@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPNU-MSCO TEAM - المنصة الدراسية</title>
+    <!-- Font Awesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ===== إعدادات عامة ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #f4efe7; /* بيج فاتح جداً */
+            height: 100vh;
+        }
+
+        /* ===== ألوان الموقع الجديدة ===== */
+        :root {
+            --black: #0d0d0d;
+            --beige-bg: #f4efe7;
+            --beige-card: #fcf9f2;
+            --beige-sidebar: #e8ddd0;
+            --gold: #d4af37;
+            --gold-dark: #b8860b;
+            --gold-light: #f5e6b8;
+        }
+
+        /* ===== صفحة تسجيل الدخول ===== */
+        .login-page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: var(--black);
+        }
+        .login-box {
+            background: var(--beige-card);
+            padding: 45px 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+            width: 420px;
+            text-align: center;
+            border: 2px solid var(--gold);
+        }
+        .login-box h1 {
+            color: var(--black);
+            margin-bottom: 5px;
+            font-size: 28px;
+        }
+        .login-box h1 span {
+            color: var(--gold);
+        }
+        .login-box p {
+            color: #555;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 14px 18px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: 0.3s;
+            background: #fffdf9;
+        }
+        .login-box input:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+        }
+        .login-box button {
+            width: 100%;
+            padding: 14px;
+            background: var(--black);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-top: 15px;
+        }
+        .login-box button:hover {
+            background: var(--gold);
+            color: var(--black);
+            transform: scale(1.02);
+        }
+        .login-box .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #888;
+        }
+
+        /* ===== Dashboard ===== */
+        .dashboard {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+        /* الشريط العلوي (أسود + ذهبي) */
+        .topbar {
+            background: var(--black);
+            color: var(--gold);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-bottom: 3px solid var(--gold);
+        }
+        .topbar h2 i {
+            color: var(--gold);
+            margin-left: 10px;
+        }
+        .topbar .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .topbar .user-info span {
+            background: var(--gold);
+            color: var(--black);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .topbar .user-info button {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 6px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+        .topbar .user-info button:hover {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        /* القائمة الجانبية (بيج) */
+        .sidebar {
+            width: 240px;
+            background: var(--beige-sidebar);
+            padding: 20px 0;
+            border-left: 1px solid #d4c9b8;
+            flex-shrink: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 15px rgba(0,0,0,0.08);
+        }
+        .sidebar .tab-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 25px;
+            background: transparent;
+            border: none;
+            text-align: right;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--black);
+            cursor: pointer;
+            transition: 0.3s;
+            border-right: 4px solid transparent;
+        }
+        .sidebar .tab-btn i {
+            margin-left: 12px;
+            width: 24px;
+            color: var(--gold-dark);
+        }
+        .sidebar .tab-btn:hover {
+            background: var(--gold-light);
+            border-right-color: var(--gold);
+        }
+        .sidebar .tab-btn.active {
+            background: var(--black);
+            border-right-color: var(--gold);
+            color: var(--gold);
+        }
+        .sidebar .tab-btn.active i {
+            color: var(--gold);
+        }
+
+        /* منطقة عرض المحتوى */
+        .content-area {
+            flex: 1;
+            padding: 25px 30px;
+            overflow-y: auto;
+            background: var(--beige-bg);
+        }
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== العناوين والأقسام ===== */
+        .section-title {
+            font-size: 24px;
+            color: var(--black);
+            margin-bottom: 20px;
+            border-bottom: 4px solid var(--gold);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+        .sub-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .sub-tabs button {
+            padding: 10px 22px;
+            background: var(--beige-card);
+            border: 1px solid #ccc;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+            font-size: 14px;
+            color: var(--black);
+        }
+        .sub-tabs button.active {
+            background: var(--black);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+        .sub-tabs button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+        }
+
+        /* شبكة المواد (بطاقات) */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 18px;
+            margin-top: 15px;
+        }
+        .subject-card {
+            background: var(--beige-card);
+            padding: 18px 12px;
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid #e0d6c8;
+        }
+        .subject-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+            box-shadow: 0 12px 25px rgba(212, 175, 55, 0.2);
+        }
+        .subject-card .icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--gold-dark);
+        }
+        .subject-card .name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--black);
+        }
+
+        /* خانات B1 - B6 */
+        .b-container {
+            margin-top: 25px;
+            background: var(--beige-card);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            border: 1px solid #e0d6c8;
+        }
+        .b-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .b-tabs button {
+            padding: 8px 18px;
+            background: #f0ebe1;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--black);
+        }
+        .b-tabs button.active {
+            background: var(--black);
+            color: var(--gold);
+            border: 1px solid var(--gold);
+        }
+        .b-content {
+            background: #fcfaf7;
+            padding: 15px;
+            border-radius: 14px;
+            min-height: 120px;
+            border: 1px dashed #d4c9b8;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 10px 16px;
+            margin: 6px 0;
+            border-radius: 10px;
+            border: 1px solid #e8e0d6;
+        }
+        .file-item .file-name i {
+            margin-left: 10px;
+            color: var(--gold-dark);
+        }
+        .file-item .download-btn {
+            background: var(--gold);
+            color: var(--black);
+            border: none;
+            padding: 5px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .file-item .download-btn:hover {
+            background: var(--black);
+            color: var(--gold);
+        }
+
+        /* البورتفوليو - الأقسام الفرعية الثلاثة */
+        .portfolio-sub {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .portfolio-sub .sub-box {
+            background: #fcf9f2;
+            padding: 15px;
+            border-radius: 14px;
+            border-right: 5px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .portfolio-sub .sub-box h4 {
+            color: var(--black);
+            margin-bottom: 10px;
+        }
+        .portfolio-sub .sub-box h4 i {
+            color: var(--gold);
+        }
+
+        /* استجابة للجوال */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 10px 0;
+            }
+            .sidebar .tab-btn span {
+                display: none;
+            }
+            .sidebar .tab-btn i {
+                font-size: 22px;
+                margin-left: 0;
+            }
+            .topbar h2 {
+                font-size: 16px;
+            }
+            .subjects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            }
+            .portfolio-sub {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===================================================== -->
+    <!-- 1. صفحة تسجيل الدخول -->
+    <!-- ===================================================== -->
+    <div class="login-page" id="loginPage">
+        <div class="login-box">
+            <h1>EPNU-<span>MSCO</span></h1>
+            <p>🏛️ المنصة الدراسية - كلية الطب</p>
+            <input type="text" placeholder="الاسم الثلاثي" id="studentName">
+            <input type="text" placeholder="الرقم القومي" id="studentNational">
+            <input type="text" placeholder="الـ ID الجامعي" id="studentId">
+            <button onclick="login()">دخول <i class="fas fa-arrow-left"></i></button>
+            <div class="note">* سيتم استخدام البيانات لتخصيص حسابك</div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 2. لوحة التحكم -->
+    <!-- ===================================================== -->
+    <div class="dashboard" id="dashboard">
+        <!-- الشريط العلوي -->
+        <div class="topbar">
+            <h2><i class="fas fa-graduation-cap"></i> EPNU-MSCO TEAM</h2>
+            <div class="user-info">
+                <span id="displayName">طالب</span>
+                <button onclick="logout()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- القائمة الجانبية -->
+            <div class="sidebar">
+                <button class="tab-btn active" onclick="switchTab('subjects')"><i class="fas fa-book"></i> <span>المواد الأساسية</span></button>
+                <button class="tab-btn" onclick="switchTab('additional')"><i class="fas fa-plus-circle"></i> <span>مواد إضافية</span></button>
+                <button class="tab-btn" onclick="switchTab('portfolio')"><i class="fas fa-folder-open"></i> <span>البورتفوليو</span></button>
+            </div>
+
+            <!-- منطقة المحتوى -->
+            <div class="content-area">
+
+                <!-- =========================== -->
+                <!-- صفحة: المواد الأساسية -->
+                <!-- =========================== -->
+                <div class="page-section active" id="section-subjects">
+                    <h2 class="section-title">📚 المواد الأساسية</h2>
+                    <div class="subjects-grid" id="coreSubjectsGrid"></div>
+                    <div id="bContainerCore" class="b-container" style="display:none;">
+                        <div class="b-tabs" id="bTabsCore"></div>
+                        <div class="b-content" id="bContentCore">اختر خانة B لعرض الملفات</div>
+                    </div>
+                </div>
+
+                <!-- =========================== -->
+                <!-- صفحة: المواد الإضافية -->
+                <!-- =========================== -->
+                <div class="page-section" id="section-additional">
+                    <h2 class="section-title">🧩 مواد إضافية</h2>
+                    <div class="sub-tabs">
+                        <button class="active" onclick="switchAddTab('add')">✅ تضاف للمجموع</button>
+                        <button onclick="switchAddTab('noAdd')">❌ لا تضاف للمجموع</button>
+                    </div>
+                    <div id="addGroup">
+                        <div class="subjects-grid" id="addSubjectsGrid"></div>
+                        <div id="bContainerAdd" class="b-container" style="display:none;">
+                            <div class="b-tabs" id="bTabsAdd"></div>
+                            <div class="b-content" id="bContentAdd">اختر خانة B</div>
+                        </div>
+                    </div>
+                    <div id="noAddGroup" style="display:none;">
+                        <div class="subjects-grid" id="noAddSubjectsGrid"></div>
+                        <div id="bContainerNoAdd" class="b-container" style="display:none;">
+                            <div class="b-tabs" id="bTabsNoAdd"></div>
+                            <div class="b-content" id="bContentNoAdd">اختر خانة B</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- =========================== -->
+                <!-- صفحة: البورتفوليو -->
+                <!-- =========================== -->
+                <div class="page-section" id="section-portfolio">
+                    <h2 class="section-title">📁 البورتفوليو</h2>
+                    <div class="b-container">
+                        <div class="b-tabs" id="bTabsPortfolio"></div>
+                        <div class="b-content" id="bContentPortfolio">اختر خانة B لعرض محتويات البورتفوليو</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        //  بيانات الموقع (محاكاة)
+        // ================================================================
+
+        const coreSubjects = [
+            { name: 'Anatomy', icon: '🦴' },
+            { name: 'Biochemistry', icon: '🧪' },
+            { name: 'Parasitology', icon: '🦠' },
+            { name: 'Pathology', icon: '🔬' },
+            { name: 'Physiology', icon: '❤️' },
+            { name: 'Pharmacology', icon: '💊' },
+            { name: 'Microbiology', icon: '🧫' },
+            { name: 'Histology', icon: '🔬' },
+            { name: 'Community', icon: '🏘️' },
+            { name: 'Family', icon: '👨‍👩‍👧‍👦' }
+        ];
+
+        const addSubjects = [
+            { name: 'Skill Lab 1', icon: '🧑‍⚕️' },
+            { name: 'Skill Lab 2', icon: '🩺' },
+            { name: 'Research', icon: '📊' }
+        ];
+
+        const noAddSubjects = [
+            { name: 'Field 1', icon: '🌍' },
+            { name: 'Field 2', icon: '🌎' },
+            { name: 'English', icon: '🇬🇧' },
+            { name: 'قضايا مجتمعية', icon: '⚖️' },
+            { name: 'جودة', icon: '✅' },
+            { name: 'تنمية ذاتية', icon: '🧘' }
+        ];
+
+        const dummyFiles = [
+            'محاضرة 1 - مقدمة.pdf',
+            'محاضرة 2 - شرح عملي.pptx',
+            'صور توضيحية.zip',
+            'ملخص نهائي.docx'
+        ];
+
+        // ================================================================
+        //  دوال العرض والتحكم
+        // ================================================================
+
+        let currentCoreSubject = null;
+        let currentAddSubject = null;
+        let currentNoAddSubject = null;
+
+        function login() {
+            const name = document.getElementById('studentName').value.trim();
+            const national = document.getElementById('studentNational').value.trim();
+            const id = document.getElementById('studentId').value.trim();
+            if (!name || !national || !id) {
+                alert('من فضلك املأ جميع البيانات');
+                return;
+            }
+            document.getElementById('displayName').innerText = name;
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'flex';
+            initDashboard();
+        }
+
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('section-' + tab).classList.add('active');
+            document.querySelectorAll('.sidebar .tab-btn').forEach(el => el.classList.remove('active'));
+            event.target.closest('.tab-btn').classList.add('active');
+        }
+
+        function switchAddTab(type) {
+            if (type === 'add') {
+                document.getElementById('addGroup').style.display = 'block';
+                document.getElementById('noAddGroup').style.display = 'none';
+            } else {
+                document.getElementById('addGroup').style.display = 'none';
+                document.getElementById('noAddGroup').style.display = 'block';
+            }
+            document.querySelectorAll('.sub-tabs button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function initDashboard() {
+            renderSubjects('coreSubjectsGrid', coreSubjects, 'core');
+            renderSubjects('addSubjectsGrid', addSubjects, 'add');
+            renderSubjects('noAddSubjectsGrid', noAddSubjects, 'noAdd');
+            initPortfolio();
+        }
+
+        function renderSubjects(containerId, subjects, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            subjects.forEach((sub, index) => {
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                card.innerHTML = `
+                    <span class="icon">${sub.icon}</span>
+                    <div class="name">${sub.name}</div>
+                `;
+                card.onclick = () => openSubject(sub.name, type, index);
+                container.appendChild(card);
+            });
+        }
+
+        function openSubject(name, type, index) {
+            let bContainer, bTabs, bContent;
+            if (type === 'core') {
+                currentCoreSubject = name;
+                bContainer = document.getElementById('bContainerCore');
+                bTabs = document.getElementById('bTabsCore');
+                bContent = document.getElementById('bContentCore');
+                bContainer.style.display = 'block';
+                document.getElementById('bContainerAdd').style.display = 'none';
+                document.getElementById('bContainerNoAdd').style.display = 'none';
+            } else if (type === 'add') {
+                currentAddSubject = name;
+                bContainer = document.getElementById('bContainerAdd');
+                bTabs = document.getElementById('bTabsAdd');
+                bContent = document.getElementById('bContentAdd');
+                bContainer.style.display = 'block';
+                document.getElementById('bContainerCore').style.display = 'none';
+                document.getElementById('bContainerNoAdd').style.display = 'none';
+            } else if (type === 'noAdd') {
+                currentNoAddSubject = name;
+                bContainer = document.getElementById('bContainerNoAdd');
+                bTabs = document.getElementById('bTabsNoAdd');
+                bContent = document.getElementById('bContentNoAdd');
+                bContainer.style.display = 'block';
+                document.getElementById('bContainerCore').style.display = 'none';
+                document.getElementById('bContainerAdd').style.display = 'none';
+            }
+
+            bTabs.innerHTML = '';
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = `B${i}`;
+                btn.dataset.b = `B${i}`;
+                if (i === 1) btn.classList.add('active');
+                btn.onclick = function() {
+                    bTabs.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    loadBFiles(bContent, `B${i}`);
+                };
+                bTabs.appendChild(btn);
+            }
+            loadBFiles(bContent, 'B1');
+        }
+
+        function loadBFiles(container, bLabel) {
+            let html = `<h4 style="color:#0d0d0d; margin-bottom:12px;">📂 ${bLabel} - الملفات</h4>`;
+            dummyFiles.forEach((file, idx) => {
+                let icon = 'fa-file-pdf';
+                if (file.includes('.pptx') || file.includes('.ppt')) icon = 'fa-file-powerpoint';
+                else if (file.includes('.zip')) icon = 'fa-file-archive';
+                else if (file.includes('.docx') || file.includes('.doc')) icon = 'fa-file-word';
+                else if (file.includes('صور')) icon = 'fa-file-image';
+                html += `
+                    <div class="file-item">
+                        <span class="file-name"><i class="fas ${icon}"></i> ${file}</span>
+                        <button class="download-btn" onclick="alert('جاري تحميل: ${file} (محاكاة)')"><i class="fas fa-download"></i> تحميل</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        // ================================================================
+        //  البورتفوليو
+        // ================================================================
+        function initPortfolio() {
+            const container = document.getElementById('bTabsPortfolio');
+            const content = document.getElementById('bContentPortfolio');
+            for (let i = 1; i <= 6; i++) {
+                const btn = document.createElement('button');
+                btn.innerText = `B${i}`;
+                if (i === 1) btn.classList.add('active');
+                btn.onclick = function() {
+                    container.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    loadPortfolioContent(content, `B${i}`);
+                };
+                container.appendChild(btn);
+            }
+            loadPortfolioContent(content, 'B1');
+        }
+
+        function loadPortfolioContent(container, bLabel) {
+            let html = `
+                <h4 style="color:#0d0d0d; margin-bottom:15px;">📘 ${bLabel} - البورتفوليو</h4>
+                <div class="portfolio-sub">
+                    <div class="sub-box">
+                        <h4><i class="fas fa-file-alt"></i> شكل البورتفوليو</h4>
+                        <div class="file-item"><span>قالب معتمد.pdf</span> <button class="download-btn" onclick="alert('تحميل قالب')"><i class="fas fa-download"></i></button></div>
+                        <div class="file-item"><span>نموذج إرشادي.docx</span> <button class="download-btn" onclick="alert('تحميل نموذج')"><i class="fas fa-download"></i></button></div>
+                    </div>
+                    <div class="sub-box">
+                        <h4><i class="fas fa-scalpel"></i> أسئلة Incision</h4>
+                        <div class="file-item"><span>Incision_Q1.pdf</span> <button class="download-btn" onclick="alert('تحميل')"><i class="fas fa-download"></i></button></div>
+                        <div class="file-item"><span>Incision_Q2.pdf</span> <button class="download-btn" onclick="alert('تحميل')"><i class="fas fa-download"></i></button></div>
+                    </div>
+                    <div class="sub-box">
+                        <h4><i class="fas fa-check-circle"></i> أسئلة Formative</h4>
+                        <div class="file-item"><span>Formative_1.pdf</span> <button class="download-btn" onclick="alert('تحميل')"><i class="fas fa-download"></i></button></div>
+                        <div class="file-item"><span>Formative_2.pdf</span> <button class="download-btn" onclick="alert('تحميل')"><i class="fas fa-download"></i></button></div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = html;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('dashboard').style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
