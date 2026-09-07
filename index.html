@@ -15,11 +15,10 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            background: #f4efe7; /* بيج فاتح جداً */
+            background: #f4efe7;
             height: 100vh;
         }
 
-        /* ===== ألوان الموقع الجديدة ===== */
         :root {
             --black: #0d0d0d;
             --beige-bg: #f4efe7;
@@ -40,12 +39,13 @@
         }
         .login-box {
             background: var(--beige-card);
-            padding: 45px 35px;
+            padding: 35px 30px;
             border-radius: 25px;
             box-shadow: 0 15px 40px rgba(0,0,0,0.7);
             width: 420px;
             text-align: center;
             border: 2px solid var(--gold);
+            position: relative;
         }
         .login-box h1 {
             color: var(--black);
@@ -55,27 +55,63 @@
         .login-box h1 span {
             color: var(--gold);
         }
-        .login-box p {
+        .login-box .subtitle {
             color: #555;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-size: 14px;
         }
-        .login-box input {
+
+        /* أزرار التبديل بين الدخول والتسجيل */
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .auth-tabs button {
+            padding: 10px 25px;
+            border: 2px solid var(--gold);
+            background: transparent;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--black);
+            font-size: 15px;
+        }
+        .auth-tabs button.active {
+            background: var(--black);
+            color: var(--gold);
+            border-color: var(--gold);
+        }
+        .auth-tabs button:hover {
+            transform: scale(1.03);
+        }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .auth-form.active {
+            display: flex;
+        }
+
+        .auth-form input {
             width: 100%;
             padding: 14px 18px;
-            margin: 8px 0;
             border: 1px solid #ccc;
             border-radius: 12px;
             font-size: 15px;
             transition: 0.3s;
             background: #fffdf9;
         }
-        .login-box input:focus {
+        .auth-form input:focus {
             border-color: var(--gold);
             outline: none;
             box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
         }
-        .login-box button {
+        .auth-form button {
             width: 100%;
             padding: 14px;
             background: var(--black);
@@ -86,17 +122,24 @@
             font-weight: bold;
             cursor: pointer;
             transition: 0.3s;
-            margin-top: 15px;
+            margin-top: 5px;
         }
-        .login-box button:hover {
+        .auth-form button:hover {
             background: var(--gold);
             color: var(--black);
             transform: scale(1.02);
         }
-        .login-box .note {
-            margin-top: 15px;
+        .auth-form .error-msg {
+            color: #c0392b;
             font-size: 13px;
-            color: #888;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+        .auth-form .success-msg {
+            color: #27ae60;
+            font-size: 13px;
+            margin-top: 5px;
+            min-height: 20px;
         }
 
         /* ===== Dashboard ===== */
@@ -105,7 +148,6 @@
             height: 100vh;
             flex-direction: column;
         }
-        /* الشريط العلوي (أسود + ذهبي) */
         .topbar {
             background: var(--black);
             color: var(--gold);
@@ -148,13 +190,11 @@
             color: var(--black);
         }
 
-        /* المحتوى الرئيسي */
         .main-content {
             display: flex;
             flex: 1;
             overflow: hidden;
         }
-        /* القائمة الجانبية (بيج) */
         .sidebar {
             width: 240px;
             background: var(--beige-sidebar);
@@ -196,7 +236,6 @@
             color: var(--gold);
         }
 
-        /* منطقة عرض المحتوى */
         .content-area {
             flex: 1;
             padding: 25px 30px;
@@ -215,7 +254,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ===== العناوين والأقسام ===== */
         .section-title {
             font-size: 24px;
             color: var(--black);
@@ -251,7 +289,6 @@
             box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
         }
 
-        /* شبكة المواد (بطاقات) */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -285,7 +322,6 @@
             color: var(--black);
         }
 
-        /* خانات B1 - B6 */
         .b-container {
             margin-top: 25px;
             background: var(--beige-card);
@@ -352,7 +388,6 @@
             color: var(--gold);
         }
 
-        /* البورتفوليو - الأقسام الفرعية الثلاثة */
         .portfolio-sub {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
@@ -374,7 +409,6 @@
             color: var(--gold);
         }
 
-        /* استجابة للجوال */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
@@ -396,23 +430,48 @@
             .portfolio-sub {
                 grid-template-columns: 1fr;
             }
+            .login-box {
+                width: 90%;
+                padding: 25px 20px;
+            }
         }
     </style>
 </head>
 <body>
 
     <!-- ===================================================== -->
-    <!-- 1. صفحة تسجيل الدخول -->
+    <!-- 1. صفحة تسجيل الدخول / التسجيل -->
     <!-- ===================================================== -->
     <div class="login-page" id="loginPage">
         <div class="login-box">
             <h1>EPNU-<span>MSCO</span></h1>
-            <p>🏛️ المنصة الدراسية - كلية الطب</p>
-            <input type="text" placeholder="الاسم الثلاثي" id="studentName">
-            <input type="text" placeholder="الرقم القومي" id="studentNational">
-            <input type="text" placeholder="الـ ID الجامعي" id="studentId">
-            <button onclick="login()">دخول <i class="fas fa-arrow-left"></i></button>
-            <div class="note">* سيتم استخدام البيانات لتخصيص حسابك</div>
+            <div class="subtitle">🏛️ المنصة الدراسية - كلية الطب</div>
+
+            <!-- أزرار التبديل -->
+            <div class="auth-tabs">
+                <button class="active" id="loginTabBtn" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+                <button id="signupTabBtn" onclick="switchAuthTab('signup')">إنشاء حساب</button>
+            </div>
+
+            <!-- نموذج تسجيل الدخول -->
+            <div class="auth-form active" id="loginForm">
+                <input type="text" id="loginName" placeholder="الاسم الثلاثي">
+                <input type="password" id="loginPassword" placeholder="كلمة المرور">
+                <div class="error-msg" id="loginError"></div>
+                <button onclick="login()">دخول <i class="fas fa-arrow-left"></i></button>
+            </div>
+
+            <!-- نموذج إنشاء حساب -->
+            <div class="auth-form" id="signupForm">
+                <input type="text" id="signupName" placeholder="الاسم الثلاثي">
+                <input type="text" id="signupNational" placeholder="الرقم القومي">
+                <input type="text" id="signupId" placeholder="الـ ID الجامعي">
+                <input type="password" id="signupPassword" placeholder="كلمة المرور">
+                <input type="password" id="signupConfirm" placeholder="تأكيد كلمة المرور">
+                <div class="error-msg" id="signupError"></div>
+                <div class="success-msg" id="signupSuccess"></div>
+                <button onclick="signup()">تسجيل حساب <i class="fas fa-user-plus"></i></button>
+            </div>
         </div>
     </div>
 
@@ -420,7 +479,6 @@
     <!-- 2. لوحة التحكم -->
     <!-- ===================================================== -->
     <div class="dashboard" id="dashboard">
-        <!-- الشريط العلوي -->
         <div class="topbar">
             <h2><i class="fas fa-graduation-cap"></i> EPNU-MSCO TEAM</h2>
             <div class="user-info">
@@ -430,19 +488,14 @@
         </div>
 
         <div class="main-content">
-            <!-- القائمة الجانبية -->
             <div class="sidebar">
                 <button class="tab-btn active" onclick="switchTab('subjects')"><i class="fas fa-book"></i> <span>المواد الأساسية</span></button>
                 <button class="tab-btn" onclick="switchTab('additional')"><i class="fas fa-plus-circle"></i> <span>مواد إضافية</span></button>
                 <button class="tab-btn" onclick="switchTab('portfolio')"><i class="fas fa-folder-open"></i> <span>البورتفوليو</span></button>
             </div>
 
-            <!-- منطقة المحتوى -->
             <div class="content-area">
-
-                <!-- =========================== -->
-                <!-- صفحة: المواد الأساسية -->
-                <!-- =========================== -->
+                <!-- المواد الأساسية -->
                 <div class="page-section active" id="section-subjects">
                     <h2 class="section-title">📚 المواد الأساسية</h2>
                     <div class="subjects-grid" id="coreSubjectsGrid"></div>
@@ -452,9 +505,7 @@
                     </div>
                 </div>
 
-                <!-- =========================== -->
-                <!-- صفحة: المواد الإضافية -->
-                <!-- =========================== -->
+                <!-- المواد الإضافية -->
                 <div class="page-section" id="section-additional">
                     <h2 class="section-title">🧩 مواد إضافية</h2>
                     <div class="sub-tabs">
@@ -477,9 +528,7 @@
                     </div>
                 </div>
 
-                <!-- =========================== -->
-                <!-- صفحة: البورتفوليو -->
-                <!-- =========================== -->
+                <!-- البورتفوليو -->
                 <div class="page-section" id="section-portfolio">
                     <h2 class="section-title">📁 البورتفوليو</h2>
                     <div class="b-container">
@@ -487,14 +536,157 @@
                         <div class="b-content" id="bContentPortfolio">اختر خانة B لعرض محتويات البورتفوليو</div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
     <script>
         // ================================================================
-        //  بيانات الموقع (محاكاة)
+        //  إدارة المستخدمين (تخزين في localStorage)
+        // ================================================================
+
+        const USERS_KEY = 'epnu_msco_users';
+
+        function getUsers() {
+            const data = localStorage.getItem(USERS_KEY);
+            return data ? JSON.parse(data) : [];
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+        }
+
+        // دالة مساعدة لتشفير كلمة المرور (بسيط)
+        function hashPassword(pwd) {
+            return btoa(pwd); // تشفير base64 (ليس آمناً حقيقياً لكنه للمحاكاة)
+        }
+
+        // ================================================================
+        //  دوال المصادقة (Sign Up / Login)
+        // ================================================================
+
+        function switchAuthTab(tab) {
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('signupForm').classList.remove('active');
+            document.getElementById('loginTabBtn').classList.remove('active');
+            document.getElementById('signupTabBtn').classList.remove('active');
+
+            if (tab === 'login') {
+                document.getElementById('loginForm').classList.add('active');
+                document.getElementById('loginTabBtn').classList.add('active');
+                // مسح أي رسائل
+                document.getElementById('loginError').innerText = '';
+                document.getElementById('signupError').innerText = '';
+                document.getElementById('signupSuccess').innerText = '';
+            } else {
+                document.getElementById('signupForm').classList.add('active');
+                document.getElementById('signupTabBtn').classList.add('active');
+                document.getElementById('loginError').innerText = '';
+                document.getElementById('signupError').innerText = '';
+                document.getElementById('signupSuccess').innerText = '';
+            }
+        }
+
+        function signup() {
+            const name = document.getElementById('signupName').value.trim();
+            const national = document.getElementById('signupNational').value.trim();
+            const id = document.getElementById('signupId').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+
+            const errorEl = document.getElementById('signupError');
+            const successEl = document.getElementById('signupSuccess');
+            errorEl.innerText = '';
+            successEl.innerText = '';
+
+            // التحقق من الحقول
+            if (!name || !national || !id || !password || !confirm) {
+                errorEl.innerText = '⚠️ جميع الحقول مطلوبة';
+                return;
+            }
+            if (password !== confirm) {
+                errorEl.innerText = '⚠️ كلمة المرور غير متطابقة';
+                return;
+            }
+            if (password.length < 4) {
+                errorEl.innerText = '⚠️ كلمة المرور يجب أن تكون 4 أحرف على الأقل';
+                return;
+            }
+
+            const users = getUsers();
+            // التأكد من عدم وجود مستخدم بنفس الاسم الثلاثي أو ID
+            const exists = users.some(u => u.name === name || u.id === id);
+            if (exists) {
+                errorEl.innerText = '⚠️ هذا الاسم أو ID موجود مسبقاً';
+                return;
+            }
+
+            // حفظ المستخدم الجديد
+            users.push({
+                name: name,
+                national: national,
+                id: id,
+                passwordHash: hashPassword(password)
+            });
+            saveUsers(users);
+
+            successEl.innerText = '✅ تم إنشاء الحساب بنجاح! يمكنك الآن تسجيل الدخول.';
+
+            // تفريغ الحقول
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupNational').value = '';
+            document.getElementById('signupId').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupConfirm').value = '';
+
+            // التبديل تلقائياً إلى login بعد ثانية
+            setTimeout(() => {
+                switchAuthTab('login');
+                document.getElementById('loginName').value = name;
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginError').innerText = '';
+            }, 1500);
+        }
+
+        function login() {
+            const name = document.getElementById('loginName').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            errorEl.innerText = '';
+
+            if (!name || !password) {
+                errorEl.innerText = '⚠️ يرجى إدخال الاسم وكلمة المرور';
+                return;
+            }
+
+            const users = getUsers();
+            const user = users.find(u => u.name === name && u.passwordHash === hashPassword(password));
+
+            if (!user) {
+                errorEl.innerText = '❌ اسم المستخدم أو كلمة المرور غير صحيحة';
+                return;
+            }
+
+            // تسجيل الدخول ناجح
+            document.getElementById('displayName').innerText = user.name;
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'flex';
+            initDashboard();
+        }
+
+        function logout() {
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('dashboard').style.display = 'none';
+            // تنظيف حقول الدخول
+            document.getElementById('loginName').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').innerText = '';
+            // إظهار تبويب login
+            switchAuthTab('login');
+        }
+
+        // ================================================================
+        //  دوال عرض المواد والملفات (كما هي مع تعديل بسيط)
         // ================================================================
 
         const coreSubjects = [
@@ -532,32 +724,9 @@
             'ملخص نهائي.docx'
         ];
 
-        // ================================================================
-        //  دوال العرض والتحكم
-        // ================================================================
-
         let currentCoreSubject = null;
         let currentAddSubject = null;
         let currentNoAddSubject = null;
-
-        function login() {
-            const name = document.getElementById('studentName').value.trim();
-            const national = document.getElementById('studentNational').value.trim();
-            const id = document.getElementById('studentId').value.trim();
-            if (!name || !national || !id) {
-                alert('من فضلك املأ جميع البيانات');
-                return;
-            }
-            document.getElementById('displayName').innerText = name;
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('dashboard').style.display = 'flex';
-            initDashboard();
-        }
-
-        function logout() {
-            document.getElementById('loginPage').style.display = 'flex';
-            document.getElementById('dashboard').style.display = 'none';
-        }
 
         function switchTab(tab) {
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
@@ -668,6 +837,7 @@
         function initPortfolio() {
             const container = document.getElementById('bTabsPortfolio');
             const content = document.getElementById('bContentPortfolio');
+            container.innerHTML = '';
             for (let i = 1; i <= 6; i++) {
                 const btn = document.createElement('button');
                 btn.innerText = `B${i}`;
@@ -706,8 +876,22 @@
             container.innerHTML = html;
         }
 
+        // بداية: إظهار صفحة الدخول
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('dashboard').style.display = 'none';
+            // التحقق من وجود مستخدمين، إن لم يوجد نضيف مستخدم تجريبي للاختبار
+            const users = getUsers();
+            if (users.length === 0) {
+                // إضافة مستخدم تجريبي لتسهيل الاختبار (يمكن حذفه)
+                users.push({
+                    name: 'طالب تجريبي',
+                    national: '123456789',
+                    id: '2023001',
+                    passwordHash: hashPassword('1234')
+                });
+                saveUsers(users);
+                console.log('تم إنشاء مستخدم تجريبي: اسم = طالب تجريبي، كلمة المرور = 1234');
+            }
         });
     </script>
 
