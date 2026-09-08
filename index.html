@@ -23,6 +23,7 @@
             --beige-light: #E8D8C8;        
             --border-gold: rgba(212, 175, 55, 0.35);
             --error-red: #E74C3C;
+            --shadow-gold: rgba(212, 175, 55, 0.2);
         }
 
         * {
@@ -313,7 +314,118 @@
             margin-bottom: 3rem;
         }
 
-        /* ---- تخصيص المواد الأساسية فقط ---- */
+        /* ---- الصفحة الرئيسية ---- */
+        #homeSection .home-banner {
+            width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+            aspect-ratio: 16 / 6;
+            background: #1a1816;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        #homeSection .home-banner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        #homeSection .home-banner .fallback-text {
+            font-size: 2.5rem;
+            color: var(--gold-primary);
+            opacity: 0.4;
+            font-weight: 700;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        #homeSection .home-credit {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--beige-light);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        #homeSection .home-credit strong {
+            color: var(--gold-primary);
+        }
+
+        #homeSection .home-links {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 1.5rem 2rem;
+        }
+
+        #homeSection .home-links .links-title {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--beige-main);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #homeSection .home-links .links-title i {
+            color: var(--gold-primary);
+        }
+
+        #homeSection .home-links .links-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        #homeSection .home-links .link-item {
+            background: #181614;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-gold);
+            color: var(--beige-main);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #homeSection .home-links .link-item:hover {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+        }
+
+        #homeSection .home-links .link-item i {
+            color: var(--gold-primary);
+        }
+
+        #homeSection .home-links .link-item:hover i {
+            color: #0A0A0A;
+        }
+
+        #homeSection .home-links .link-item.add-link {
+            background: transparent;
+            border: 1px dashed var(--border-gold);
+            color: var(--beige-light);
+            cursor: pointer;
+        }
+
+        #homeSection .home-links .link-item.add-link:hover {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            background: transparent;
+        }
+
+        /* ---- المواد الأساسية ---- */
         #coreSection .grid-container {
             grid-template-columns: repeat(5, 1fr);
         }
@@ -326,6 +438,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            cursor: pointer;
         }
 
         #coreSection .subject-card .subject-cover-img {
@@ -334,6 +447,7 @@
             object-fit: cover;
             border-radius: 10px;
             margin-bottom: 0.4rem;
+            border: 1px solid var(--border-gold);
         }
 
         #coreSection .subject-card i {
@@ -348,14 +462,14 @@
 
         /* ---- تفاصيل المادة (B1-B6) ---- */
         #subjectDetailSection .grid-container {
-            grid-template-columns: repeat(6, 1fr);
+            grid-template-columns: repeat(3, 1fr);
         }
 
         .b-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
             border-radius: 14px;
-            padding: 1rem 0.8rem;
+            padding: 1.2rem 0.8rem;
             text-align: center;
             transition: 0.3s;
         }
@@ -369,15 +483,15 @@
 
         .b-card h4 {
             color: var(--gold-primary);
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 0.2rem;
         }
 
         .b-card .b-subtitle {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             color: var(--beige-light);
-            margin-bottom: 0.7rem;
-            opacity: 0.9;
+            margin-bottom: 0.8rem;
+            opacity: 0.85;
             line-height: 1.3;
         }
 
@@ -392,8 +506,8 @@
             background: #181614;
             border: 1px solid var(--border-gold);
             border-radius: 10px;
-            padding: 0.4rem 0.6rem;
-            min-width: 65px;
+            padding: 0.5rem 0.7rem;
+            min-width: 70px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -402,10 +516,11 @@
             transition: 0.3s;
             color: var(--beige-light);
             font-size: 0.7rem;
+            text-decoration: none;
         }
 
         .b-icons .icon-item i {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             color: var(--gold-primary);
         }
 
@@ -413,19 +528,20 @@
             background: var(--gold-primary);
             color: #0A0A0A;
             border-color: var(--gold-primary);
+            transform: scale(1.05);
         }
 
         .b-icons .icon-item:hover i {
             color: #0A0A0A;
         }
 
-        /* ---- بقية الأقسام (إضافية، بورتفوليو) تبقى كما هي ---- */
+        /* ---- بقية الأقسام (إضافية، بورتفوليو) ---- */
         #extraSection .grid-container,
         #portfolioSection .grid-container {
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
 
-        /* بطاقات عامة (غير الأساسية) */
+        /* بطاقات عامة */
         .subject-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -491,13 +607,6 @@
             overflow-y: auto;
         }
 
-        .blocks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
         .block-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -547,7 +656,7 @@
             font-weight: 600;
         }
 
-        /* ---- استجابة للهواتف (عمودين) ---- */
+        /* ---- استجابة ---- */
         @media (max-width: 767px) {
             #coreSection .grid-container {
                 grid-template-columns: repeat(2, 1fr);
@@ -564,12 +673,25 @@
             }
 
             .b-icons .icon-item {
-                min-width: 55px;
-                padding: 0.3rem 0.4rem;
+                min-width: 60px;
+                padding: 0.4rem 0.5rem;
                 font-size: 0.65rem;
             }
             .b-icons .icon-item i {
-                font-size: 1.1rem;
+                font-size: 1.2rem;
+            }
+
+            #homeSection .home-banner {
+                aspect-ratio: 16 / 5;
+            }
+            #homeSection .home-banner .fallback-text {
+                font-size: 1.5rem;
+            }
+            #homeSection .home-links .links-grid {
+                flex-direction: column;
+            }
+            #homeSection .home-links .link-item {
+                justify-content: center;
             }
         }
 
@@ -580,6 +702,14 @@
             #subjectDetailSection .grid-container {
                 grid-template-columns: repeat(3, 1fr);
             }
+        }
+
+        /* إخفاء الأقسام */
+        .section-content {
+            display: none;
+        }
+        .section-content.active {
+            display: block;
         }
     </style>
 </head>
@@ -650,71 +780,61 @@
 
     <!-- المحتوى الرئيسي -->
     <div class="container">
+        <!-- تبويبات التنقل -->
         <div class="nav-tabs">
-            <button class="tab-btn active" type="button" onclick="showSection('core', this)">المواد الأساسية</button>
+            <button class="tab-btn active" type="button" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="tab-btn" type="button" onclick="showSection('core', this)">المواد الأساسية</button>
             <button class="tab-btn" type="button" onclick="showSection('extra', this)">المواد الإضافية</button>
             <button class="tab-btn" type="button" onclick="showSection('portfolio', this)">البورتفوليو</button>
         </div>
 
-        <!-- 1. المواد الأساسية -->
-        <div id="coreSection">
-            <h2 class="section-title">المواد الأساسية (Core Subjects)</h2>
-            <div class="grid-container">
-                <div class="subject-card" onclick="openSubject('Anatomy')">
-                    <img src="anatomy-cover.jpg" alt="Anatomy Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-bone" style="display:none;"></i>
-                    <h3>Anatomy</h3>
+        <!-- 1. الصفحة الرئيسية -->
+        <div class="section-content active" id="homeSection">
+            <div class="home-banner">
+                <img src="banner.jpg" alt="NOVA Banner" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                <div class="fallback-text" style="display:none;">NOVA<br><span style="font-size:0.4em; color:var(--beige-light);">FOM-EPNU</span></div>
+            </div>
+            <div class="home-credit">
+                <strong>created by Dr.Amin</strong> — FOM-EPNU
+            </div>
+            <div class="home-links">
+                <div class="links-title">
+                    <i class="fa-solid fa-link"></i> روابط سريعة
                 </div>
-                <div class="subject-card" onclick="openSubject('Biochemistry')">
-                    <img src="biochemistry-cover.jpg" alt="Biochemistry Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-dna" style="display:none;"></i>
-                    <h3>Biochemistry</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Parasitology')">
-                    <img src="parasitology-cover.jpg" alt="Parasitology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-bug" style="display:none;"></i>
-                    <h3>Parasitology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Pathology')">
-                    <img src="pathology-cover.jpg" alt="Pathology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-vial-virus" style="display:none;"></i>
-                    <h3>Pathology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Physiology')">
-                    <img src="physiology-cover.jpg" alt="Physiology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-heart-pulse" style="display:none;"></i>
-                    <h3>Physiology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Pharmacology')">
-                    <img src="pharmacology-cover.jpg" alt="Pharmacology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-capsules" style="display:none;"></i>
-                    <h3>Pharmacology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Microbiology')">
-                    <img src="microbiology-cover.jpg" alt="Microbiology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-virus" style="display:none;"></i>
-                    <h3>Microbiology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Histology')">
-                    <img src="histology-cover.jpg" alt="Histology Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-microscope" style="display:none;"></i>
-                    <h3>Histology</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Community')">
-                    <img src="community-cover.jpg" alt="Community Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-users" style="display:none;"></i>
-                    <h3>Community</h3>
-                </div>
-                <div class="subject-card" onclick="openSubject('Family')">
-                    <img src="family-cover.jpg" alt="Family Cover" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-                    <i class="fa-solid fa-people-group" style="display:none;"></i>
-                    <h3>Family</h3>
+                <div class="links-grid">
+                    <a href="#" class="link-item" onclick="showSection('core', document.querySelector('.tab-btn[onclick*=\\'core\\']'));"><i class="fa-solid fa-graduation-cap"></i> المواد الأساسية</a>
+                    <a href="#" class="link-item" onclick="showSection('extra', document.querySelector('.tab-btn[onclick*=\\'extra\\']'));"><i class="fa-solid fa-layer-group"></i> مواد إضافية</a>
+                    <a href="#" class="link-item" onclick="showSection('portfolio', document.querySelector('.tab-btn[onclick*=\\'portfolio\\']'));"><i class="fa-solid fa-folder-open"></i> البورتفوليو</a>
+                    <a href="#" class="link-item"><i class="fa-solid fa-calendar-alt"></i> الجدول الدراسي</a>
+                    <a href="#" class="link-item"><i class="fa-solid fa-envelope"></i> التواصل</a>
+                    <button class="link-item add-link" onclick="alert('يمكنك إضافة رابط جديد هنا')">
+                        <i class="fa-solid fa-plus"></i> إضافة رابط
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- 2. المواد الإضافية -->
-        <div id="extraSection" style="display: none;">
+        <!-- 2. المواد الأساسية -->
+        <div class="section-content" id="coreSection">
+            <h2 class="section-title">المواد الأساسية (Core Subjects)</h2>
+            <div class="grid-container" id="coreGrid">
+                <!-- يتم إنشاؤها بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- 3. تفاصيل المادة (B1-B6) -->
+        <div class="section-content" id="subjectDetailSection">
+            <h2 class="section-title">
+                <span id="subjectDetailTitle">المادة</span>
+                <button class="back-btn" type="button" onclick="backToCore()"><i class="fa-solid fa-arrow-right"></i> العودة</button>
+            </h2>
+            <div class="grid-container" id="subjectBlocksContainer">
+                <!-- يتم إنشاؤها بواسطة JavaScript -->
+            </div>
+        </div>
+
+        <!-- 4. المواد الإضافية -->
+        <div class="section-content" id="extraSection">
             <h2 class="section-title">مواد تُضاف للمجموع</h2>
             <div class="grid-container">
                 <div class="subject-card" onclick="alert('محتوى Skill Lab 1')"><i class="fa-solid fa-user-doctor"></i><h3>Skill Lab 1</h3></div>
@@ -733,8 +853,8 @@
             </div>
         </div>
 
-        <!-- 3. قسم البورتفوليو -->
-        <div id="portfolioSection" style="display: none;">
+        <!-- 5. البورتفوليو -->
+        <div class="section-content" id="portfolioSection">
             <h2 class="section-title">قسم البورتفوليو (Portfolio)</h2>
             <div class="grid-container">
                 <div class="subject-card" onclick="openPortfolioBlock('B1')"><i class="fa-solid fa-folder-open"></i><h3>Portfolio B1</h3></div>
@@ -743,17 +863,6 @@
                 <div class="subject-card" onclick="openPortfolioBlock('B4')"><i class="fa-solid fa-folder-open"></i><h3>Portfolio B4</h3></div>
                 <div class="subject-card" onclick="openPortfolioBlock('B5')"><i class="fa-solid fa-folder-open"></i><h3>Portfolio B5</h3></div>
                 <div class="subject-card" onclick="openPortfolioBlock('B6')"><i class="fa-solid fa-folder-open"></i><h3>Portfolio B6</h3></div>
-            </div>
-        </div>
-
-        <!-- 4. صفحة تفاصيل المادة الأساسية (B1-B6) -->
-        <div id="subjectDetailSection" style="display: none;">
-            <h2 class="section-title">
-                <span id="subjectDetailTitle">المادة</span>
-                <button class="back-btn" type="button" onclick="backToCore()"><i class="fa-solid fa-arrow-right"></i> العودة</button>
-            </h2>
-            <div class="grid-container" id="subjectBlocksContainer">
-                <!-- يتم إنشاء المحتوى بواسطة JavaScript -->
             </div>
         </div>
     </div>
@@ -785,15 +894,160 @@
     </footer>
 
     <script>
+        // ===== بيانات المواد الأساسية مع صور Cover =====
+        const coreSubjects = [
+            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
+            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
+            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg', fallbackIcon: 'fa-bug' },
+            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg', fallbackIcon: 'fa-vial-virus' },
+            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg', fallbackIcon: 'fa-heart-pulse' },
+            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg', fallbackIcon: 'fa-capsules' },
+            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg', fallbackIcon: 'fa-virus' },
+            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg', fallbackIcon: 'fa-microscope' },
+            { id: 'community', name: 'Community', cover: 'community-cover.jpg', fallbackIcon: 'fa-users' },
+            { id: 'family', name: 'Family', cover: 'family-cover.jpg', fallbackIcon: 'fa-people-group' }
+        ];
+
+        // ===== العناوين الفرعية لكل B =====
+        const bSubtitles = {
+            1: "Introduction To Medicine",
+            2: "Man & Environment",
+            3: "Nutrition & Metabolism",
+            4: "Growth & Development",
+            5: "Principles of Diseases",
+            6: "Urinary System"
+        };
+
+        // ===== دالة عرض المواد الأساسية =====
+        function renderCoreSubjects() {
+            const grid = document.getElementById('coreGrid');
+            grid.innerHTML = '';
+            coreSubjects.forEach(sub => {
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                card.innerHTML = `
+                    <img src="${sub.cover}" alt="${sub.name}" class="subject-cover-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                    <i class="fa-solid ${sub.fallbackIcon}" style="display:none;"></i>
+                    <h3>${sub.name}</h3>
+                `;
+                card.onclick = () => openSubject(sub.name);
+                grid.appendChild(card);
+            });
+        }
+
+        // ===== فتح تفاصيل المادة (B1-B6) =====
+        function openSubject(subjectName) {
+            // إخفاء جميع الأقسام وإظهار قسم التفاصيل
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('subjectDetailSection').classList.add('active');
+
+            // تحديث عنوان المادة
+            document.getElementById('subjectDetailTitle').innerText = subjectName;
+
+            // توليد بطاقات B1-B6
+            const container = document.getElementById('subjectBlocksContainer');
+            container.innerHTML = '';
+
+            for (let i = 1; i <= 6; i++) {
+                const b = document.createElement('div');
+                b.className = 'b-card';
+                b.innerHTML = `
+                    <h4>B${i}</h4>
+                    <div class="b-subtitle">${bSubtitles[i]}</div>
+                    <div class="b-icons">
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'Data')">
+                            <i class="fa-solid fa-database"></i>
+                            <span>Data</span>
+                        </a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'From Doctor')">
+                            <i class="fa-solid fa-user-md"></i>
+                            <span>From Doctor</span>
+                        </a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'Past Exams')">
+                            <i class="fa-solid fa-file-pen"></i>
+                            <span>Past Exams</span>
+                        </a>
+                    </div>
+                `;
+                container.appendChild(b);
+            }
+
+            // إلغاء تفعيل التبويبات
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        // ===== معالجة النقر على أيقونات B =====
+        function handleIconClick(subject, b, type) {
+            // هنا يمكنك ربط ملفات PDF: مثلاً:
+            // window.open(`pdfs/${subject}_${b}_${type.replace(/ /g,'_')}.pdf`, '_blank');
+            // أو عرض رسالة توضيحية
+            alert(`📄 ${subject} - ${b} - ${type}\n\nيمكنك ربط هذا الزر بملف PDF.\nمثال: pdfs/${subject}_${b}_${type.replace(/ /g,'_')}.pdf`);
+            return false;
+        }
+
+        // ===== العودة إلى قائمة المواد الأساسية =====
+        function backToCore() {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('coreSection').classList.add('active');
+            // تفعيل تبويب المواد الأساسية
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            const coreTab = document.querySelector('.tab-btn[onclick*="core"]');
+            if (coreTab) coreTab.classList.add('active');
+        }
+
+        // ===== عرض الأقسام =====
+        function showSection(section, btnElement) {
+            // إخفاء جميع الأقسام
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+
+            // إظهار القسم المطلوب
+            const sectionMap = {
+                'home': 'homeSection',
+                'core': 'coreSection',
+                'extra': 'extraSection',
+                'portfolio': 'portfolioSection'
+            };
+            const targetId = sectionMap[section] || 'homeSection';
+            document.getElementById(targetId).classList.add('active');
+
+            // إذا كان القسم هو المواد الأساسية، تأكد من إخفاء التفاصيل
+            if (section === 'core') {
+                document.getElementById('subjectDetailSection').classList.remove('active');
+            }
+
+            // تحديث التبويبات النشطة
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) {
+                btnElement.classList.add('active');
+            } else {
+                // محاولة العثور على التبويب المناسب
+                const tab = document.querySelector(`.tab-btn[onclick*="${section}"]`);
+                if (tab) tab.classList.add('active');
+            }
+        }
+
+        // ===== البورتفوليو =====
+        function openPortfolioBlock(blockName) {
+            document.getElementById('portfolioTitle').innerText = `تفاصيل Portfolio - ${blockName}`;
+            document.getElementById('portfolioModal').style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // ===== نظام تسجيل الدخول =====
         window.onload = function() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
-                if(activeUser && activeUser.name) {
+                if (activeUser && activeUser.name) {
                     showMainApp(activeUser.name);
                 }
             } catch(e) {
                 console.error(e);
             }
+            // عرض المواد الأساسية
+            renderCoreSubjects();
         };
 
         function switchAuthMode(mode) {
@@ -878,6 +1132,8 @@
         function showMainApp(userName) {
             document.getElementById('userInfoDisplay').innerText = `الطالب: ${userName}`;
             document.getElementById('authOverlay').style.display = 'none';
+            // التأكد من عرض الصفحة الرئيسية
+            showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
         }
 
         function logout() {
@@ -889,86 +1145,8 @@
             document.getElementById('loginPassword').value = '';
             document.getElementById('loginAlert').style.display = 'none';
             document.getElementById('signupAlert').style.display = 'none';
-            backToCore();
-        }
-
-        function showSection(section, btnElement) {
-            document.getElementById('coreSection').style.display = section === 'core' ? 'block' : 'none';
-            document.getElementById('extraSection').style.display = section === 'extra' ? 'block' : 'none';
-            document.getElementById('portfolioSection').style.display = section === 'portfolio' ? 'block' : 'none';
-            document.getElementById('subjectDetailSection').style.display = 'none';
-            
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            if(btnElement) {
-                btnElement.classList.add('active');
-            }
-        }
-
-        // --- دالة فتح المادة الأساسية وعرض B1-B6 مع العناوين الفرعية ---
-        function openSubject(subjectName) {
-            document.getElementById('coreSection').style.display = 'none';
-            document.getElementById('extraSection').style.display = 'none';
-            document.getElementById('portfolioSection').style.display = 'none';
-            
-            const detailSection = document.getElementById('subjectDetailSection');
-            detailSection.style.display = 'block';
-            document.getElementById('subjectDetailTitle').innerText = subjectName;
-
-            const subtitles = {
-                1: "Introduction To Medicine",
-                2: "Man & Environment",
-                3: "Nutrition & Metabolism",
-                4: "Growth & Development",
-                5: "Principles of Diseases",
-                6: "Urinary System"
-            };
-
-            const container = document.getElementById('subjectBlocksContainer');
-            container.innerHTML = '';
-            for (let i = 1; i <= 6; i++) {
-                const b = document.createElement('div');
-                b.className = 'b-card';
-                b.innerHTML = `
-                    <h4>B${i}</h4>
-                    <div class="b-subtitle">${subtitles[i]}</div>
-                    <div class="b-icons">
-                        <div class="icon-item" onclick="alert('${subjectName} - B${i} - Data')">
-                            <i class="fa-solid fa-database"></i>
-                            <span>Data</span>
-                        </div>
-                        <div class="icon-item" onclick="alert('${subjectName} - B${i} - From Doctor')">
-                            <i class="fa-solid fa-user-md"></i>
-                            <span>From Doctor</span>
-                        </div>
-                        <div class="icon-item" onclick="alert('${subjectName} - B${i} - Past Exams')">
-                            <i class="fa-solid fa-file-pen"></i>
-                            <span>Past Exams</span>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(b);
-            }
-        }
-
-        // --- العودة إلى قائمة المواد الأساسية ---
-        function backToCore() {
-            document.getElementById('subjectDetailSection').style.display = 'none';
-            document.getElementById('coreSection').style.display = 'block';
-            document.getElementById('extraSection').style.display = 'none';
-            document.getElementById('portfolioSection').style.display = 'none';
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            document.querySelector('.tab-btn[onclick*="core"]').classList.add('active');
-        }
-
-        function openPortfolioBlock(blockName) {
-            document.getElementById('portfolioTitle').innerText = `تفاصيل Portfolio - ${blockName}`;
-            document.getElementById('portfolioModal').style.display = 'flex';
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
+            // العودة للصفحة الرئيسية
+            showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
         }
     </script>
 </body>
