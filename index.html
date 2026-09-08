@@ -285,13 +285,53 @@
             padding-right: 12px;
         }
 
+        /* الشبكة العامة */
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
 
+        /* ---- تخصيص المواد الأساسية فقط ---- */
+        #coreSection .grid-container {
+            grid-template-columns: repeat(5, 1fr); /* 5 أعمدة افتراضياً للكمبيوتر */
+        }
+
+        #coreSection .subject-card {
+            aspect-ratio: 1 / 1;               /* جعل البطاقة مربعة */
+            justify-content: center;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        #coreSection .subject-card .subject-cover-img {
+            height: 60%;                       /* التحكم بحجم الصورة داخل المربع */
+            width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 0.4rem;
+        }
+
+        #coreSection .subject-card i {
+            font-size: 2.8rem;                 /* تكبير الأيقونة قليلاً */
+            margin-bottom: 0.3rem;
+        }
+
+        #coreSection .subject-card h3 {
+            font-size: 0.9rem;                 /* تصغير النص ليناسب المربع */
+            margin: 0;
+        }
+
+        /* ---- بقية الأقسام (إضافية، بورتفوليو) تبقى كما هي ---- */
+        #extraSection .grid-container,
+        #portfolioSection .grid-container {
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        }
+
+        /* بطاقات عامة (غير الأساسية) */
         .subject-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -335,6 +375,7 @@
             font-size: 1.15rem;
         }
 
+        /* المودالات */
         .modal {
             display: none;
             position: fixed;
@@ -410,6 +451,26 @@
         footer p span {
             color: var(--gold-primary);
             font-weight: 600;
+        }
+
+        /* ---- استجابة للهواتف (عمودين) ---- */
+        @media (max-width: 767px) {
+            #coreSection .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            #coreSection .subject-card i {
+                font-size: 2.2rem;
+            }
+            #coreSection .subject-card h3 {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ضبط للشاشات المتوسطة (اختياري) */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            #coreSection .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -622,7 +683,6 @@
                 signupBtn.classList.add('active');
                 loginBtn.classList.remove('active');
             }
-            // إخفاء رسائل التنبيه
             document.getElementById('loginAlert').style.display = 'none';
             document.getElementById('signupAlert').style.display = 'none';
         }
@@ -635,7 +695,6 @@
             const password = document.getElementById('signupPassword').value;
             const alertBox = document.getElementById('signupAlert');
 
-            // التحقق من أن الرقم القومي 14 رقمًا فقط
             if (!/^\d{14}$/.test(nationalId)) {
                 alertBox.innerText = 'الرقم القومي يجب أن يتكون من 14 رقمًا فقط.';
                 alertBox.style.display = 'block';
@@ -693,15 +752,11 @@
 
         function logout() {
             localStorage.removeItem('nova_active_user');
-            // إظهار نافذة الدخول مرة أخرى بدون إعادة تحميل الصفحة
             document.getElementById('authOverlay').style.display = 'flex';
             document.getElementById('userInfoDisplay').innerText = 'أهلاً بك';
-            // إعادة تعيين نموذج الدخول إلى الوضع الافتراضي
             switchAuthMode('login');
-            // مسح الحقول
             document.getElementById('loginId').value = '';
             document.getElementById('loginPassword').value = '';
-            // إخفاء أي رسائل خطأ
             document.getElementById('loginAlert').style.display = 'none';
             document.getElementById('signupAlert').style.display = 'none';
         }
