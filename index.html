@@ -109,24 +109,16 @@
             width: 80px;
             height: 80px;
             border-radius: 20px;
-            background: #E8E6E0;
-            overflow: hidden;
-            margin: 0 auto 12px auto;
-            box-shadow: 0 6px 20px rgba(200, 168, 78, 0.3);
+            background: var(--gold);
+            color: var(--navy);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .auth-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .auth-logo .fallback-icon {
             font-size: 2.4rem;
             font-weight: 700;
-            color: var(--navy);
+            margin: 0 auto 12px auto;
             font-family: var(--font);
+            box-shadow: 0 6px 20px rgba(200, 168, 78, 0.3);
         }
 
         .auth-title {
@@ -303,23 +295,15 @@
             width: 40px;
             height: 40px;
             border-radius: 10px;
-            background: #2A2835;
-            overflow: hidden;
-            flex-shrink: 0;
+            background: var(--gold);
+            color: var(--navy);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .sidebar-brand .brand-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .sidebar-brand .brand-icon .fallback-icon {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
-            color: var(--gold);
             font-family: var(--font);
+            flex-shrink: 0;
         }
         .sidebar-brand .brand-name {
             font-size: 1.35rem;
@@ -546,38 +530,33 @@
             box-shadow: 0 4px 16px rgba(13, 14, 25, 0.06), 0 2px 6px rgba(13, 14, 25, 0.04);
             transform: translateY(-2px);
         }
-
         .subject-card .illustration {
             width: 78px;
             height: 78px;
             border-radius: var(--radius-illustration);
             background: #F4F2EC;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             box-shadow: var(--shadow-illustration);
             margin-bottom: 14px;
             flex-shrink: 0;
             transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            overflow: hidden;
         }
-        .subject-card .illustration img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
+        .subject-card:hover .illustration {
+            background: #F0EDE6;
         }
-        .subject-card .illustration .fallback-icon {
+        .subject-card .illustration i {
             font-size: 30px;
             color: var(--navy);
             opacity: 0.75;
             transition: all 0.2s;
         }
-        .subject-card:hover .illustration .fallback-icon {
+        .subject-card:hover .illustration i {
             color: var(--gold);
             opacity: 1;
         }
-
         .subject-card .subject-name {
             font-size: 0.92rem;
             font-weight: 600;
@@ -695,7 +674,7 @@
             margin-top: 2px;
         }
 
-        /* ─── Home Page ─── */
+        /* ─── Home Page (الصفحة الرئيسية) ─── */
         .home-container {
             padding: 10px 0;
         }
@@ -990,9 +969,8 @@
                 width: 56px;
                 height: 56px;
             }
-            .subject-card .illustration img {
-                width: 56px;
-                height: 56px;
+            .subject-card .illustration i {
+                font-size: 22px;
             }
             .subject-card .subject-name {
                 font-size: 0.75rem;
@@ -1069,11 +1047,7 @@
     <!-- ─── AUTH OVERLAY ─── -->
     <div class="auth-overlay" id="authOverlay">
         <div class="auth-container">
-            <!-- لوجو -->
-            <div class="auth-logo" id="authLogo">
-                <img src="https://via.placeholder.com/80/0D0E19/C8A84E?text=N" alt="NOVA Logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <span class="fallback-icon" style="display:none;">N</span>
-            </div>
+            <div class="auth-logo">N</div>
             <div class="auth-title">NO<span>VA</span></div>
             <div class="auth-sub">FOM-EPNU</div>
             <div class="auth-credit"><strong>created by Dr. Amin</strong></div>
@@ -1146,13 +1120,19 @@
             <!-- ─── SECTION: HOME ─── -->
             <div class="section-content active" id="sectionHome">
                 <div class="home-container">
+                    <!-- صورة كبيرة جداً -->
                     <div class="home-image-wrapper">
+                        <!-- استبدل src بالصورة التي تريدها -->
                         <img src="https://via.placeholder.com/1200x600/F7F6F1/C8A84E?text=NOVA+Medical+Dashboard" alt="NOVA Banner" />
                         <div class="placeholder-text">NOVA — FOM-EPNU</div>
                     </div>
+
+                    <!-- نص التوقيع -->
                     <div class="home-credit">
                         <strong>created by Dr.Amin</strong> — FOM-EPNU
                     </div>
+
+                    <!-- منطقة الروابط -->
                     <div class="home-links">
                         <div class="links-title">
                             <i class="fas fa-link"></i> روابط سريعة
@@ -1173,15 +1153,20 @@
 
             <!-- ─── SECTION: CORE ─── -->
             <div class="section-content" id="sectionCore">
+                <!-- قائمة المواد -->
                 <div id="coreGridContainer">
                     <div class="subjects-grid" id="coreGrid"></div>
                 </div>
+
+                <!-- تفاصيل المادة (B1-B6) -->
                 <div id="subjectDetails">
                     <button class="back-btn" onclick="backToCoreGrid()">
                         <i class="fas fa-chevron-right"></i> العودة إلى المواد
                     </button>
                     <div class="details-title" id="detailsTitle">📂 <span>Anatomy</span> — الملفات</div>
-                    <div class="b-details-grid" id="bDetailsGrid"></div>
+                    <div class="b-details-grid" id="bDetailsGrid">
+                        <!-- يتم توليدها بواسطة JS -->
+                    </div>
                 </div>
             </div>
 
@@ -1207,10 +1192,7 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-brand">
-                <div class="brand-icon" id="brandIcon">
-                    <img src="https://via.placeholder.com/40/0D0E19/C8A84E?text=N" alt="NOVA" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                    <span class="fallback-icon" style="display:none;">N</span>
-                </div>
+                <div class="brand-icon">N</div>
                 <div class="brand-name">NO<span>VA</span></div>
             </div>
             <nav class="sidebar-nav" id="sidebarNav">
@@ -1251,15 +1233,27 @@
         </aside>
     </div>
 
-    <!-- ─── MODAL: B Detail ─── -->
+    <!-- ─── MODAL: B Detail (Data, From Doctor, Past Exams) ─── -->
     <div class="modal-overlay" id="bDetailModal">
         <div class="modal-box">
             <button class="modal-close" onclick="closeBDetailModal()"><i class="fas fa-times"></i></button>
             <div class="modal-title" id="bDetailTitle">📂 <span>Anatomy</span> — B1</div>
             <div class="modal-items">
-                <div class="modal-item"><i class="fas fa-database"></i><span class="item-text">Data</span><span class="item-desc">ملفات البيانات</span></div>
-                <div class="modal-item"><i class="fas fa-user-md"></i><span class="item-text">From Doctor</span><span class="item-desc">محاضرات وملاحظات</span></div>
-                <div class="modal-item"><i class="fas fa-file-alt"></i><span class="item-text">Past Exams</span><span class="item-desc">امتحانات سابقة</span></div>
+                <div class="modal-item">
+                    <i class="fas fa-database"></i>
+                    <span class="item-text">Data</span>
+                    <span class="item-desc">ملفات البيانات</span>
+                </div>
+                <div class="modal-item">
+                    <i class="fas fa-user-md"></i>
+                    <span class="item-text">From Doctor</span>
+                    <span class="item-desc">محاضرات وملاحظات</span>
+                </div>
+                <div class="modal-item">
+                    <i class="fas fa-file-alt"></i>
+                    <span class="item-text">Past Exams</span>
+                    <span class="item-desc">امتحانات سابقة</span>
+                </div>
             </div>
         </div>
     </div>
@@ -1270,26 +1264,38 @@
             <button class="modal-close" onclick="closePortfolioModal()"><i class="fas fa-times"></i></button>
             <div class="modal-title" id="portfolioModalTitle">📂 <span>B1</span> — التفاصيل</div>
             <div class="modal-items">
-                <div class="modal-item"><i class="fas fa-folder-open"></i><span class="item-text">شكل البورتفوليو</span><span class="item-desc">النماذج والقوالب</span></div>
-                <div class="modal-item"><i class="fas fa-question-circle"></i><span class="item-text">أسئلة Incision</span><span class="item-desc">الملفات المعتمدة</span></div>
-                <div class="modal-item"><i class="fas fa-pencil-alt"></i><span class="item-text">أسئلة Formative</span><span class="item-desc">اختبارات ونماذج</span></div>
+                <div class="modal-item">
+                    <i class="fas fa-folder-open"></i>
+                    <span class="item-text">شكل البورتفوليو</span>
+                    <span class="item-desc">النماذج والقوالب</span>
+                </div>
+                <div class="modal-item">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="item-text">أسئلة Incision</span>
+                    <span class="item-desc">الملفات المعتمدة</span>
+                </div>
+                <div class="modal-item">
+                    <i class="fas fa-pencil-alt"></i>
+                    <span class="item-text">أسئلة Formative</span>
+                    <span class="item-desc">اختبارات ونماذج</span>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // ─── Data with Cover Images ───
+        // ─── Data ───
         const coreSubjects = [
-            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg' },
-            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg' },
-            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg' },
-            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg' },
-            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg' },
-            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg' },
-            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg' },
-            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg' },
-            { id: 'family', name: 'Family', cover: 'family-cover.jpg' }
-            { id: 'community', name: 'Community', cover: 'community-cover.jpg' }
+            { id: 'anatomy', name: 'Anatomy', icon: 'fa-bone' },
+            { id: 'biochemistry', name: 'Biochemistry', icon: 'fa-flask' },
+            { id: 'parasitology', name: 'Parasitology', icon: 'fa-microscope' },
+            { id: 'pathology', name: 'Pathology', icon: 'fa-vial-virus' },
+            { id: 'physiology', name: 'Physiology', icon: 'fa-heart-pulse' },
+            { id: 'pharmacology', name: 'Pharmacology', icon: 'fa-pills' },
+            { id: 'microbiology', name: 'Microbiology', icon: 'fa-virus' },
+            { id: 'histology', name: 'Histology', icon: 'fa-dna' },
+            { id: 'community', name: 'Community', icon: 'fa-users' },
+            { id: 'family', name: 'Family', icon: 'fa-house-chimney-medical' }
         ];
 
         const extraAdd = [
@@ -1317,7 +1323,7 @@
             'Urinary System'
         ];
 
-        // ─── Render Core with Cover Images ───
+        // ─── Render Core ───
         function renderCore() {
             const container = document.getElementById('coreGrid');
             container.innerHTML = '';
@@ -1325,10 +1331,7 @@
                 const card = document.createElement('div');
                 card.className = 'subject-card';
                 card.innerHTML = `
-                    <div class="illustration">
-                        <img src="${sub.cover}" alt="${sub.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <span class="fallback-icon" style="display:none;"><i class="fas fa-book"></i></span>
-                    </div>
+                    <div class="illustration"><i class="fas ${sub.icon}"></i></div>
                     <div class="subject-name">${sub.name}</div>
                     <div class="card-arrow"><i class="fas fa-chevron-left"></i></div>
                 `;
@@ -1337,7 +1340,7 @@
             });
         }
 
-        // ─── Show Subject Details ───
+        // ─── Show Subject Details (B1-B6 full page) ───
         function showSubjectDetails(subjectName) {
             document.getElementById('coreGridContainer').style.display = 'none';
             document.getElementById('subjectDetails').style.display = 'block';
@@ -1407,11 +1410,12 @@
             });
         }
 
-        // ─── Modals ───
+        // ─── B Detail Modal ───
         function openBDetailModal(subject, b) {
             document.getElementById('bDetailTitle').innerHTML = `📂 <span>${subject}</span> — ${b}`;
             document.getElementById('bDetailModal').classList.add('active');
         }
+
         function closeBDetailModal() {
             document.getElementById('bDetailModal').classList.remove('active');
         }
@@ -1419,10 +1423,12 @@
             if (e.target === this) closeBDetailModal();
         });
 
+        // ─── Portfolio Modal ───
         function openPortfolioModal(b) {
             document.getElementById('portfolioModalTitle').innerHTML = `📂 <span>${b}</span> — التفاصيل`;
             document.getElementById('portfolioModal').classList.add('active');
         }
+
         function closePortfolioModal() {
             document.getElementById('portfolioModal').classList.remove('active');
         }
@@ -1501,6 +1507,7 @@
             document.getElementById('sidebarStudentName').textContent = user.name;
             document.getElementById('sidebarStudentId').textContent = `ID: ${user.studentId}`;
             document.getElementById('avatarLetter').textContent = user.name.charAt(0);
+            // التبديل إلى الصفحة الرئيسية
             switchSection('home');
         }
 
@@ -1525,14 +1532,17 @@
         };
 
         function switchSection(section) {
+            // تحديث التنقل النشط
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.querySelector(`.nav-item[data-section="${section}"]`)?.classList.add('active');
 
+            // تحديث الهيدر
             const info = sectionMap[section] || sectionMap.home;
             document.getElementById('pageTitle').textContent = info.title;
             document.getElementById('pageSub').textContent = info.sub;
             document.getElementById('breadcrumbCurrent').textContent = info.title;
 
+            // إظهار القسم المطلوب وإخفاء الباقي
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             const targetId = section === 'home' ? 'sectionHome' :
                             section === 'core' ? 'sectionCore' :
@@ -1540,6 +1550,7 @@
             const target = document.getElementById(targetId);
             if (target) target.classList.add('active');
 
+            // إذا كان القسم هو الأساسي، تأكد من إظهار الـ grid وإخفاء التفاصيل
             if (section === 'core') {
                 backToCoreGrid();
             }
@@ -1596,6 +1607,7 @@
             }
         })();
 
+        // تأكد من أن الصفحة الرئيسية هي النشطة بعد التحميل
         setTimeout(() => {
             if (document.getElementById('appWrapper').classList.contains('visible')) {
                 switchSection('home');
