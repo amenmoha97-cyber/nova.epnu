@@ -7,7 +7,7 @@
 
     <!-- Cairo font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <!-- Font Awesome 6 -->
+    <!-- Font Awesome 6 (لسه محتاجينها للأسهم والأزرار) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
@@ -547,15 +547,12 @@
         .subject-card:hover .illustration {
             background: #F0EDE6;
         }
-        .subject-card .illustration i {
-            font-size: 30px;
-            color: var(--navy);
-            opacity: 0.75;
-            transition: all 0.2s;
-        }
-        .subject-card:hover .illustration i {
-            color: var(--gold);
-            opacity: 1;
+        /* ─── style for the new images ─── */
+        .subject-card .illustration img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: var(--radius-illustration);
         }
         .subject-card .subject-name {
             font-size: 0.92rem;
@@ -661,6 +658,14 @@
             color: var(--gold-muted);
             margin-bottom: 10px;
             display: block;
+        }
+        /* style for images inside B-details */
+        .b-details-card .b-icon-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
         .b-details-card .b-name {
             font-weight: 700;
@@ -969,8 +974,10 @@
                 width: 56px;
                 height: 56px;
             }
-            .subject-card .illustration i {
-                font-size: 22px;
+            .subject-card .illustration img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
             }
             .subject-card .subject-name {
                 font-size: 0.75rem;
@@ -1120,19 +1127,13 @@
             <!-- ─── SECTION: HOME ─── -->
             <div class="section-content active" id="sectionHome">
                 <div class="home-container">
-                    <!-- صورة كبيرة جداً -->
                     <div class="home-image-wrapper">
-                        <!-- استبدل src بالصورة التي تريدها -->
-                        <img src="https://via.placeholder.com/1200x600/F7F6F1/C8A84E?text=NOVA+Medical+Dashboard" alt="NOVA Banner" />
+                        <img src="https://placehold.co/1200x600/F7F6F1/C8A84E?text=NOVA+Medical+Dashboard" alt="NOVA Banner" />
                         <div class="placeholder-text">NOVA — FOM-EPNU</div>
                     </div>
-
-                    <!-- نص التوقيع -->
                     <div class="home-credit">
                         <strong>created by Dr.Amin</strong> — FOM-EPNU
                     </div>
-
-                    <!-- منطقة الروابط -->
                     <div class="home-links">
                         <div class="links-title">
                             <i class="fas fa-link"></i> روابط سريعة
@@ -1153,20 +1154,15 @@
 
             <!-- ─── SECTION: CORE ─── -->
             <div class="section-content" id="sectionCore">
-                <!-- قائمة المواد -->
                 <div id="coreGridContainer">
                     <div class="subjects-grid" id="coreGrid"></div>
                 </div>
-
-                <!-- تفاصيل المادة (B1-B6) -->
                 <div id="subjectDetails">
                     <button class="back-btn" onclick="backToCoreGrid()">
                         <i class="fas fa-chevron-right"></i> العودة إلى المواد
                     </button>
                     <div class="details-title" id="detailsTitle">📂 <span>Anatomy</span> — الملفات</div>
-                    <div class="b-details-grid" id="bDetailsGrid">
-                        <!-- يتم توليدها بواسطة JS -->
-                    </div>
+                    <div class="b-details-grid" id="bDetailsGrid"></div>
                 </div>
             </div>
 
@@ -1233,27 +1229,15 @@
         </aside>
     </div>
 
-    <!-- ─── MODAL: B Detail (Data, From Doctor, Past Exams) ─── -->
+    <!-- ─── MODAL: B Detail ─── -->
     <div class="modal-overlay" id="bDetailModal">
         <div class="modal-box">
             <button class="modal-close" onclick="closeBDetailModal()"><i class="fas fa-times"></i></button>
             <div class="modal-title" id="bDetailTitle">📂 <span>Anatomy</span> — B1</div>
             <div class="modal-items">
-                <div class="modal-item">
-                    <i class="fas fa-database"></i>
-                    <span class="item-text">Data</span>
-                    <span class="item-desc">ملفات البيانات</span>
-                </div>
-                <div class="modal-item">
-                    <i class="fas fa-user-md"></i>
-                    <span class="item-text">From Doctor</span>
-                    <span class="item-desc">محاضرات وملاحظات</span>
-                </div>
-                <div class="modal-item">
-                    <i class="fas fa-file-alt"></i>
-                    <span class="item-text">Past Exams</span>
-                    <span class="item-desc">امتحانات سابقة</span>
-                </div>
+                <div class="modal-item"><i class="fas fa-database"></i><span class="item-text">Data</span><span class="item-desc">ملفات البيانات</span></div>
+                <div class="modal-item"><i class="fas fa-user-md"></i><span class="item-text">From Doctor</span><span class="item-desc">محاضرات وملاحظات</span></div>
+                <div class="modal-item"><i class="fas fa-file-alt"></i><span class="item-text">Past Exams</span><span class="item-desc">امتحانات سابقة</span></div>
             </div>
         </div>
     </div>
@@ -1264,56 +1248,54 @@
             <button class="modal-close" onclick="closePortfolioModal()"><i class="fas fa-times"></i></button>
             <div class="modal-title" id="portfolioModalTitle">📂 <span>B1</span> — التفاصيل</div>
             <div class="modal-items">
-                <div class="modal-item">
-                    <i class="fas fa-folder-open"></i>
-                    <span class="item-text">شكل البورتفوليو</span>
-                    <span class="item-desc">النماذج والقوالب</span>
-                </div>
-                <div class="modal-item">
-                    <i class="fas fa-question-circle"></i>
-                    <span class="item-text">أسئلة Incision</span>
-                    <span class="item-desc">الملفات المعتمدة</span>
-                </div>
-                <div class="modal-item">
-                    <i class="fas fa-pencil-alt"></i>
-                    <span class="item-text">أسئلة Formative</span>
-                    <span class="item-desc">اختبارات ونماذج</span>
-                </div>
+                <div class="modal-item"><i class="fas fa-folder-open"></i><span class="item-text">شكل البورتفوليو</span><span class="item-desc">النماذج والقوالب</span></div>
+                <div class="modal-item"><i class="fas fa-question-circle"></i><span class="item-text">أسئلة Incision</span><span class="item-desc">الملفات المعتمدة</span></div>
+                <div class="modal-item"><i class="fas fa-pencil-alt"></i><span class="item-text">أسئلة Formative</span><span class="item-desc">اختبارات ونماذج</span></div>
             </div>
         </div>
     </div>
 
     <script>
-        // ─── Data ───
+        // ─── DATA WITH IMAGES (Placeholders) ───
+        // استبدل روابط placehold.co بروابط صورك على GitHub
         const coreSubjects = [
-            { id: 'anatomy', name: 'Anatomy', icon: 'fa-bone' },
-            { id: 'biochemistry', name: 'Biochemistry', icon: 'fa-flask' },
-            { id: 'parasitology', name: 'Parasitology', icon: 'fa-microscope' },
-            { id: 'pathology', name: 'Pathology', icon: 'fa-vial-virus' },
-            { id: 'physiology', name: 'Physiology', icon: 'fa-heart-pulse' },
-            { id: 'pharmacology', name: 'Pharmacology', icon: 'fa-pills' },
-            { id: 'microbiology', name: 'Microbiology', icon: 'fa-virus' },
-            { id: 'histology', name: 'Histology', icon: 'fa-dna' },
-            { id: 'community', name: 'Community', icon: 'fa-users' },
-            { id: 'family', name: 'Family', icon: 'fa-house-chimney-medical' }
+            { id: 'anatomy',      name: 'Anatomy',      img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/anatomy.png' },
+            { id: 'biochemistry', name: 'Biochemistry', img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/biochemistry.png' },
+            { id: 'parasitology', name: 'Parasitology', img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/parasitology.png' },
+            { id: 'pathology',    name: 'Pathology',    img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/pathology.png' },
+            { id: 'physiology',   name: 'Physiology',   img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/physiology.png' },
+            { id: 'pharmacology', name: 'Pharmacology', img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/pharmacology.png' },
+            { id: 'microbiology', name: 'Microbiology', img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/microbiology.png' },
+            { id: 'histology',    name: 'Histology',    img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/histology.png' },
+            { id: 'community',    name: 'Community',    img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/community.png' },
+            { id: 'family',       name: 'Family',       img: 'https://raw.githubusercontent.com/amenmoha97/NOVA.epnu/main/images/family.png' }
         ];
 
         const extraAdd = [
-            { name: 'Skill Lab 1', icon: 'fa-user-doctor' },
-            { name: 'Skill Lab 2', icon: 'fa-kit-medical' },
-            { name: 'Research', icon: 'fa-book-bookmark' }
+            { name: 'Skill Lab 1', img: 'https://placehold.co/100/0D0E19/C8A84E?text=Skill+1' },
+            { name: 'Skill Lab 2', img: 'https://placehold.co/100/0D0E19/C8A84E?text=Skill+2' },
+            { name: 'Research',    img: 'https://placehold.co/100/0D0E19/C8A84E?text=Research' }
         ];
 
         const extraNoAdd = [
-            { name: 'Field 1', icon: 'fa-map-location-dot' },
-            { name: 'Field 2', icon: 'fa-location-dot' },
-            { name: 'English', icon: 'fa-language' },
-            { name: 'قضايا مجتمعية', icon: 'fa-handshake' },
-            { name: 'جودة', icon: 'fa-award' },
-            { name: 'تنمية ذاتية', icon: 'fa-brain' }
+            { name: 'Field 1',          img: 'https://placehold.co/100/0D0E19/C8A84E?text=Field+1' },
+            { name: 'Field 2',          img: 'https://placehold.co/100/0D0E19/C8A84E?text=Field+2' },
+            { name: 'English',          img: 'https://placehold.co/100/0D0E19/C8A84E?text=English' },
+            { name: 'قضايا مجتمعية',    img: 'https://placehold.co/100/0D0E19/C8A84E?text=Community' },
+            { name: 'جودة',             img: 'https://placehold.co/100/0D0E19/C8A84E?text=Quality' },
+            { name: 'تنمية ذاتية',      img: 'https://placehold.co/100/0D0E19/C8A84E?text=Self' }
         ];
 
-        const portfolioItems = ['B1', 'B2', 'B3', 'B4', 'B5', 'B6'];
+        // Portfolio items with images
+        const portfolioItems = [
+            { name: 'B1', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B1' },
+            { name: 'B2', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B2' },
+            { name: 'B3', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B3' },
+            { name: 'B4', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B4' },
+            { name: 'B5', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B5' },
+            { name: 'B6', img: 'https://placehold.co/100/0D0E19/C8A84E?text=B6' }
+        ];
+
         const bSubtitles = [
             'Introduction To Medicine',
             'Man & Environment',
@@ -1323,7 +1305,7 @@
             'Urinary System'
         ];
 
-        // ─── Render Core ───
+        // ─── RENDER CORE ───
         function renderCore() {
             const container = document.getElementById('coreGrid');
             container.innerHTML = '';
@@ -1331,7 +1313,9 @@
                 const card = document.createElement('div');
                 card.className = 'subject-card';
                 card.innerHTML = `
-                    <div class="illustration"><i class="fas ${sub.icon}"></i></div>
+                    <div class="illustration">
+                        <img src="${sub.img}" alt="${sub.name}" />
+                    </div>
                     <div class="subject-name">${sub.name}</div>
                     <div class="card-arrow"><i class="fas fa-chevron-left"></i></div>
                 `;
@@ -1340,7 +1324,7 @@
             });
         }
 
-        // ─── Show Subject Details (B1-B6 full page) ───
+        // ─── SHOW SUBJECT DETAILS (B1-B6) ───
         function showSubjectDetails(subjectName) {
             document.getElementById('coreGridContainer').style.display = 'none';
             document.getElementById('subjectDetails').style.display = 'block';
@@ -1348,13 +1332,14 @@
 
             const grid = document.getElementById('bDetailsGrid');
             grid.innerHTML = '';
+            // Use placeholder images for B1-B6 details
             for (let i = 1; i <= 6; i++) {
                 const b = `B${i}`;
                 const subtitle = bSubtitles[i - 1] || 'ملف المادة';
                 const card = document.createElement('div');
                 card.className = 'b-details-card';
                 card.innerHTML = `
-                    <i class="fas fa-folder"></i>
+                    <img src="https://placehold.co/60/0D0E19/C8A84E?text=${b}" alt="${b}" class="b-icon-img" />
                     <div class="b-name">${b}</div>
                     <div class="b-sub">${subtitle}</div>
                 `;
@@ -1375,7 +1360,7 @@
             document.getElementById('pageSub').textContent = 'اضغط على أي مادة لعرض ملفات B1 إلى B6';
         }
 
-        // ─── Render Extra ───
+        // ─── RENDER EXTRA ───
         function renderExtra(containerId, items, clickMsg) {
             const container = document.getElementById(containerId);
             container.innerHTML = '';
@@ -1383,7 +1368,9 @@
                 const card = document.createElement('div');
                 card.className = 'subject-card';
                 card.innerHTML = `
-                    <div class="illustration"><i class="fas ${item.icon}"></i></div>
+                    <div class="illustration">
+                        <img src="${item.img}" alt="${item.name}" />
+                    </div>
                     <div class="subject-name">${item.name}</div>
                     <div class="card-arrow"><i class="fas fa-chevron-left"></i></div>
                 `;
@@ -1392,30 +1379,31 @@
             });
         }
 
-        // ─── Render Portfolio ───
+        // ─── RENDER PORTFOLIO ───
         function renderPortfolio() {
             const container = document.getElementById('portfolioGrid');
             container.innerHTML = '';
-            portfolioItems.forEach(b => {
+            portfolioItems.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'subject-card';
                 card.innerHTML = `
-                    <div class="illustration"><i class="fas fa-folder-open"></i></div>
-                    <div class="subject-name">${b}</div>
+                    <div class="illustration">
+                        <img src="${item.img}" alt="${item.name}" />
+                    </div>
+                    <div class="subject-name">${item.name}</div>
                     <div class="subject-sub">ملف البورتفوليو</div>
                     <div class="card-arrow"><i class="fas fa-chevron-left"></i></div>
                 `;
-                card.addEventListener('click', () => openPortfolioModal(b));
+                card.addEventListener('click', () => openPortfolioModal(item.name));
                 container.appendChild(card);
             });
         }
 
-        // ─── B Detail Modal ───
+        // ─── B DETAIL MODAL ───
         function openBDetailModal(subject, b) {
             document.getElementById('bDetailTitle').innerHTML = `📂 <span>${subject}</span> — ${b}`;
             document.getElementById('bDetailModal').classList.add('active');
         }
-
         function closeBDetailModal() {
             document.getElementById('bDetailModal').classList.remove('active');
         }
@@ -1423,12 +1411,11 @@
             if (e.target === this) closeBDetailModal();
         });
 
-        // ─── Portfolio Modal ───
+        // ─── PORTFOLIO MODAL ───
         function openPortfolioModal(b) {
             document.getElementById('portfolioModalTitle').innerHTML = `📂 <span>${b}</span> — التفاصيل`;
             document.getElementById('portfolioModal').classList.add('active');
         }
-
         function closePortfolioModal() {
             document.getElementById('portfolioModal').classList.remove('active');
         }
@@ -1436,7 +1423,7 @@
             if (e.target === this) closePortfolioModal();
         });
 
-        // ─── Auth System ───
+        // ─── AUTH SYSTEM ─── (نفس الكود القديم بدون تغيير)
         let currentUser = null;
 
         function switchAuthTab(tab) {
@@ -1453,13 +1440,8 @@
             const loginId = document.getElementById('loginId').value.trim();
             const password = document.getElementById('loginPassword').value;
             const alertEl = document.getElementById('loginAlert');
-
             const users = JSON.parse(localStorage.getItem('nova_users') || '[]');
-            const user = users.find(u =>
-                (u.studentId === loginId || u.nationalId === loginId) &&
-                u.password === password
-            );
-
+            const user = users.find(u => (u.studentId === loginId || u.nationalId === loginId) && u.password === password);
             if (user) {
                 currentUser = user;
                 localStorage.setItem('nova_session', JSON.stringify(user));
@@ -1478,20 +1460,17 @@
             const nationalId = document.getElementById('signupNationalId').value.trim();
             const password = document.getElementById('signupPassword').value;
             const alertEl = document.getElementById('signupAlert');
-
             if (!/^\d{14}$/.test(nationalId)) {
                 alertEl.textContent = '⚠️ الرقم القومي يجب أن يتكون من 14 رقمًا.';
                 alertEl.style.display = 'block';
                 return;
             }
-
             let users = JSON.parse(localStorage.getItem('nova_users') || '[]');
             if (users.find(u => u.studentId === studentId || u.nationalId === nationalId)) {
                 alertEl.textContent = '⚠️ هذا الـ ID أو الرقم القومي مسجل بالفعل.';
                 alertEl.style.display = 'block';
                 return;
             }
-
             const newUser = { name, studentId, nationalId, password };
             users.push(newUser);
             localStorage.setItem('nova_users', JSON.stringify(users));
@@ -1507,7 +1486,6 @@
             document.getElementById('sidebarStudentName').textContent = user.name;
             document.getElementById('sidebarStudentId').textContent = `ID: ${user.studentId}`;
             document.getElementById('avatarLetter').textContent = user.name.charAt(0);
-            // التبديل إلى الصفحة الرئيسية
             switchSection('home');
         }
 
@@ -1523,7 +1501,7 @@
             switchAuthTab('login');
         }
 
-        // ─── Section Switching ───
+        // ─── SECTION SWITCHING ───
         const sectionMap = {
             home: { title: 'الرئيسية', sub: 'مرحباً بك في لوحة التحكم' },
             core: { title: 'المواد الأساسية', sub: 'اضغط على أي مادة لعرض ملفات B1 إلى B6' },
@@ -1532,40 +1510,27 @@
         };
 
         function switchSection(section) {
-            // تحديث التنقل النشط
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.querySelector(`.nav-item[data-section="${section}"]`)?.classList.add('active');
-
-            // تحديث الهيدر
             const info = sectionMap[section] || sectionMap.home;
             document.getElementById('pageTitle').textContent = info.title;
             document.getElementById('pageSub').textContent = info.sub;
             document.getElementById('breadcrumbCurrent').textContent = info.title;
-
-            // إظهار القسم المطلوب وإخفاء الباقي
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             const targetId = section === 'home' ? 'sectionHome' :
                             section === 'core' ? 'sectionCore' :
                             section === 'extra' ? 'sectionExtra' : 'sectionPortfolio';
             const target = document.getElementById(targetId);
             if (target) target.classList.add('active');
-
-            // إذا كان القسم هو الأساسي، تأكد من إظهار الـ grid وإخفاء التفاصيل
-            if (section === 'core') {
-                backToCoreGrid();
-            }
-
+            if (section === 'core') backToCoreGrid();
             closeSidebar();
         }
 
-        // ─── Sidebar Navigation ───
         document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function() {
-                switchSection(this.dataset.section);
-            });
+            item.addEventListener('click', function() { switchSection(this.dataset.section); });
         });
 
-        // ─── Mobile Sidebar ───
+        // ─── MOBILE SIDEBAR ───
         const menuToggle = document.getElementById('menuToggle');
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebarOverlay');
@@ -1575,25 +1540,20 @@
             overlay.classList.toggle('active');
             document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
         }
-
         function closeSidebar() {
             sidebar.classList.remove('open');
             overlay.classList.remove('active');
             document.body.style.overflow = '';
         }
-
         menuToggle.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', closeSidebar);
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSidebar(); });
 
-        // ─── Logout ───
         document.getElementById('logoutBtn').addEventListener('click', function() {
-            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
-                logout();
-            }
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) logout();
         });
 
-        // ─── Init ───
+        // ─── INIT ───
         renderCore();
         renderExtra('extraGridAdd', extraAdd, '📘 ');
         renderExtra('extraGridNoAdd', extraNoAdd, '📗 ');
@@ -1607,7 +1567,6 @@
             }
         })();
 
-        // تأكد من أن الصفحة الرئيسية هي النشطة بعد التحميل
         setTimeout(() => {
             if (document.getElementById('appWrapper').classList.contains('visible')) {
                 switchSection('home');
