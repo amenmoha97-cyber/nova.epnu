@@ -347,7 +347,7 @@
             text-align: center;
             font-size: 0.85rem;
             color: var(--beige-light);
-            margin-bottom: 2rem;
+            margin-bottom: 0.5rem;
             opacity: 0.8;
         }
 
@@ -355,74 +355,37 @@
             color: var(--gold-primary);
         }
 
-        #homeSection .home-links {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 1.5rem 2rem;
+        /* زر التواصل الجديد */
+        .contact-btn-wrapper {
+            text-align: center;
+            margin-top: 1.5rem;
         }
 
-        #homeSection .home-links .links-title {
-            font-weight: 600;
-            font-size: 1rem;
-            color: var(--beige-main);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        #homeSection .home-links .links-title i {
-            color: var(--gold-primary);
-        }
-
-        #homeSection .home-links .links-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        #homeSection .home-links .link-item {
-            background: #181614;
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-gold);
-            color: var(--beige-main);
-            text-decoration: none;
-            font-size: 0.85rem;
-            font-weight: 500;
-            transition: 0.3s;
+        .contact-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-        }
-
-        #homeSection .home-links .link-item:hover {
+            gap: 12px;
             background: var(--gold-primary);
             color: #0A0A0A;
-            border-color: var(--gold-primary);
-            transform: translateY(-2px);
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            transition: 0.3s;
+            border: 1px solid var(--gold-primary);
         }
 
-        #homeSection .home-links .link-item i {
-            color: var(--gold-primary);
+        .contact-btn:hover {
+            background: var(--gold-secondary);
+            color: #FFF;
+            transform: scale(1.05);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
         }
 
-        #homeSection .home-links .link-item:hover i {
-            color: #0A0A0A;
-        }
-
-        #homeSection .home-links .link-item.add-link {
-            background: transparent;
-            border: 1px dashed var(--border-gold);
-            color: var(--beige-light);
-            cursor: pointer;
-        }
-
-        #homeSection .home-links .link-item.add-link:hover {
-            border-color: var(--gold-primary);
-            color: var(--gold-primary);
-            background: transparent;
+        .contact-btn i {
+            font-size: 1.8rem;
         }
 
         /* ---- المواد الأساسية ---- */
@@ -687,11 +650,12 @@
             #homeSection .home-banner .fallback-text {
                 font-size: 1.5rem;
             }
-            #homeSection .home-links .links-grid {
-                flex-direction: column;
+            .contact-btn {
+                padding: 0.6rem 1.8rem;
+                font-size: 1rem;
             }
-            #homeSection .home-links .link-item {
-                justify-content: center;
+            .contact-btn i {
+                font-size: 1.4rem;
             }
         }
 
@@ -797,20 +761,12 @@
             <div class="home-credit">
                 <strong>created by Dr.Amin</strong> — FOM-EPNU
             </div>
-            <div class="home-links">
-                <div class="links-title">
-                    <i class="fa-solid fa-link"></i> روابط سريعة
-                </div>
-                <div class="links-grid">
-                    <a href="#" class="link-item" onclick="showSection('core', document.querySelector('.tab-btn[onclick*=\\'core\\']'));"><i class="fa-solid fa-graduation-cap"></i> المواد الأساسية</a>
-                    <a href="#" class="link-item" onclick="showSection('extra', document.querySelector('.tab-btn[onclick*=\\'extra\\']'));"><i class="fa-solid fa-layer-group"></i> مواد إضافية</a>
-                    <a href="#" class="link-item" onclick="showSection('portfolio', document.querySelector('.tab-btn[onclick*=\\'portfolio\\']'));"><i class="fa-solid fa-folder-open"></i> البورتفوليو</a>
-                    <a href="#" class="link-item"><i class="fa-solid fa-calendar-alt"></i> الجدول الدراسي</a>
-                    <a href="#" class="link-item"><i class="fa-solid fa-envelope"></i> التواصل</a>
-                    <button class="link-item add-link" onclick="alert('يمكنك إضافة رابط جديد هنا')">
-                        <i class="fa-solid fa-plus"></i> إضافة رابط
-                    </button>
-                </div>
+            <!-- زر التواصل الجديد (بدلاً من الروابط السريعة) -->
+            <div class="contact-btn-wrapper">
+                <a href="https://wa.me/201098919599" target="_blank" class="contact-btn">
+                    <i class="fa-brands fa-whatsapp"></i>
+                    تواصل
+                </a>
             </div>
         </div>
 
@@ -978,9 +934,6 @@
 
         // ===== معالجة النقر على أيقونات B =====
         function handleIconClick(subject, b, type) {
-            // هنا يمكنك ربط ملفات PDF: مثلاً:
-            // window.open(`pdfs/${subject}_${b}_${type.replace(/ /g,'_')}.pdf`, '_blank');
-            // أو عرض رسالة توضيحية
             alert(`📄 ${subject} - ${b} - ${type}\n\nيمكنك ربط هذا الزر بملف PDF.\nمثال: pdfs/${subject}_${b}_${type.replace(/ /g,'_')}.pdf`);
             return false;
         }
@@ -1020,7 +973,6 @@
             if (btnElement) {
                 btnElement.classList.add('active');
             } else {
-                // محاولة العثور على التبويب المناسب
                 const tab = document.querySelector(`.tab-btn[onclick*="${section}"]`);
                 if (tab) tab.classList.add('active');
             }
