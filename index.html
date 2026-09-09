@@ -2068,6 +2068,24 @@
         <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
     </footer>
 
+    <!-- مودال البورتفوليو (يتم إنشاؤه بواسطة JS) -->
+    <div id="portfolioModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
+            <h2 id="portfolioTitle">تفاصيل Portfolio</h2>
+            <div id="portfolioContent"></div>
+        </div>
+    </div>
+
+    <!-- مودال المواد الإضافية -->
+    <div id="extraModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <button class="close-btn" onclick="document.getElementById('extraModal').style.display='none';">إغلاق</button>
+            <h2 id="extraTitle">المادة</h2>
+            <div id="extraContentContainer"></div>
+        </div>
+    </div>
+
     <script>
         // ===== بيانات المواد الأساسية مع مسارات الصور المحلية =====
         const coreSubjects = [
@@ -2616,25 +2634,9 @@
 
         // دالة عرض البورتفوليو الجديدة
         function openPortfolioBlock(blockName) {
+            const modal = document.getElementById('portfolioModal');
             const title = document.getElementById('portfolioTitle');
             const content = document.getElementById('portfolioContent');
-            // التأكد من وجود العناصر
-            let modal = document.getElementById('portfolioModal');
-            if (!modal) {
-                // إنشاء المودال إذا لم يكن موجوداً
-                modal = document.createElement('div');
-                modal.id = 'portfolioModal';
-                modal.className = 'modal';
-                modal.innerHTML = `
-                    <div class="modal-content">
-                        <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
-                        <h2 id="portfolioTitle">تفاصيل Portfolio</h2>
-                        <div id="portfolioContent"></div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
-                modal.addEventListener('click', function(e) { if (e.target === this) this.style.display = 'none'; });
-            }
 
             title.innerText = `تفاصيل Portfolio - ${blockName}`;
 
@@ -2990,6 +2992,8 @@
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
             startSessionTimer();
             updateStats();
+            // إعادة تعيين الـ isDeveloper في الدوال الأخرى
+            console.log('Developer status:', isDeveloper);
         }
 
         function logout() {
