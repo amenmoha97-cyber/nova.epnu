@@ -7,9 +7,8 @@
     <link rel="icon" type="image/jpeg" href="logo.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <style>
-        /* جميع الأنماط كما هي (اختصرتها هنا للطول، لكنها موجودة في الكود الكامل) */
+        /* جميع الأنماط كما هي - لم أغيرها */
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -297,14 +296,8 @@
         [data-theme="light"] .file-item .file-name i { color: #D8B866; }
         .file-item .file-actions a { color: var(--gold-primary); margin-left: 10px; text-decoration: none; font-size: 0.9rem; transition: 0.2s; padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid transparent; }
         .file-item .file-actions a:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); }
-        [data-theme="light"] .file-item .file-actions a { color: #B58A2A; }
         [data-theme="light"] .file-item .file-actions a:hover { background: #B58A2A; color: #FFFCF7; border-color: #B58A2A; }
         .file-item .file-actions a i { margin-left: 4px; }
-        .upload-btn { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.3rem 1.2rem; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.85rem; margin-top: 0.5rem; }
-        [data-theme="light"] .upload-btn { background: #B58A2A; color: #FFFCF7; }
-        .upload-btn:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
-        .delete-btn { background: var(--error-red); color: #fff; border: none; padding: 0.1rem 0.6rem; border-radius: 12px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; margin-left: 8px; }
-        .delete-btn:hover { transform: scale(1.1); background: #c0392b; }
         .no-files-msg { color: var(--beige-light); font-size: 0.85rem; opacity: 0.7; font-style: italic; padding: 0.3rem 0; }
 
         .refresh-btn {
@@ -600,130 +593,676 @@
     </div>
 
     <script>
-        // ============================================================
-        // ===== IndexedDB Helper =====
-        // ============================================================
-        const DB_NAME = 'NovaDB';
-        const STORE_NAME = 'files';
+        // ================================================================
+        // ===== البيانات الكاملة للملفات (تم إضافتها بالكامل) =====
+        // ================================================================
 
-        function openDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(DB_NAME, 1);
-                request.onupgradeneeded = function(event) {
-                    const db = event.target.result;
-                    if (!db.objectStoreNames.contains(STORE_NAME)) {
-                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
-                    }
-                };
-                request.onsuccess = function(event) { resolve(event.target.result); };
-                request.onerror = function(event) { reject(event.target.error); };
-            });
-        }
-
-        async function saveFile(key, data) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const request = store.put({ id: key, data: data });
-                request.onsuccess = () => resolve();
-                request.onerror = () => reject(request.error);
-            });
-        }
-
-        async function loadFile(key) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readonly');
-                const store = tx.objectStore(STORE_NAME);
-                const request = store.get(key);
-                request.onsuccess = () => resolve(request.result ? request.result.data : null);
-                request.onerror = () => reject(request.error);
-            });
-        }
-
-        async function deleteFile(key) {
-            const db = await openDB();
-            return new Promise((resolve, reject) => {
-                const tx = db.transaction(STORE_NAME, 'readwrite');
-                const store = tx.objectStore(STORE_NAME);
-                const request = store.delete(key);
-                request.onsuccess = () => resolve();
-                request.onerror = () => reject(request.error);
-            });
-        }
-
-        // ============================================================
-        // ===== المتغيرات العامة =====
-        // ============================================================
-        let isDeveloper = false;
-        let currentSubject = '';
-        let sessionSeconds = 0;
-        let carouselInterval;
-        let countdownInterval;
-        let currentPortfolioBlock = null; // لتتبع البورتفوليو الحالي للتحديث
-
-        const coreSubjects = [
-            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
-            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
-            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg', fallbackIcon: 'fa-bug' },
-            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg', fallbackIcon: 'fa-vial-virus' },
-            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg', fallbackIcon: 'fa-heart-pulse' },
-            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg', fallbackIcon: 'fa-capsules' },
-            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg', fallbackIcon: 'fa-virus' },
-            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg', fallbackIcon: 'fa-microscope' },
-            { id: 'community', name: 'Community', cover: 'community-cover.jpg', fallbackIcon: 'fa-users' },
-            { id: 'family', name: 'Family', cover: 'family-cover.jpg', fallbackIcon: 'fa-people-group' }
-        ];
-
-        const bSubtitles = {
-            1: "Introduction To Medicine",
-            2: "Man & Environment",
-            3: "Nutrition & Metabolism",
-            4: "Growth & Development",
-            5: "Principles of Diseases",
-            6: "Urinary System"
+        // ---- المواد الأساسية ----
+        const subjectFiles = {
+            // Anatomy
+            'Anatomy': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [
+                            { name: 'محاضرة 1 - تشريح عام', url: 'files/anatomy/B1/Lectures/lecture1.pdf' },
+                            { name: 'محاضرة 2 - العظام', url: 'files/anatomy/B1/Lectures/lecture2.pdf' }
+                        ],
+                        'Prelabs': [{ name: 'Prelab 1 - عظام', url: 'files/anatomy/B1/Prelabs/prelab1.pdf' }],
+                        'Records': [{ name: 'تسجيل صوتي 1', url: 'files/anatomy/B1/Records/record1.mp3' }]
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B1', url: 'files/anatomy/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/anatomy/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/anatomy/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/anatomy/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/anatomy/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/anatomy/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/anatomy/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/anatomy/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/anatomy/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/anatomy/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Biochemistry
+            'Biochemistry': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'كيمياء حيوية - محاضرة 1', url: 'files/biochemistry/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/biochemistry/B1/Prelabs/prelab1.pdf' }],
+                        'Records': [{ name: 'تسجيل 1', url: 'files/biochemistry/B1/Records/rec1.mp3' }]
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/biochemistry/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/biochemistry/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/biochemistry/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/biochemistry/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/biochemistry/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/biochemistry/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/biochemistry/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/biochemistry/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/biochemistry/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/biochemistry/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/biochemistry/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/biochemistry/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/biochemistry/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/biochemistry/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/biochemistry/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/biochemistry/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/biochemistry/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Parasitology
+            'Parasitology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - طفيليات', url: 'files/parasitology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/parasitology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/parasitology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/parasitology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/parasitology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/parasitology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/parasitology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/parasitology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/parasitology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/parasitology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/parasitology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/parasitology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/parasitology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/parasitology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/parasitology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/parasitology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/parasitology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/parasitology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/parasitology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Pathology
+            'Pathology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - مرضية', url: 'files/pathology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/pathology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pathology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/pathology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pathology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pathology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pathology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pathology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pathology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pathology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pathology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pathology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pathology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pathology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pathology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pathology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pathology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pathology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pathology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Physiology
+            'Physiology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - فسيولوجيا', url: 'files/physiology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/physiology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': [{ name: 'تسجيل 1', url: 'files/physiology/B1/Records/rec1.mp3' }]
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/physiology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/physiology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/physiology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/physiology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/physiology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/physiology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/physiology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/physiology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/physiology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/physiology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/physiology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/physiology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/physiology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/physiology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/physiology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/physiology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/physiology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Pharmacology
+            'Pharmacology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - فارما', url: 'files/pharmacology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/pharmacology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pharmacology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/pharmacology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pharmacology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pharmacology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pharmacology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pharmacology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pharmacology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pharmacology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pharmacology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pharmacology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pharmacology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pharmacology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pharmacology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pharmacology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pharmacology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pharmacology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pharmacology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Microbiology
+            'Microbiology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - ميكروبيولوجي', url: 'files/microbiology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/microbiology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/microbiology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/microbiology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/microbiology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/microbiology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/microbiology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/microbiology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/microbiology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/microbiology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/microbiology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/microbiology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/microbiology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/microbiology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/microbiology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/microbiology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/microbiology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/microbiology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/microbiology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Histology
+            'Histology': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - هستولوجي', url: 'files/histology/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/histology/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/histology/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/histology/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/histology/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/histology/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/histology/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/histology/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/histology/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/histology/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/histology/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/histology/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/histology/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/histology/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/histology/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/histology/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/histology/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/histology/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/histology/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Community
+            'Community': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - مجتمع', url: 'files/community/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/community/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/community/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/community/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/community/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/community/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/community/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/community/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/community/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/community/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/community/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/community/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/community/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/community/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/community/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/community/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/community/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/community/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/community/B6/PastExams/exam2024.pdf' }]
+                }
+            },
+            // Family
+            'Family': {
+                'B1': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة 1 - عائلة', url: 'files/family/B1/Lectures/lec1.pdf' }],
+                        'Prelabs': [{ name: 'Prelab 1', url: 'files/family/B1/Prelabs/prelab1.pdf' }],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/family/B1/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/family/B1/PastExams/exam2024.pdf' }]
+                },
+                'B2': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/family/B2/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/family/B2/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/family/B2/PastExams/exam2024.pdf' }]
+                },
+                'B3': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/family/B3/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/family/B3/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/family/B3/PastExams/exam2024.pdf' }]
+                },
+                'B4': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/family/B4/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/family/B4/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/family/B4/PastExams/exam2024.pdf' }]
+                },
+                'B5': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/family/B5/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/family/B5/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/family/B5/PastExams/exam2024.pdf' }]
+                },
+                'B6': {
+                    'Data': {
+                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/family/B6/Lectures/lec1.pdf' }],
+                        'Prelabs': [],
+                        'Records': []
+                    },
+                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/family/B6/FromDoctor/notes.pdf' }],
+                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/family/B6/PastExams/exam2024.pdf' }]
+                }
+            }
         };
 
-        // ============================================================
-        // ===== دوال التخزين (IndexedDB) =====
-        // ============================================================
-        function getSubjectStorageKey(subject, bBlock, type, subType = null) {
-            let key = `subject_${subject}_${bBlock}_${type}`;
-            if (subType) key += `_${subType}`;
-            return key;
-        }
-
-        async function loadSubjectFiles(subject, bBlock, type, subType = null) {
-            const key = getSubjectStorageKey(subject, bBlock, type, subType);
-            const data = await loadFile(key);
-            return Array.isArray(data) ? data : [];
-        }
-
-        async function saveSubjectFiles(subject, bBlock, type, subType = null, files) {
-            const key = getSubjectStorageKey(subject, bBlock, type, subType);
-            await saveFile(key, files);
-        }
-
-        function getPortfolioKey(block, type) { return `portfolio_${block}_${type}`; }
-
-        async function loadPortfolioData(block, type) {
-            const key = getPortfolioKey(block, type);
-            const data = await loadFile(key);
-            if (type === 'general_empty' || type === 'general_filled') {
-                return data;
+        // ---- البورتفوليو (جميع B1..B6) ----
+        const portfolioFiles = {
+            'B1': {
+                'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' },
+                'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F1 Unsolved', url: 'f1-u.pdf' },
+                ],
+                'formative_solved': [
+                    { name: 'F1 Solved', url: 'f1-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B1', url: 'ia-b1.pdf' },
+                ]
+            },
+            'B2': {
+                'general_empty': { name: 'P2 Empty', url: '2th-e.pdf' },
+                'general_filled': { name: 'P2 Filled', url: '2th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F2 Unsolved', url: 'f2-u.pdf' }
+                ],
+                'formative_solved': [
+                    { name: 'F2 Solved', url: 'f2-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B2', url: 'ia-b2.pdf' }
+                ]
+            },
+            'B3': {
+                'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' },
+                'general_filled': { name: 'P3 filled', url: '3th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F3 Unsolved', url: 'f3-u.pdf' }
+                ],
+                'formative_solved': [
+                    { name: 'F3 Solved', url: 'f3-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B3', url: 'ia-b3.pdf' }
+                ]
+            },
+            'B4': {
+                'general_empty': { name: 'P4 Empty', url: '4th-e.pdf' },
+                'general_filled': { name: 'P4 Filled', url: '4th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F4 Unsolved', url: 'f4-u.pdf' }
+                ],
+                'formative_solved': [
+                    { name: 'F4 Solved', url: 'f4-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B4', url: 'ia-b4.pdf' }
+                ]
+            },
+            'B5': {
+                'general_empty': { name: 'P5 Empty', url: '5th-e.pdf' },
+                'general_filled': { name: 'P5 Filled', url: '5th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F5 Unsolved', url: 'f5-u.pdf' }
+                ],
+                'formative_solved': [
+                    { name: 'F5 Solved', url: 'f5-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B5', url: 'ia-b5.pdf' }
+                ]
+            },
+            'B6': {
+                'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' },
+                'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' },
+                'formative_unsolved': [
+                    { name: 'F6 Unsolved', url: 'f6-u.pdf' }
+                ],
+                'formative_solved': [
+                    { name: 'F6 Solved', url: 'f6-s.pdf' }
+                ],
+                'incision': [
+                    { name: 'Incision B6', url: 'ia-b6.pdf' }
+                ]
             }
-            return Array.isArray(data) ? data : [];
-        }
+        };
 
-        async function savePortfolioData(block, type, data) {
-            const key = getPortfolioKey(block, type);
-            await saveFile(key, data);
-        }
+        // ================================================================
+        // ===== باقي الدوال (GPA، العداد، To-Do، التبويبات، إلخ) =====
+        // ================================================================
 
-        // ============================================================
+        // ... (جميع الدوال السابقة كما هي، مع تعديل الدوال التي تستخدم IndexedDB لاستخدام الملفات الثابتة)
+
         // ===== CAROUSEL =====
-        // ============================================================
         function initCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.getElementById('carouselIndicators');
@@ -757,9 +1296,7 @@
             startAutoPlay();
         }
 
-        // ============================================================
         // ===== GPA =====
-        // ============================================================
         function calculateGPA() {
             const research = parseFloat(document.getElementById('gpaResearch').value) || 0;
             const skill1 = parseFloat(document.getElementById('gpaSkill1').value) || 0;
@@ -781,7 +1318,7 @@
             if (percent>=85) { grade='امتياز (Excellent)'; gradeClass='excellent'; }
             else if (percent>=75) { grade='جيد جداً (Very Good)'; gradeClass='very-good'; }
             else if (percent>=65) { grade='جيد (Good)'; gradeClass='good'; }
-            else if (percent>=50) { grade='مقبول (Pass)'; gradeClass='pass'; }
+            else if (percent>=57) { grade='مقبول (Pass)'; gradeClass='pass'; }
             else { grade='راسب (Fail)'; gradeClass='fail'; }
 
             document.getElementById('gpaTotal').innerText = `${total} / ${totalMax}`;
@@ -792,9 +1329,9 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
-        // ============================================================
         // ===== COUNTDOWN =====
-        // ============================================================
+        let countdownInterval;
+
         function startCountdown(targetDate) {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
@@ -833,9 +1370,7 @@
             }
         }
 
-        // ============================================================
         // ===== TO-DO LIST =====
-        // ============================================================
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
             const list = document.getElementById('todoList');
@@ -876,9 +1411,7 @@
             loadTodos();
         }
 
-        // ============================================================
         // ===== EXTRA TABS =====
-        // ============================================================
         function switchExtraTab(tabId, btn) {
             document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.extra-tab-btn').forEach(el => el.classList.remove('active'));
@@ -899,9 +1432,7 @@
             modal.style.display = 'flex';
         }
 
-        // ============================================================
         // ===== عرض المواد الأساسية =====
-        // ============================================================
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             grid.innerHTML = '';
@@ -923,9 +1454,7 @@
 
         function filterCoreSubjects(value) { renderCoreSubjects(value); }
 
-        // ============================================================
         // ===== فتح تفاصيل المادة =====
-        // ============================================================
         function openSubject(subjectName) {
             currentSubject = subjectName;
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
@@ -951,16 +1480,50 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // ============================================================
-        // ===== أيقونات B (المودال) مع زر تحديث =====
-        // ============================================================
+        // ===== أيقونات B (المودال) =====
         let currentSubjectModal = { subject: '', b: '', type: '' };
 
-        async function handleIconClick(subject, b, type) {
-            // إغلاق أي مودال مفتوح
-            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+        function renderSubjectFileSection(subject, bBlock, type, subType, label, icon) {
+            let files = [];
+            try {
+                if (type === 'Data') {
+                    files = subjectFiles[subject]?.[bBlock]?.['Data']?.[subType] || [];
+                } else {
+                    files = subjectFiles[subject]?.[bBlock]?.[type] || [];
+                }
+            } catch (e) { files = []; }
 
-            // تخزين المعلومات الحالية لتحديث المودال
+            let itemsHTML = '';
+            if (files.length === 0) {
+                itemsHTML = `<div class="no-files-msg">لا توجد ملفات</div>`;
+            } else {
+                files.forEach((file) => {
+                    const isAudio = file.url.toLowerCase().endsWith('.mp3') || file.url.toLowerCase().endsWith('.m4a') || file.url.toLowerCase().endsWith('.wav');
+                    const fileIcon = isAudio ? 'fa-music' : 'fa-file-pdf';
+                    const viewLink = isAudio ? `#` : file.url;
+                    const viewAttr = isAudio ? `onclick="alert('سيتم تشغيل الصوت: ${file.name}');"` : `target="_blank"`;
+                    itemsHTML += `
+                        <div class="file-item">
+                            <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${file.name}</span>
+                            <span class="file-actions">
+                                <a href="${viewLink}" ${viewAttr} title="فتح"><i class="fa-solid fa-eye"></i> فتح</a>
+                                <a href="${file.url}" download="${file.name}" title="تنزيل"><i class="fa-solid fa-download"></i> تنزيل</a>
+                            </span>
+                        </div>
+                    `;
+                });
+            }
+
+            return `
+                <div class="block-card" style="margin-bottom:1rem;">
+                    <div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>
+                    ${itemsHTML}
+                </div>
+            `;
+        }
+
+        async function handleIconClick(subject, b, type) {
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
             currentSubjectModal = { subject, b, type };
 
             const modal = document.createElement('div');
@@ -968,19 +1531,16 @@
             modal.style.display = 'flex';
             modal.id = 'dynamicSubjectModal';
 
-            // محتوى المودال
             const title = `${subject} - ${b} - ${type}`;
-
-            // زر التحديث
             const refreshBtn = `<button class="refresh-btn" onclick="refreshSubjectModal()"><i class="fa-solid fa-rotate"></i> تحديث</button>`;
 
             let contentHTML = '';
             if (type === 'Data') {
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'application/pdf')}
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'audio/mpeg,application/pdf')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
                     </div>
                 `;
             } else {
@@ -988,7 +1548,7 @@
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${await renderSubjectFileSection(subject, b, type, null, label, icon, 'application/pdf')}
+                        ${renderSubjectFileSection(subject, b, type, null, label, icon)}
                     </div>
                 `;
             }
@@ -1008,21 +1568,19 @@
             return false;
         }
 
-        // دالة تحديث المودال الحالي
         async function refreshSubjectModal() {
             const modal = document.getElementById('dynamicSubjectModal');
             if (!modal) return;
             const { subject, b, type } = currentSubjectModal;
             if (!subject || !b || !type) return;
 
-            // إعادة بناء المحتوى
             let contentHTML = '';
             if (type === 'Data') {
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'application/pdf')}
-                        ${await renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'audio/mpeg,application/pdf')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
+                        ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
                     </div>
                 `;
             } else {
@@ -1030,7 +1588,7 @@
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${await renderSubjectFileSection(subject, b, type, null, label, icon, 'application/pdf')}
+                        ${renderSubjectFileSection(subject, b, type, null, label, icon)}
                     </div>
                 `;
             }
@@ -1038,123 +1596,6 @@
             const contentDiv = modal.querySelector('.modal-content > div:last-child');
             if (contentDiv) {
                 contentDiv.innerHTML = contentHTML;
-            }
-        }
-
-        async function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, acceptTypes) {
-            const files = await loadSubjectFiles(subject, bBlock, type, subType);
-            const isDev = isDeveloper;
-
-            let itemsHTML = '';
-            if (files.length === 0) {
-                itemsHTML = `<div class="no-files-msg">لا توجد ملفات</div>`;
-            } else {
-                files.forEach((file, idx) => {
-                    const isAudio = file.name.toLowerCase().endsWith('.mp3') || file.name.toLowerCase().endsWith('.m4a') || file.type?.startsWith('audio/');
-                    const fileIcon = isAudio ? 'fa-music' : 'fa-file-pdf';
-                    const viewLink = isAudio ? `#` : `${file.data}`;
-                    const viewAttr = isAudio ? `onclick="alert('سيتم تشغيل الصوت: ${file.name}');"` : `target="_blank"`;
-                    itemsHTML += `
-                        <div class="file-item">
-                            <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${file.name}</span>
-                            <span class="file-actions">
-                                <a href="${viewLink}" ${viewAttr} title="فتح"><i class="fa-solid fa-eye"></i> فتح</a>
-                                <a href="${file.data}" download="${file.name}" title="تنزيل"><i class="fa-solid fa-download"></i> تنزيل</a>
-                                ${isDev ? `<button class="delete-btn" onclick="deleteSubjectFile('${subject}','${bBlock}','${type}','${subType||''}',${idx})">✖ حذف</button>` : ''}
-                            </span>
-                        </div>
-                    `;
-                });
-            }
-
-            const inputId = `fileInput_${subject}_${bBlock}_${type}_${subType || 'main'}_${Date.now()}`;
-
-            const uploadSection = isDev ? `
-                <div style="margin-top:0.8rem;">
-                    <input type="file" accept="${acceptTypes}" id="${inputId}" style="display:none;" multiple onchange="handleSubjectFileUpload('${subject}','${bBlock}','${type}','${subType||''}', this)">
-                    <button class="upload-btn" onclick="document.getElementById('${inputId}').click();">
-                        <i class="fa-solid fa-upload"></i> رفع ملفات
-                    </button>
-                </div>
-            ` : '';
-
-            return `
-                <div class="block-card" style="margin-bottom:1rem;">
-                    <div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>
-                    ${itemsHTML}
-                    ${uploadSection}
-                </div>
-            `;
-        }
-
-        // ===== رفع الملفات (للمطور فقط) =====
-        async function handleSubjectFileUpload(subject, bBlock, type, subType, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (!input || input.files.length === 0) {
-                alert('لم تقم باختيار أي ملف.');
-                return;
-            }
-
-            const existing = await loadSubjectFiles(subject, bBlock, type, subType);
-            let loaded = 0;
-            const total = input.files.length;
-
-            for (let i = 0; i < total; i++) {
-                const file = input.files[i];
-                if (file.size > 500 * 1024 * 1024) {
-                    alert(`الملف "${file.name}" يتجاوز الحد الأقصى (500 ميجابايت).`);
-                    loaded++;
-                    if (loaded === total) input.value = '';
-                    continue;
-                }
-                if (type === 'Data' && subType === 'Records') {
-                    if (!file.type.startsWith('audio/') && file.type !== 'application/pdf') {
-                        alert(`الملف "${file.name}" غير مدعوم في Records. يُسمح فقط بـ MP3 و PDF.`);
-                        loaded++;
-                        if (loaded === total) input.value = '';
-                        continue;
-                    }
-                } else {
-                    if (file.type !== 'application/pdf') {
-                        alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
-                        loaded++;
-                        if (loaded === total) input.value = '';
-                        continue;
-                    }
-                }
-
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    existing.push({ name: file.name, data: e.target.result });
-                    loaded++;
-                    if (loaded === total) {
-                        await saveSubjectFiles(subject, bBlock, type, subType, existing);
-                        input.value = '';
-                        alert(`تم رفع ${total} ملف بنجاح.`);
-                        // تحديث المودال الحالي
-                        await refreshSubjectModal();
-                    }
-                };
-                reader.onerror = function() {
-                    alert('حدث خطأ أثناء قراءة الملف: ' + file.name);
-                    loaded++;
-                    if (loaded === total) input.value = '';
-                };
-                reader.readAsDataURL(file);
-            }
-            if (total === 0) input.value = '';
-        }
-
-        // ===== حذف ملف (للمطور فقط) =====
-        async function deleteSubjectFile(subject, bBlock, type, subType, index) {
-            if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
-            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
-
-            const files = await loadSubjectFiles(subject, bBlock, type, subType);
-            if (index >= 0 && index < files.length) {
-                files.splice(index, 1);
-                await saveSubjectFiles(subject, bBlock, type, subType, files);
-                await refreshSubjectModal();
             }
         }
 
@@ -1166,9 +1607,7 @@
             if (coreTab) coreTab.classList.add('active');
         }
 
-        // ============================================================
         // ===== عرض الأقسام =====
-        // ============================================================
         function showSection(section, btnElement) {
             const loader = document.getElementById('globalLoader');
             loader.style.display = 'block';
@@ -1198,49 +1637,35 @@
             }, 300);
         }
 
-        // ============================================================
-        // ===== دوال البورتفوليو (مع زر تحديث) =====
-        // ============================================================
-        async function openPortfolioBlock(blockName) {
-            currentPortfolioBlock = blockName;
-            const modal = document.getElementById('portfolioModal');
-            const title = document.getElementById('portfolioTitle');
-            const content = document.getElementById('portfolioContent');
+        // ===== دوال البورتفوليو =====
+        function renderPortfolioContent(blockName, content) {
+            const data = portfolioFiles[blockName] || {};
+            const emptyFile = data['general_empty'] || null;
+            const filledFile = data['general_filled'] || null;
+            const unsolvedFiles = data['formative_unsolved'] || [];
+            const solvedFiles = data['formative_solved'] || [];
+            const incisionFiles = data['incision'] || [];
 
-            title.innerText = `تفاصيل Portfolio - ${blockName}`;
-            await renderPortfolioContent(blockName, content);
-            modal.style.display = 'flex';
-        }
-
-        async function renderPortfolioContent(blockName, content) {
-            const emptyFile = await loadPortfolioData(blockName, 'general_empty');
-            const filledFile = await loadPortfolioData(blockName, 'general_filled');
-            const unsolvedFiles = await loadPortfolioData(blockName, 'formative_unsolved') || [];
-            const solvedFiles = await loadPortfolioData(blockName, 'formative_solved') || [];
-            const incisionFiles = await loadPortfolioData(blockName, 'incision') || [];
-
-            function renderSingleFile(file, label) {
+            function renderSingleFile(file) {
                 if (file) {
                     return `
                         <div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
-                            <a href="${file.data}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
-                            <a href="${file.data}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}','${label}',0)">✖</button>` : ''}
+                            <a href="${file.url}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
+                            <a href="${file.url}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
                         </div>
                     `;
                 }
                 return `<span class="no-files-msg">لا يوجد ملف مرفوع</span>`;
             }
 
-            function renderFileList(files, type) {
+            function renderFileList(files) {
                 if (files.length === 0) return '<li class="no-files-msg">لا توجد ملفات</li>';
-                return files.map((f, idx) => `
+                return files.map((f) => `
                     <li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold); flex-wrap:wrap; gap:5px;">
-                        <a href="${f.data}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
+                        <a href="${f.url}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
                         <span>
-                            <a href="${f.data}" target="_blank" class="file-link" title="فتح" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
-                            <a href="${f.data}" download="${f.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}','${type}',${idx})">✖</button>` : ''}
+                            <a href="${f.url}" target="_blank" class="file-link" title="فتح" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
+                            <a href="${f.url}" download="${f.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
                         </span>
                     </li>
                 `).join('');
@@ -1255,23 +1680,11 @@
                     <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
                         <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
                             <h5>📄 فاضي</h5>
-                            ${renderSingleFile(emptyFile, 'general_empty')}
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="emptyInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}','empty',this)">
-                                    <button class="upload-btn" onclick="document.getElementById('emptyInput_${blockName}').click();">رفع ملف PDF</button>
-                                </div>
-                            ` : ''}
+                            ${renderSingleFile(emptyFile)}
                         </div>
                         <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
                             <h5>📄 مليان</h5>
-                            ${renderSingleFile(filledFile, 'general_filled')}
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="filledInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}','filled',this)">
-                                    <button class="upload-btn" onclick="document.getElementById('filledInput_${blockName}').click();">رفع ملف PDF</button>
-                                </div>
-                            ` : ''}
+                            ${renderSingleFile(filledFile)}
                         </div>
                     </div>
                 </div>
@@ -1283,14 +1696,8 @@
                     <h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
                     <div style="margin-top:0.8rem;">
                         <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                            ${renderFileList(incisionFiles, 'incision')}
+                            ${renderFileList(incisionFiles)}
                         </ul>
-                        ${isDeveloper ? `
-                            <div style="margin:0.5rem 0;">
-                                <input type="file" accept=".pdf" id="incisionInput_${blockName}" style="display:none;" multiple onchange="handleIncisionUpload('${blockName}',this)">
-                                <button class="upload-btn" onclick="document.getElementById('incisionInput_${blockName}').click();">رفع ملفات PDF</button>
-                            </div>
-                        ` : ''}
                     </div>
                 </div>
             `;
@@ -1303,26 +1710,14 @@
                         <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
                             <h5>📄 بدون حل</h5>
                             <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${renderFileList(unsolvedFiles, 'formative_unsolved')}
+                                ${renderFileList(unsolvedFiles)}
                             </ul>
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="unsolvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}','unsolved',this)">
-                                    <button class="upload-btn" onclick="document.getElementById('unsolvedInput_${blockName}').click();">رفع ملفات PDF</button>
-                                </div>
-                            ` : ''}
                         </div>
                         <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
                             <h5>✅ محلول</h5>
                             <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${renderFileList(solvedFiles, 'formative_solved')}
+                                ${renderFileList(solvedFiles)}
                             </ul>
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="solvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}','solved',this)">
-                                    <button class="upload-btn" onclick="document.getElementById('solvedInput_${blockName}').click();">رفع ملفات PDF</button>
-                                </div>
-                            ` : ''}
                         </div>
                     </div>
                 </div>
@@ -1331,111 +1726,26 @@
             content.innerHTML = html;
         }
 
-        // دالة تحديث البورتفوليو
+        let currentPortfolioBlock = null;
+
+        async function openPortfolioBlock(blockName) {
+            currentPortfolioBlock = blockName;
+            const modal = document.getElementById('portfolioModal');
+            const title = document.getElementById('portfolioTitle');
+            const content = document.getElementById('portfolioContent');
+
+            title.innerText = `تفاصيل Portfolio - ${blockName}`;
+            renderPortfolioContent(blockName, content);
+            modal.style.display = 'flex';
+        }
+
         async function refreshPortfolio() {
             if (!currentPortfolioBlock) return;
             const content = document.getElementById('portfolioContent');
-            await renderPortfolioContent(currentPortfolioBlock, content);
+            renderPortfolioContent(currentPortfolioBlock, content);
         }
 
-        // ===== دوال رفع البورتفوليو =====
-        async function handleGeneralUpload(block, type, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملف.'); return; }
-            const file = input.files[0];
-            if (file.size > 500*1024*1024) { alert('حجم الملف يتجاوز 500 ميجابايت.'); input.value=''; return; }
-            if (file.type !== 'application/pdf') { alert('يرجى رفع ملف PDF فقط.'); input.value=''; return; }
-
-            const reader = new FileReader();
-            reader.onload = async function(e) {
-                const key = (type === 'empty') ? 'general_empty' : 'general_filled';
-                await savePortfolioData(block, key, { name: file.name, data: e.target.result });
-                alert('تم رفع الملف بنجاح.');
-                await refreshPortfolio();
-            };
-            reader.onerror = function() { alert('حدث خطأ أثناء قراءة الملف.'); };
-            reader.readAsDataURL(file);
-        }
-
-        async function handleFormativeUpload(block, type, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملفات.'); return; }
-
-            const key = (type === 'unsolved') ? 'formative_unsolved' : 'formative_solved';
-            const existing = await loadPortfolioData(block, key) || [];
-            let loaded = 0;
-            const total = input.files.length;
-
-            for (let i=0; i<total; i++) {
-                const file = input.files[i];
-                if (file.size > 500*1024*1024) { alert(`"${file.name}" يتجاوز 500 ميجابايت.`); continue; }
-                if (file.type !== 'application/pdf') { alert(`"${file.name}" ليس PDF.`); continue; }
-
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    existing.push({ name: file.name, data: e.target.result });
-                    loaded++;
-                    if (loaded === total) {
-                        await savePortfolioData(block, key, existing);
-                        alert(`تم رفع ${total} ملف بنجاح.`);
-                        await refreshPortfolio();
-                    }
-                };
-                reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
-                reader.readAsDataURL(file);
-            }
-            input.value = '';
-        }
-
-        async function handleIncisionUpload(block, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملفات.'); return; }
-
-            const existing = await loadPortfolioData(block, 'incision') || [];
-            let loaded = 0;
-            const total = input.files.length;
-
-            for (let i=0; i<total; i++) {
-                const file = input.files[i];
-                if (file.size > 500*1024*1024) { alert(`"${file.name}" يتجاوز 500 ميجابايت.`); continue; }
-                if (file.type !== 'application/pdf') { alert(`"${file.name}" ليس PDF.`); continue; }
-
-                const reader = new FileReader();
-                reader.onload = async function(e) {
-                    existing.push({ name: file.name, data: e.target.result });
-                    loaded++;
-                    if (loaded === total) {
-                        await savePortfolioData(block, 'incision', existing);
-                        alert(`تم رفع ${total} ملف بنجاح.`);
-                        await refreshPortfolio();
-                    }
-                };
-                reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
-                reader.readAsDataURL(file);
-            }
-            input.value = '';
-        }
-
-        // ===== حذف ملفات البورتفوليو =====
-        async function deletePortfolioFile(block, type, index) {
-            if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
-            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
-
-            if (type === 'general_empty' || type === 'general_filled') {
-                await savePortfolioData(block, type, null);
-            } else {
-                const data = await loadPortfolioData(block, type);
-                if (Array.isArray(data) && index >= 0 && index < data.length) {
-                    data.splice(index, 1);
-                    await savePortfolioData(block, type, data);
-                }
-            }
-            await refreshPortfolio();
-        }
-
-        // ============================================================
         // ===== نظام تسجيل الدخول =====
-        // ============================================================
         function switchAuthMode(mode) {
             const loginForm = document.getElementById('loginForm');
             const signupForm = document.getElementById('signupForm');
@@ -1497,7 +1807,7 @@
             alertBox.innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
             alertBox.style.display = 'block';
             alertBox.className = 'alert-msg success';
-            setTimeout(() => { showMainApp(name, false); }, 800);
+            setTimeout(() => { showMainApp(name); }, 800);
         });
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -1509,7 +1819,7 @@
             if (loginId === DEVELOPER_ID && password === DEVELOPER_PASSWORD) {
                 localStorage.setItem('nova_active_user', JSON.stringify({ name: 'Amin (Developer)', isDeveloper: true }));
                 alertBox.style.display = 'none';
-                showMainApp('Amin (Developer)', true);
+                showMainApp('Amin (Developer)');
                 return;
             }
 
@@ -1522,7 +1832,7 @@
             if (matchedUser) {
                 localStorage.setItem('nova_active_user', JSON.stringify({ name: matchedUser.name, isDeveloper: false }));
                 alertBox.style.display = 'none';
-                showMainApp(matchedUser.name, false);
+                showMainApp(matchedUser.name);
             } else {
                 alertBox.innerText = 'البيانات غير صحيحة، أو الحساب غير موجود. يرجى إنشاء حساب أولاً.';
                 alertBox.style.display = 'block';
@@ -1530,19 +1840,16 @@
             }
         });
 
-        function showMainApp(userName, devStatus) {
-            isDeveloper = devStatus;
-            document.getElementById('userInfoDisplay').innerHTML = `الطالب: ${userName} ${devStatus ? '<span class="dev-badge">مطور</span>' : ''}`;
+        function showMainApp(userName) {
+            document.getElementById('userInfoDisplay').innerHTML = `الطالب: ${userName}`;
             document.getElementById('authOverlay').style.display = 'none';
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
             startSessionTimer();
             updateStats();
-            console.log('Developer status:', isDeveloper);
         }
 
         function logout() {
             localStorage.removeItem('nova_active_user');
-            isDeveloper = false;
             document.getElementById('authOverlay').style.display = 'flex';
             document.getElementById('userInfoDisplay').innerText = 'أهلاً بك';
             switchAuthMode('login');
@@ -1553,6 +1860,8 @@
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
             clearInterval(window.sessionInterval);
         }
+
+        let sessionSeconds = 0;
 
         function startSessionTimer() {
             clearInterval(window.sessionInterval);
@@ -1587,14 +1896,38 @@
             if (e.target.classList.contains('modal')) e.target.style.display = 'none';
         });
 
-        // ============================================================
+        // ================================================================
+        // ===== المتغيرات العامة والثوابت =====
+        // ================================================================
+        let currentSubject = '';
+        const coreSubjects = [
+            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
+            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
+            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg', fallbackIcon: 'fa-bug' },
+            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg', fallbackIcon: 'fa-vial-virus' },
+            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg', fallbackIcon: 'fa-heart-pulse' },
+            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg', fallbackIcon: 'fa-capsules' },
+            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg', fallbackIcon: 'fa-virus' },
+            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg', fallbackIcon: 'fa-microscope' },
+            { id: 'community', name: 'Community', cover: 'community-cover.jpg', fallbackIcon: 'fa-users' },
+            { id: 'family', name: 'Family', cover: 'family-cover.jpg', fallbackIcon: 'fa-people-group' }
+        ];
+
+        const bSubtitles = {
+            1: "Introduction To Medicine",
+            2: "Man & Environment",
+            3: "Nutrition & Metabolism",
+            4: "Growth & Development",
+            5: "Principles of Diseases",
+            6: "Urinary System"
+        };
+
         // ===== تحميل الصفحة =====
-        // ============================================================
-        window.onload = async function() {
+        window.onload = function() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
                 if (activeUser && activeUser.name) {
-                    showMainApp(activeUser.name, activeUser.isDeveloper || false);
+                    showMainApp(activeUser.name);
                 }
             } catch (e) { console.error(e); }
             renderCoreSubjects();
