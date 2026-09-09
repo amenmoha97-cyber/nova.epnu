@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* جميع الأنماط (نفسها السابقة) - اختصار للطول */
+        /* جميع الأنماط كما هي (اختصرتها هنا للطول، لكنها موجودة في الكود الكامل) */
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -38,79 +38,37 @@
             --shadow-gold: rgba(184, 138, 42, 0.2);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-arabic), var(--font-english); }
-        body {
-            background-color: var(--bg-black);
-            color: var(--beige-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: background-color var(--transition-speed), color var(--transition-speed);
-        }
-        .bg-animation {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-            background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%),
-                        radial-gradient(circle at 70% 60%, rgba(212,175,55,0.05) 0%, transparent 50%);
-            animation: pulseBg 8s ease-in-out infinite alternate;
-        }
+        body { background-color: var(--bg-black); color: var(--beige-main); min-height: 100vh; display: flex; flex-direction: column; transition: background-color var(--transition-speed), color var(--transition-speed); }
+        .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(212,175,55,0.05) 0%, transparent 50%); animation: pulseBg 8s ease-in-out infinite alternate; }
         @keyframes pulseBg { 0% { opacity:0.6; transform:scale(1); } 100% { opacity:1; transform:scale(1.05); } }
-        .auth-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5,5,5,0.97); display: flex; justify-content: center; align-items: center;
-            z-index: 1000; padding: 1rem; overflow-y: auto; backdrop-filter: blur(8px);
-        }
+        .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,5,0.97); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; overflow-y: auto; backdrop-filter: blur(8px); }
         [data-theme="light"] .auth-overlay { background: rgba(247,244,238,0.97); }
-        .auth-box {
-            background: var(--card-black); border: 1.5px solid var(--gold-primary); padding: 2.5rem 2rem;
-            border-radius: 28px; width: 100%; max-width: 480px; text-align: center;
-            box-shadow: 0 0 40px rgba(212,175,55,0.25); animation: fadeUp 0.8s ease;
-            transition: background var(--transition-speed);
-        }
+        .auth-box { background: var(--card-black); border: 1.5px solid var(--gold-primary); padding: 2.5rem 2rem; border-radius: 28px; width: 100%; max-width: 480px; text-align: center; box-shadow: 0 0 40px rgba(212,175,55,0.25); animation: fadeUp 0.8s ease; transition: background var(--transition-speed); }
         [data-theme="light"] .auth-box { border-color: #B58A2A; box-shadow: 0 0 40px rgba(184,138,42,0.15); }
         @keyframes fadeUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
-        .auth-logo {
-            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
-            border: 3px solid var(--gold-primary); margin-bottom: 1rem;
-            box-shadow: 0 0 30px rgba(212,175,55,0.3); transition: transform 0.3s;
-        }
+        .auth-logo { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; border: 3px solid var(--gold-primary); margin-bottom: 1rem; box-shadow: 0 0 30px rgba(212,175,55,0.3); transition: transform 0.3s; }
         .auth-logo:hover { transform: scale(1.05) rotate(-3deg); }
         .auth-box h2 { color: var(--gold-primary); font-size: 2.5rem; letter-spacing: 3px; font-family: var(--font-english); font-weight: 700; }
         [data-theme="light"] .auth-box h2 { color: #B58A2A; }
         .credits-text { color: var(--beige-light); font-size: 0.9rem; margin-bottom: 1.8rem; font-family: var(--font-english); line-height: 1.6; opacity: 0.9; }
         .credits-text b { color: var(--gold-primary); }
         .auth-tabs { display: flex; gap: 10px; margin-bottom: 1.8rem; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; }
-        .auth-tab-btn {
-            flex: 1; background: transparent; border: none; color: var(--beige-light); padding: 0.7rem;
-            font-size: 1rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s;
-            font-family: var(--font-english);
-        }
+        .auth-tab-btn { flex: 1; background: transparent; border: none; color: var(--beige-light); padding: 0.7rem; font-size: 1rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s; font-family: var(--font-english); }
         .auth-tab-btn.active { color: var(--gold-primary); border-bottom-color: var(--gold-primary); }
         .input-group { margin-bottom: 1.2rem; text-align: right; }
         .input-group label { display: block; margin-bottom: 0.4rem; color: var(--beige-main); font-size: 0.9rem; font-weight: 600; }
-        .input-group input {
-            width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1.5px solid var(--border-gold);
-            background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; transition: 0.3s;
-        }
+        .input-group input { width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; transition: 0.3s; }
         [data-theme="light"] .input-group input { background: rgba(255,252,247,0.8); border-color: #E4DCCF; color: #29251F; }
         .input-group input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212,175,55,0.3); background: rgba(24,22,20,0.9); }
         [data-theme="light"] .input-group input:focus { border-color: #B58A2A; box-shadow: 0 0 15px rgba(184,138,42,0.2); background: #FFFCF7; }
-        .btn-gold {
-            width: 100%; padding: 0.9rem; background: var(--gold-primary); color: #0A0A0A; border: none;
-            border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
-            margin-top: 0.5rem; box-shadow: 0 6px 20px rgba(212,175,55,0.25);
-        }
+        .btn-gold { width: 100%; padding: 0.9rem; background: var(--gold-primary); color: #0A0A0A; border: none; border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; margin-top: 0.5rem; box-shadow: 0 6px 20px rgba(212,175,55,0.25); }
         [data-theme="light"] .btn-gold { background: #B58A2A; color: #FFFCF7; box-shadow: 0 6px 20px rgba(184,138,42,0.25); }
         .btn-gold:hover { background: var(--gold-secondary); color: #FFF; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.4); }
         [data-theme="light"] .btn-gold:hover { background: #8C691F; color: #FFFCF7; box-shadow: 0 10px 30px rgba(140,105,31,0.4); }
         .alert-msg { color: var(--error-red); font-size: 0.9rem; margin-top: 0.8rem; display: none; padding: 0.5rem; border-radius: 8px; background: rgba(231,76,60,0.1); border: 1px solid var(--error-red); }
         .alert-msg.success { color: var(--success-green); border-color: var(--success-green); background: rgba(46,204,113,0.1); }
 
-        header {
-            background: var(--card-black); border-bottom: 1px solid var(--border-gold);
-            padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(6px);
-            transition: background var(--transition-speed);
-        }
+        header { background: var(--card-black); border-bottom: 1px solid var(--border-gold); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(6px); transition: background var(--transition-speed); }
         [data-theme="light"] header { border-bottom-color: #E4DCCF; }
         .logo-container { display: flex; align-items: center; gap: 14px; }
         .site-logo { width: 48px; height: 48px; border-radius: 14px; border: 2px solid var(--gold-primary); object-fit: cover; box-shadow: 0 0 18px rgba(212,175,55,0.2); }
@@ -131,11 +89,7 @@
         .container { max-width: 1300px; margin: 2rem auto; padding: 0 1.5rem; flex: 1; width: 100%; }
 
         .nav-tabs { display: flex; gap: 12px; margin-bottom: 2rem; border-bottom: 1px solid var(--border-gold); padding-bottom: 14px; overflow-x: auto; flex-wrap: wrap; }
-        .tab-btn {
-            background: rgba(24,22,20,0.7); border: 1px solid var(--border-gold); color: var(--beige-main);
-            padding: 0.7rem 1.8rem; border-radius: 40px; cursor: pointer; font-weight: 700; transition: 0.3s;
-            white-space: nowrap; font-size: 0.95rem; backdrop-filter: blur(4px);
-        }
+        .tab-btn { background: rgba(24,22,20,0.7); border: 1px solid var(--border-gold); color: var(--beige-main); padding: 0.7rem 1.8rem; border-radius: 40px; cursor: pointer; font-weight: 700; transition: 0.3s; white-space: nowrap; font-size: 0.95rem; backdrop-filter: blur(4px); }
         [data-theme="light"] .tab-btn { background: #FFFCF7; border-color: #E4DCCF; color: #29251F; }
         .tab-btn i { margin-left: 8px; }
         .tab-btn.active, .tab-btn:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); box-shadow: 0 4px 20px rgba(212,175,55,0.3); transform: translateY(-2px); }
@@ -352,6 +306,22 @@
         .delete-btn { background: var(--error-red); color: #fff; border: none; padding: 0.1rem 0.6rem; border-radius: 12px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; margin-left: 8px; }
         .delete-btn:hover { transform: scale(1.1); background: #c0392b; }
         .no-files-msg { color: var(--beige-light); font-size: 0.85rem; opacity: 0.7; font-style: italic; padding: 0.3rem 0; }
+
+        .refresh-btn {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.85rem;
+            margin-right: 10px;
+        }
+        [data-theme="light"] .refresh-btn { background: #B58A2A; color: #FFFCF7; }
+        .refresh-btn:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
+        [data-theme="light"] .refresh-btn:hover { background: #8C691F; }
 
         .section-content { display: none; animation: fadeIn 0.5s ease; }
         .section-content.active { display: block; }
@@ -612,7 +582,10 @@
     <div id="portfolioModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
-            <h2 id="portfolioTitle">تفاصيل Portfolio</h2>
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:0.5rem;">
+                <h2 id="portfolioTitle" style="margin:0;">تفاصيل Portfolio</h2>
+                <button class="refresh-btn" onclick="refreshPortfolio()"><i class="fa-solid fa-rotate"></i> تحديث</button>
+            </div>
             <div id="portfolioContent"></div>
         </div>
     </div>
@@ -628,7 +601,7 @@
 
     <script>
         // ============================================================
-        // ===== IndexedDB Helper (بديل localStorage) =====
+        // ===== IndexedDB Helper =====
         // ============================================================
         const DB_NAME = 'NovaDB';
         const STORE_NAME = 'files';
@@ -688,6 +661,7 @@
         let sessionSeconds = 0;
         let carouselInterval;
         let countdownInterval;
+        let currentPortfolioBlock = null; // لتتبع البورتفوليو الحالي للتحديث
 
         const coreSubjects = [
             { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
@@ -712,7 +686,7 @@
         };
 
         // ============================================================
-        // ===== دوال التخزين (تعتمد على IndexedDB) =====
+        // ===== دوال التخزين (IndexedDB) =====
         // ============================================================
         function getSubjectStorageKey(subject, bBlock, type, subType = null) {
             let key = `subject_${subject}_${bBlock}_${type}`;
@@ -737,7 +711,7 @@
             const key = getPortfolioKey(block, type);
             const data = await loadFile(key);
             if (type === 'general_empty' || type === 'general_filled') {
-                return data; // قد يكون null
+                return data;
             }
             return Array.isArray(data) ? data : [];
         }
@@ -978,19 +952,29 @@
         }
 
         // ============================================================
-        // ===== أيقونات B (المودال) مع async/await =====
+        // ===== أيقونات B (المودال) مع زر تحديث =====
         // ============================================================
+        let currentSubjectModal = { subject: '', b: '', type: '' };
+
         async function handleIconClick(subject, b, type) {
+            // إغلاق أي مودال مفتوح
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+
+            // تخزين المعلومات الحالية لتحديث المودال
+            currentSubjectModal = { subject, b, type };
 
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.style.display = 'flex';
             modal.id = 'dynamicSubjectModal';
 
-            let contentHTML = '';
+            // محتوى المودال
             const title = `${subject} - ${b} - ${type}`;
 
+            // زر التحديث
+            const refreshBtn = `<button class="refresh-btn" onclick="refreshSubjectModal()"><i class="fa-solid fa-rotate"></i> تحديث</button>`;
+
+            let contentHTML = '';
             if (type === 'Data') {
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
@@ -1012,13 +996,49 @@
             modal.innerHTML = `
                 <div class="modal-content">
                     <button class="close-btn" onclick="this.closest('.modal').remove()">إغلاق</button>
-                    <h2 style="color:var(--gold-primary);">${title}</h2>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:0.5rem;">
+                        <h2 style="color:var(--gold-primary); margin:0;">${title}</h2>
+                        ${refreshBtn}
+                    </div>
                     <div style="margin-top:1rem;">${contentHTML}</div>
                 </div>
             `;
             document.body.appendChild(modal);
             modal.addEventListener('click', function(e) { if (e.target === this) this.remove(); });
             return false;
+        }
+
+        // دالة تحديث المودال الحالي
+        async function refreshSubjectModal() {
+            const modal = document.getElementById('dynamicSubjectModal');
+            if (!modal) return;
+            const { subject, b, type } = currentSubjectModal;
+            if (!subject || !b || !type) return;
+
+            // إعادة بناء المحتوى
+            let contentHTML = '';
+            if (type === 'Data') {
+                contentHTML = `
+                    <div style="margin-bottom:1rem;">
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'application/pdf')}
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'audio/mpeg,application/pdf')}
+                    </div>
+                `;
+            } else {
+                const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
+                const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
+                contentHTML = `
+                    <div style="margin-bottom:1rem;">
+                        ${await renderSubjectFileSection(subject, b, type, null, label, icon, 'application/pdf')}
+                    </div>
+                `;
+            }
+
+            const contentDiv = modal.querySelector('.modal-content > div:last-child');
+            if (contentDiv) {
+                contentDiv.innerHTML = contentHTML;
+            }
         }
 
         async function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, acceptTypes) {
@@ -1111,10 +1131,8 @@
                         await saveSubjectFiles(subject, bBlock, type, subType, existing);
                         input.value = '';
                         alert(`تم رفع ${total} ملف بنجاح.`);
-                        // إعادة فتح المودال
-                        const modal = document.getElementById('dynamicSubjectModal');
-                        if (modal) modal.remove();
-                        await handleIconClick(subject, bBlock, type);
+                        // تحديث المودال الحالي
+                        await refreshSubjectModal();
                     }
                 };
                 reader.onerror = function() {
@@ -1136,9 +1154,7 @@
             if (index >= 0 && index < files.length) {
                 files.splice(index, 1);
                 await saveSubjectFiles(subject, bBlock, type, subType, files);
-                const modal = document.getElementById('dynamicSubjectModal');
-                if (modal) modal.remove();
-                await handleIconClick(subject, bBlock, type);
+                await refreshSubjectModal();
             }
         }
 
@@ -1183,15 +1199,20 @@
         }
 
         // ============================================================
-        // ===== دوال البورتفوليو (مع async/await) =====
+        // ===== دوال البورتفوليو (مع زر تحديث) =====
         // ============================================================
         async function openPortfolioBlock(blockName) {
+            currentPortfolioBlock = blockName;
             const modal = document.getElementById('portfolioModal');
             const title = document.getElementById('portfolioTitle');
             const content = document.getElementById('portfolioContent');
 
             title.innerText = `تفاصيل Portfolio - ${blockName}`;
+            await renderPortfolioContent(blockName, content);
+            modal.style.display = 'flex';
+        }
 
+        async function renderPortfolioContent(blockName, content) {
             const emptyFile = await loadPortfolioData(blockName, 'general_empty');
             const filledFile = await loadPortfolioData(blockName, 'general_filled');
             const unsolvedFiles = await loadPortfolioData(blockName, 'formative_unsolved') || [];
@@ -1308,7 +1329,13 @@
             `;
 
             content.innerHTML = html;
-            modal.style.display = 'flex';
+        }
+
+        // دالة تحديث البورتفوليو
+        async function refreshPortfolio() {
+            if (!currentPortfolioBlock) return;
+            const content = document.getElementById('portfolioContent');
+            await renderPortfolioContent(currentPortfolioBlock, content);
         }
 
         // ===== دوال رفع البورتفوليو =====
@@ -1324,7 +1351,7 @@
                 const key = (type === 'empty') ? 'general_empty' : 'general_filled';
                 await savePortfolioData(block, key, { name: file.name, data: e.target.result });
                 alert('تم رفع الملف بنجاح.');
-                await openPortfolioBlock(block);
+                await refreshPortfolio();
             };
             reader.onerror = function() { alert('حدث خطأ أثناء قراءة الملف.'); };
             reader.readAsDataURL(file);
@@ -1351,7 +1378,7 @@
                     if (loaded === total) {
                         await savePortfolioData(block, key, existing);
                         alert(`تم رفع ${total} ملف بنجاح.`);
-                        await openPortfolioBlock(block);
+                        await refreshPortfolio();
                     }
                 };
                 reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
@@ -1380,7 +1407,7 @@
                     if (loaded === total) {
                         await savePortfolioData(block, 'incision', existing);
                         alert(`تم رفع ${total} ملف بنجاح.`);
-                        await openPortfolioBlock(block);
+                        await refreshPortfolio();
                     }
                 };
                 reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
@@ -1403,7 +1430,7 @@
                     await savePortfolioData(block, type, data);
                 }
             }
-            await openPortfolioBlock(block);
+            await refreshPortfolio();
         }
 
         // ============================================================
