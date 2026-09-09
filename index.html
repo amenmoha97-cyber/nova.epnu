@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ===== المتغيرات العامة ===== */
+        /* ===== جميع الأنماط كما هي دون تغيير ===== */
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -27,7 +27,6 @@
             --font-english: 'Poppins', sans-serif;
         }
 
-        /* ===== الوضع الفاتح ===== */
         [data-theme="light"] {
             --bg-black: #F7F4EE;
             --card-black: #FFFCF7;
@@ -390,7 +389,6 @@
             width: 100%;
         }
 
-        /* ===== تبويبات التنقل ===== */
         .nav-tabs {
             display: flex;
             gap: 12px;
@@ -435,7 +433,6 @@
             box-shadow: 0 4px 20px rgba(184, 138, 42, 0.25);
         }
 
-        /* ===== عنوان القسم ===== */
         .section-title {
             color: var(--gold-primary);
             margin-bottom: 1.5rem;
@@ -503,7 +500,6 @@
             margin-bottom: 3rem;
         }
 
-        /* ===== الصفحة الرئيسية ===== */
         .home-credit {
             text-align: center;
             font-size: 0.9rem;
@@ -518,7 +514,6 @@
             color: #B58A2A;
         }
 
-        /* ===== كاروسيل (Fade Effect - سلس) ===== */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -627,14 +622,12 @@
             border-color: #B58A2A;
         }
 
-        /* ===== تبويب أخرى ===== */
         .other-tools {
             display: flex;
             flex-direction: column;
             gap: 2rem;
         }
 
-        /* ===== حاسبة التقدير ===== */
         .gpa-calculator {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -741,7 +734,6 @@
         .gpa-result .result-value.pass { color: #E67E22; }
         .gpa-result .result-value.fail { color: var(--error-red); }
 
-        /* ===== عداد تنازلي ===== */
         .countdown-section {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -840,7 +832,6 @@
             background: #8C691F;
         }
 
-        /* ===== To-Do List ===== */
         .todo-section {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
@@ -1006,7 +997,6 @@
             font-size: 2rem;
         }
 
-        /* ===== المواد الأساسية ===== */
         #coreSection .grid-container {
             grid-template-columns: repeat(5, 1fr);
         }
@@ -1064,7 +1054,6 @@
             font-weight: 700;
         }
 
-        /* ===== تفاصيل المادة ===== */
         #subjectDetailSection .grid-container {
             grid-template-columns: repeat(3, 1fr);
         }
@@ -1160,7 +1149,6 @@
             color: #FFFCF7;
         }
 
-        /* ===== المواد الإضافية (تبويبات) ===== */
         .extra-tabs {
             display: flex;
             gap: 12px;
@@ -1215,25 +1203,20 @@
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         }
 
-        /* ===== البورتفوليو ===== */
         #portfolioSection .grid-container {
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
-
         #portfolioSection .subject-card {
             aspect-ratio: 1 / 1;
             padding: 1rem 0.5rem;
         }
-
         #portfolioSection .subject-card i {
             font-size: 2.2rem;
         }
-
         #portfolioSection .subject-card h3 {
             font-size: 0.85rem;
         }
 
-        /* ===== مودالات ===== */
         .modal {
             display: none;
             position: fixed;
@@ -1549,7 +1532,22 @@
             padding: 0.3rem 0;
         }
 
-        /* ===== استجابة ===== */
+        .portfolio-sub-section {
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 1rem;
+            background: var(--beige-card);
+        }
+        [data-theme="light"] .portfolio-sub-section {
+            background: #F7F4EE;
+        }
+        .portfolio-sub-section h5 {
+            color: var(--gold-primary);
+            margin-bottom: 0.5rem;
+        }
+
         @media (max-width: 1024px) {
             #coreSection .grid-container {
                 grid-template-columns: repeat(4, 1fr);
@@ -1718,6 +1716,9 @@
             .todo-list li .todo-delete {
                 order: 3;
             }
+            .portfolio-sub-section {
+                min-width: 100%;
+            }
         }
 
         @media (min-width: 768px) and (max-width: 1023px) {
@@ -1822,8 +1823,6 @@
 
         <!-- ===== الصفحة الرئيسية ===== -->
         <div class="section-content active" id="homeSection">
-            
-            <!-- كاروسيل -->
             <div class="carousel-container" id="mainCarousel">
                 <div class="carousel-slides" id="carouselSlides">
                     <div class="carousel-slide active" data-index="0">
@@ -1857,18 +1856,14 @@
                 </div>
                 <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
-
             <div class="home-credit">
                 <strong>created by Dr.Amin</strong> — FOM-EPNU
             </div>
-
-            <!-- إحصائيات -->
             <div class="stats-bar" id="statsBar">
                 <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
                 <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
                 <div class="stat-item"><i class="fa-solid fa-clock"></i> وقت الجلسة: <strong id="sessionTime">00:00</strong></div>
             </div>
-
             <div class="contact-btn-wrapper">
                 <a href="https://wa.me/201098919599" target="_blank" class="contact-btn">
                     <i class="fa-brands fa-whatsapp"></i>
@@ -1883,9 +1878,7 @@
                 <span>المواد الأساسية (Core Subjects)</span>
                 <input type="text" class="search-bar" id="coreSearch" placeholder="🔍 بحث في المواد..." oninput="filterCoreSubjects(this.value)">
             </h2>
-            <div class="grid-container" id="coreGrid">
-                <!-- يتم إنشاؤها بواسطة JavaScript -->
-            </div>
+            <div class="grid-container" id="coreGrid"></div>
         </div>
 
         <!-- 3. تفاصيل المادة -->
@@ -1907,7 +1900,6 @@
                     <i class="fa-regular fa-circle-xmark"></i> مواد لا تضاف للمجموع
                 </button>
             </div>
-
             <div class="extra-tab-content active" id="tab1">
                 <div class="grid-container">
                     <div class="subject-card" onclick="openExtraContent('Skill Lab 1')">
@@ -1924,7 +1916,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="extra-tab-content" id="tab2">
                 <div class="grid-container">
                     <div class="subject-card" onclick="openExtraContent('Field 1')">
@@ -1971,7 +1962,6 @@
         <!-- 6. تبويب "أخرى" -->
         <div class="section-content" id="otherSection">
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
-            
             <div class="other-tools">
                 <!-- حاسبة التقدير -->
                 <div class="gpa-calculator" id="gpaCalculator">
@@ -2016,7 +2006,6 @@
                         </div>
                     </div>
                     <button class="btn-gold" onclick="calculateGPA()" style="width: auto; padding: 0.7rem 3rem; margin: 0 auto; display: block;">احسب النسبة</button>
-                    
                     <div class="gpa-result" id="gpaResult">
                         <div class="result-row">
                             <span class="result-label">المجموع الكلي</span>
@@ -2064,12 +2053,32 @@
         </div>
     </div>
 
+    <!-- ===== مودال البورتفوليو (سيتم ملؤه ديناميكيًا) ===== -->
+    <div class="modal" id="portfolioModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('portfolioModal')">إغلاق</button>
+            <h2 id="portfolioTitle"></h2>
+            <div id="portfolioContent" style="margin-top:1rem;"></div>
+        </div>
+    </div>
+
+    <!-- ===== مودال المواد الإضافية ===== -->
+    <div class="modal" id="extraModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('extraModal')">إغلاق</button>
+            <h2 id="extraTitle" style="color:var(--gold-primary);"></h2>
+            <div id="extraContentContainer" style="margin-top:1rem;"></div>
+        </div>
+    </div>
+
     <footer>
         <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
     </footer>
 
     <script>
-        // ===== بيانات المواد الأساسية مع مسارات الصور المحلية =====
+        // ======================================================
+        // ===== بيانات المواد الأساسية =====
+        // ======================================================
         const coreSubjects = [
             { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
             { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
@@ -2099,11 +2108,9 @@
         let isDeveloper = false;
 
         // ======================================================
-        // ===== دوال التخزين الجديدة للمواد الأساسية =====
+        // ===== دوال تخزين المواد الأساسية (كما هي) =====
         // ======================================================
         function getSubjectStorageKey(subject, bBlock, type, subType = null) {
-            // نوع: Data, From Doctor, Past Exams
-            // subType: Lectures, Prelabs, Records (فقط في حالة Data)
             let key = `subject_${subject}_${bBlock}_${type}`;
             if (subType) key += `_${subType}`;
             return key;
@@ -2111,15 +2118,32 @@
 
         function loadSubjectFiles(subject, bBlock, type, subType = null) {
             const key = getSubjectStorageKey(subject, bBlock, type, subType);
-            try {
-                return JSON.parse(localStorage.getItem(key)) || [];
-            } catch {
-                return [];
-            }
+            try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
         }
 
         function saveSubjectFiles(subject, bBlock, type, subType = null, files) {
             const key = getSubjectStorageKey(subject, bBlock, type, subType);
+            localStorage.setItem(key, JSON.stringify(files));
+        }
+
+        // ======================================================
+        // ===== دوال البورتفوليو الجديدة (وفقًا للطلب) =====
+        // ======================================================
+        function getPortfolioKey(block, section, subSection = null) {
+            // section: 'general', 'incision', 'formative'
+            // subSection: 'solved', 'unsolved' (لـ formative فقط)
+            let key = `portfolio_${block}_${section}`;
+            if (subSection) key += `_${subSection}`;
+            return key;
+        }
+
+        function loadPortfolioFiles(block, section, subSection = null) {
+            const key = getPortfolioKey(block, section, subSection);
+            try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; }
+        }
+
+        function savePortfolioFiles(block, section, subSection = null, files) {
+            const key = getPortfolioKey(block, section, subSection);
             localStorage.setItem(key, JSON.stringify(files));
         }
 
@@ -2174,7 +2198,7 @@
         }
 
         // ======================================================
-        // ===== GPA CALCULATOR =====
+        // ===== GPA =====
         // ======================================================
         function calculateGPA() {
             const research = parseFloat(document.getElementById('gpaResearch').value) || 0;
@@ -2206,7 +2230,6 @@
             const gradeEl = document.getElementById('gpaGrade');
             gradeEl.innerText = grade;
             gradeEl.className = `result-value ${gradeClass}`;
-
             document.getElementById('gpaResult').style.display = 'block';
         }
 
@@ -2263,7 +2286,7 @@
         }
 
         // ======================================================
-        // ===== TO-DO LIST =====
+        // ===== TO-DO =====
         // ======================================================
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
@@ -2308,7 +2331,7 @@
         }
 
         // ======================================================
-        // ===== EXTRA TABS =====
+        // ===== EXTRA =====
         // ======================================================
         function switchExtraTab(tabId, btn) {
             document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
@@ -2333,7 +2356,7 @@
         }
 
         // ======================================================
-        // ===== عرض المواد الأساسية =====
+        // ===== المواد الأساسية =====
         // ======================================================
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
@@ -2397,10 +2420,9 @@
         }
 
         // ======================================================
-        // ===== أيقونات B (المودال الجديد مع الأقسام المنفصلة) =====
+        // ===== أيقونات B (للمواد الأساسية) =====
         // ======================================================
         function handleIconClick(subject, b, type) {
-            // إغلاق أي مودال مفتوح
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
 
             const modal = document.createElement('div');
@@ -2412,7 +2434,6 @@
             const title = `${subject} - ${b} - ${type}`;
 
             if (type === 'Data') {
-                // ثلاثة أقسام منفصلة: Lectures, Prelabs, Records
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
                         ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
@@ -2421,7 +2442,6 @@
                     </div>
                 `;
             } else {
-                // From Doctor أو Past Exams (قسم واحد)
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
                 const accept = 'application/pdf';
@@ -2444,7 +2464,7 @@
             return false;
         }
 
-        // ===== دالة مساعدة لعرض قسم ملفات واحد مع رفع وحذف =====
+        // دالة مساعدة لعرض قسم ملفات في المواد الأساسية
         function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, acceptTypes) {
             const files = loadSubjectFiles(subject, bBlock, type, subType);
             const isDev = isDeveloper;
@@ -2489,7 +2509,7 @@
             `;
         }
 
-        // ===== رفع الملفات (للمطور فقط) =====
+        // رفع وحذف للمواد الأساسية (للمطور فقط)
         function handleSubjectFileUpload(subject, bBlock, type, subType, input) {
             if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
             if (input.files.length === 0) return;
@@ -2500,7 +2520,6 @@
 
             for (let i = 0; i < total; i++) {
                 const file = input.files[i];
-                // التحقق من نوع الملف (للمقاطع الصوتية أو PDF)
                 if (type === 'Data' && subType === 'Records') {
                     if (!file.type.startsWith('audio/') && file.type !== 'application/pdf') {
                         alert(`الملف "${file.name}" غير مدعوم في Records. يُسمح فقط بـ MP3 و PDF.`);
@@ -2524,7 +2543,6 @@
                     if (loaded === total) {
                         saveSubjectFiles(subject, bBlock, type, subType, existing);
                         input.value = '';
-                        // إعادة فتح المودال لتحديث العرض
                         const modal = document.getElementById('dynamicSubjectModal');
                         if (modal) modal.remove();
                         handleIconClick(subject, bBlock, type);
@@ -2532,13 +2550,9 @@
                 };
                 reader.readAsDataURL(file);
             }
-            // في حال كان العدد صفر
-            if (total === 0) {
-                input.value = '';
-            }
+            if (total === 0) input.value = '';
         }
 
-        // ===== حذف ملف (للمطور فقط) =====
         function deleteSubjectFile(subject, bBlock, type, subType, index) {
             if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
             if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
@@ -2547,20 +2561,162 @@
             if (index >= 0 && index < files.length) {
                 files.splice(index, 1);
                 saveSubjectFiles(subject, bBlock, type, subType, files);
-                // إعادة فتح المودال لتحديث العرض
                 const modal = document.getElementById('dynamicSubjectModal');
                 if (modal) modal.remove();
                 handleIconClick(subject, bBlock, type);
             }
         }
 
-        // ===== العودة للمواد الأساسية =====
         function backToCore() {
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             document.getElementById('coreSection').classList.add('active');
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const coreTab = document.querySelector('.tab-btn[onclick*="core"]');
             if (coreTab) coreTab.classList.add('active');
+        }
+
+        // ======================================================
+        // ===== فتح البورتفوليو (بصلاحيات المطور فقط للرفع) =====
+        // ======================================================
+        function openPortfolioBlock(blockName) {
+            const title = document.getElementById('portfolioTitle');
+            const content = document.getElementById('portfolioContent');
+            title.innerText = `تفاصيل Portfolio - ${blockName}`;
+            const isDev = isDeveloper;
+
+            // تحميل الملفات من كل قسم
+            const generalFiles = loadPortfolioFiles(blockName, 'general');
+            const incisionFiles = loadPortfolioFiles(blockName, 'incision');
+            const formativeSolved = loadPortfolioFiles(blockName, 'formative', 'solved');
+            const formativeUnsolved = loadPortfolioFiles(blockName, 'formative', 'unsolved');
+
+            // دالة لعرض قائمة الملفات مع أزرار فتح وتنزيل للجميع، وحذف للمطور فقط
+            function renderFileList(files, section, subSection = null) {
+                if (files.length === 0) {
+                    return '<div class="no-files-msg">لا توجد ملفات</div>';
+                }
+                return files.map((f, idx) => {
+                    const fileIcon = f.name.toLowerCase().endsWith('.pdf') ? 'fa-file-pdf' : 'fa-file';
+                    return `
+                        <div class="file-item">
+                            <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${f.name}</span>
+                            <span class="file-actions">
+                                <a href="${f.data}" target="_blank" title="فتح"><i class="fa-solid fa-eye"></i> فتح</a>
+                                <a href="${f.data}" download="${f.name}" title="تنزيل"><i class="fa-solid fa-download"></i> تنزيل</a>
+                                ${isDev ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', '${section}', '${subSection || ''}', ${idx})">✖ حذف</button>` : ''}
+                            </span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // دالة لعرض قسم مع زر رفع للمطور فقط
+            function renderPortfolioSection(title, icon, files, section, subSection = null, accept = '.pdf') {
+                const uploadHTML = isDev ? `
+                    <div style="margin-top:0.8rem;">
+                        <input type="file" accept="${accept}" id="portfolioUpload_${blockName}_${section}_${subSection || 'main'}" style="display:none;" multiple onchange="handlePortfolioUpload('${blockName}', '${section}', '${subSection || ''}', this)">
+                        <button class="upload-btn" onclick="document.getElementById('portfolioUpload_${blockName}_${section}_${subSection || 'main'}').click();">
+                            <i class="fa-solid fa-upload"></i> رفع ملفات
+                        </button>
+                    </div>
+                ` : '';
+
+                return `
+                    <div class="block-card" style="margin-bottom:1.5rem;">
+                        <div class="file-section-title"><i class="fa-solid ${icon}"></i> ${title}</div>
+                        ${renderFileList(files, section, subSection)}
+                        ${uploadHTML}
+                    </div>
+                `;
+            }
+
+            let html = '';
+
+            // 1. شكل البورتفوليو (قسم واحد)
+            html += renderPortfolioSection('📄 شكل البورتفوليو', 'fa-file-pdf', generalFiles, 'general');
+
+            // 2. أسئلة Incision
+            html += renderPortfolioSection('🔪 أسئلة Incision', 'fa-scissors', incisionFiles, 'incision');
+
+            // 3. أسئلة Formative (قسمان فرعيان: محلول وبدون حل)
+            html += `
+                <div class="block-card" style="margin-bottom:1.5rem;">
+                    <div class="file-section-title"><i class="fa-solid fa-question-circle"></i> أسئلة Formative</div>
+                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
+                        <div class="portfolio-sub-section">
+                            <h5>✅ محلول</h5>
+                            ${renderFileList(formativeSolved, 'formative', 'solved')}
+                            ${isDev ? `
+                                <div style="margin-top:0.8rem;">
+                                    <input type="file" accept=".pdf" id="portfolioUpload_${blockName}_formative_solved" style="display:none;" multiple onchange="handlePortfolioUpload('${blockName}', 'formative', 'solved', this)">
+                                    <button class="upload-btn" onclick="document.getElementById('portfolioUpload_${blockName}_formative_solved').click();">
+                                        <i class="fa-solid fa-upload"></i> رفع ملفات
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="portfolio-sub-section">
+                            <h5>📄 بدون حل</h5>
+                            ${renderFileList(formativeUnsolved, 'formative', 'unsolved')}
+                            ${isDev ? `
+                                <div style="margin-top:0.8rem;">
+                                    <input type="file" accept=".pdf" id="portfolioUpload_${blockName}_formative_unsolved" style="display:none;" multiple onchange="handlePortfolioUpload('${blockName}', 'formative', 'unsolved', this)">
+                                    <button class="upload-btn" onclick="document.getElementById('portfolioUpload_${blockName}_formative_unsolved').click();">
+                                        <i class="fa-solid fa-upload"></i> رفع ملفات
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            content.innerHTML = html;
+            document.getElementById('portfolioModal').style.display = 'flex';
+        }
+
+        // ===== دوال رفع وحذف البورتفوليو (للمطور فقط) =====
+        function handlePortfolioUpload(block, section, subSection, input) {
+            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
+            if (input.files.length === 0) return;
+
+            const existing = loadPortfolioFiles(block, section, subSection || null);
+            let loaded = 0;
+            const total = input.files.length;
+
+            for (let i = 0; i < total; i++) {
+                const file = input.files[i];
+                if (file.type !== 'application/pdf') {
+                    alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
+                    loaded++;
+                    if (loaded === total) input.value = '';
+                    continue;
+                }
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    existing.push({ name: file.name, data: e.target.result });
+                    loaded++;
+                    if (loaded === total) {
+                        savePortfolioFiles(block, section, subSection || null, existing);
+                        input.value = '';
+                        openPortfolioBlock(block);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+            if (total === 0) input.value = '';
+        }
+
+        function deletePortfolioFile(block, section, subSection, index) {
+            if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
+            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
+
+            const files = loadPortfolioFiles(block, section, subSection || null);
+            if (index >= 0 && index < files.length) {
+                files.splice(index, 1);
+                savePortfolioFiles(block, section, subSection || null, files);
+                openPortfolioBlock(block);
+            }
         }
 
         // ======================================================
@@ -2596,252 +2752,13 @@
             }, 300);
         }
 
-        // ======================================================
-        // ===== دوال البورتفوليو (مثل السابق مع صلاحيات المطور) =====
-        // ======================================================
-        function getPortfolioKey(block, type) {
-            return `portfolio_${block}_${type}`;
-        }
-
-        function loadPortfolioData(block, type) {
-            const key = getPortfolioKey(block, type);
-            try {
-                return JSON.parse(localStorage.getItem(key)) || (type === 'general' ? null : []);
-            } catch {
-                return type === 'general' ? null : [];
-            }
-        }
-
-        function savePortfolioData(block, type, data) {
-            const key = getPortfolioKey(block, type);
-            localStorage.setItem(key, JSON.stringify(data));
-        }
-
-        function openPortfolioBlock(blockName) {
-            const title = document.getElementById('portfolioTitle');
-            const content = document.getElementById('portfolioContent');
-            title.innerText = `تفاصيل Portfolio - ${blockName}`;
-
-            const generalFile = loadPortfolioData(blockName, 'general');
-            const unsolvedFiles = loadPortfolioData(blockName, 'formative_unsolved') || [];
-            const solvedFiles = loadPortfolioData(blockName, 'formative_solved') || [];
-            const incisionFiles = loadPortfolioData(blockName, 'incision') || [];
-
-            function renderFileList(files) {
-                if (files.length === 0) {
-                    return '<li class="no-files-msg">لا توجد ملفات</li>';
-                }
-                return files.map((f, idx) => `
-                    <li>
-                        <a href="${f.data}" download="${f.name}" class="file-link" target="_blank">
-                            <i class="fa-solid fa-file-pdf"></i> ${f.name}
-                        </a>
-                        <a href="${f.data}" download="${f.name}" class="download-btn" title="تحميل الملف">
-                            <i class="fa-solid fa-download"></i> تنزيل
-                        </a>
-                        ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', '${f.type || 'general'}', ${idx})">✖</button>` : ''}
-                    </li>
-                `).join('');
-            }
-
-            // تعديل لعرض أزرار الحذف في البورتفوليو
-            let html = '';
-
-            // General
-            html += `
-                <div class="block-card" style="margin-bottom:1.5rem;">
-                    <h4><i class="fa-regular fa-file-pdf"></i> الشكل العام</h4>
-                    <div style="margin-top:0.5rem;">
-                        ${generalFile ? `<a href="${generalFile.data}" download="${generalFile.name}" class="file-link" target="_blank"><i class="fa-solid fa-file-pdf"></i> ${generalFile.name}</a> ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', 'general', 0)">✖</button>` : ''}` : '<span class="no-files-msg">لا يوجد ملف مرفوع</span>'}
-                    </div>
-                    ${isDeveloper ? `
-                        <div class="portfolio-upload-area">
-                            <input type="file" accept=".pdf" id="generalFileInput" style="display:none;" onchange="handleGeneralUpload('${blockName}', this)">
-                            <button class="upload-btn" onclick="document.getElementById('generalFileInput').click();">رفع ملف PDF</button>
-                        </div>
-                    ` : ''}
-                    ${generalFile ? `<div style="margin-top:0.5rem;"><a href="${generalFile.data}" download="${generalFile.name}" class="download-btn"><i class="fa-solid fa-download"></i> تنزيل الملف</a></div>` : ''}
-                </div>
-            `;
-
-            // Formative
-            html += `
-                <div class="block-card" style="margin-bottom:1.5rem;">
-                    <h4><i class="fa-regular fa-file-lines"></i> أسئلة Formative</h4>
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>📄 بدون حل</h5>
-                            <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${unsolvedFiles.map((f, idx) => `
-                                    <li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold);">
-                                        <a href="${f.data}" download="${f.name}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
-                                        <span>
-                                            <a href="${f.data}" download="${f.name}" class="download-btn"><i class="fa-solid fa-download"></i></a>
-                                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', 'formative_unsolved', ${idx})">✖</button>` : ''}
-                                        </span>
-                                    </li>
-                                `).join('') || '<li class="no-files-msg">لا توجد ملفات</li>'}
-                            </ul>
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="unsolvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}', 'unsolved', this)">
-                                    <button class="upload-btn" onclick="document.getElementById('unsolvedInput_${blockName}').click();">رفع ملفات</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>✅ محلولة</h5>
-                            <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${solvedFiles.map((f, idx) => `
-                                    <li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold);">
-                                        <a href="${f.data}" download="${f.name}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
-                                        <span>
-                                            <a href="${f.data}" download="${f.name}" class="download-btn"><i class="fa-solid fa-download"></i></a>
-                                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', 'formative_solved', ${idx})">✖</button>` : ''}
-                                        </span>
-                                    </li>
-                                `).join('') || '<li class="no-files-msg">لا توجد ملفات</li>'}
-                            </ul>
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="solvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}', 'solved', this)">
-                                    <button class="upload-btn" onclick="document.getElementById('solvedInput_${blockName}').click();">رفع ملفات</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // Incision
-            html += `
-                <div class="block-card" style="margin-bottom:0;">
-                    <h4><i class="fa-solid fa-scissors"></i> أسئلة incision</h4>
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>📂 ملفات incision</h5>
-                            <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${incisionFiles.map((f, idx) => `
-                                    <li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold);">
-                                        <a href="${f.data}" download="${f.name}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
-                                        <span>
-                                            <a href="${f.data}" download="${f.name}" class="download-btn"><i class="fa-solid fa-download"></i></a>
-                                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', 'incision', ${idx})">✖</button>` : ''}
-                                        </span>
-                                    </li>
-                                `).join('') || '<li class="no-files-msg">لا توجد ملفات</li>'}
-                            </ul>
-                            ${isDeveloper ? `
-                                <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="incisionInput_${blockName}" style="display:none;" multiple onchange="handleIncisionUpload('${blockName}', this)">
-                                    <button class="upload-btn" onclick="document.getElementById('incisionInput_${blockName}').click();">رفع ملفات</button>
-                                </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            content.innerHTML = html;
-            document.getElementById('portfolioModal').style.display = 'flex';
-        }
-
-        // دوال رفع وحذف البورتفوليو (للمطور فقط)
-        function handleGeneralUpload(block, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (input.files.length === 0) return;
-            const file = input.files[0];
-            if (file.type !== 'application/pdf') {
-                alert('يرجى رفع ملف PDF فقط.');
-                input.value = '';
-                return;
-            }
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                savePortfolioData(block, 'general', { name: file.name, data: e.target.result });
-                openPortfolioBlock(block);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function handleFormativeUpload(block, type, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (input.files.length === 0) return;
-            const files = input.files;
-            const key = type === 'unsolved' ? 'formative_unsolved' : 'formative_solved';
-            const existing = loadPortfolioData(block, key) || [];
-
-            let loaded = 0;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.type !== 'application/pdf') {
-                    alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
-                    continue;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    existing.push({ name: file.name, data: e.target.result, type: key });
-                    loaded++;
-                    if (loaded === files.length) {
-                        savePortfolioData(block, key, existing);
-                        openPortfolioBlock(block);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-            input.value = '';
-        }
-
-        function handleIncisionUpload(block, input) {
-            if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (input.files.length === 0) return;
-            const files = input.files;
-            const existing = loadPortfolioData(block, 'incision') || [];
-
-            let loaded = 0;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.type !== 'application/pdf') {
-                    alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
-                    continue;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    existing.push({ name: file.name, data: e.target.result, type: 'incision' });
-                    loaded++;
-                    if (loaded === files.length) {
-                        savePortfolioData(block, 'incision', existing);
-                        openPortfolioBlock(block);
-                    }
-                };
-                reader.readAsDataURL(file);
-            }
-            input.value = '';
-        }
-
-        function deletePortfolioFile(block, type, index) {
-            if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
-            if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
-
-            if (type === 'general') {
-                savePortfolioData(block, 'general', null);
-            } else {
-                const data = loadPortfolioData(block, type);
-                if (Array.isArray(data) && index >= 0 && index < data.length) {
-                    data.splice(index, 1);
-                    savePortfolioData(block, type, data);
-                }
-            }
-            openPortfolioBlock(block);
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
 
         // ======================================================
         // ===== نظام تسجيل الدخول =====
         // ======================================================
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
         window.onload = function() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
