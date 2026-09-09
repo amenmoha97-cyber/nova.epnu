@@ -4,33 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NOVA - Academic Portal</title>
-    
-    <!-- أيقونة المتصفح -->
     <link rel="icon" type="image/jpeg" href="logo.jpg">
-    
-    <!-- الخطوط والأيقونات -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
+        /* ===== المتغيرات العامة ===== */
         :root {
-            --bg-black: #080808;           
-            --card-black: #121110;         
-            --gold-primary: #D4AF37;       
-            --gold-secondary: #C5A059;     
-            --beige-main: #F5EBE0;         
-            --beige-card: #1C1917;         
-            --beige-light: #E8D8C8;        
+            --bg-black: #080808;
+            --card-black: #121110;
+            --gold-primary: #D4AF37;
+            --gold-secondary: #C5A059;
+            --beige-main: #F5EBE0;
+            --beige-card: #1C1917;
+            --beige-light: #E8D8C8;
             --border-gold: rgba(212, 175, 55, 0.35);
             --error-red: #E74C3C;
+            --success-green: #2ECC71;
             --shadow-gold: rgba(212, 175, 55, 0.2);
+            --transition-speed: 0.4s;
+            --font-arabic: 'Cairo', sans-serif;
+            --font-english: 'Poppins', sans-serif;
+        }
+
+        /* ===== الوضع الفاتح ===== */
+        [data-theme="light"] {
+            --bg-black: #F7F4EE;
+            --card-black: #FFFCF7;
+            --beige-main: #29251F;
+            --beige-card: #FFFCF7;
+            --beige-light: #6F685D;
+            --border-gold: #E4DCCF;
+            --gold-primary: #B58A2A;
+            --gold-secondary: #8C691F;
+            --shadow-gold: rgba(184, 138, 42, 0.2);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Cairo', 'Poppins', sans-serif;
+            font-family: var(--font-arabic), var(--font-english);
         }
 
         body {
@@ -39,65 +53,111 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: background-color var(--transition-speed), color var(--transition-speed);
         }
 
-        /* نافذة تسجيل الدخول */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            animation: pulseBg 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBg {
+            0% { opacity: 0.6; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* ===== نافذة تسجيل الدخول ===== */
         .auth-overlay {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 5, 5, 0.96);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 5, 0.97);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             padding: 1rem;
             overflow-y: auto;
+            backdrop-filter: blur(8px);
+        }
+        [data-theme="light"] .auth-overlay {
+            background: rgba(247, 244, 238, 0.97);
         }
 
         .auth-box {
             background: var(--card-black);
             border: 1.5px solid var(--gold-primary);
-            padding: 2.2rem;
-            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            border-radius: 28px;
             width: 100%;
-            max-width: 460px;
+            max-width: 480px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.25);
+            animation: fadeUp 0.8s ease;
+            transition: background var(--transition-speed);
+        }
+        [data-theme="light"] .auth-box {
+            border-color: #B58A2A;
+            box-shadow: 0 0 40px rgba(184, 138, 42, 0.15);
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .auth-logo {
             width: 110px;
             height: 110px;
-            border-radius: 18px;
+            border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--gold-primary);
+            border: 3px solid var(--gold-primary);
             margin-bottom: 1rem;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            transition: transform 0.3s;
+        }
+        .auth-logo:hover {
+            transform: scale(1.05) rotate(-3deg);
         }
 
         .auth-box h2 {
             color: var(--gold-primary);
-            font-size: 2.3rem;
-            letter-spacing: 2px;
-            font-family: 'Poppins', sans-serif;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            font-family: var(--font-english);
             font-weight: 700;
+        }
+        [data-theme="light"] .auth-box h2 {
+            color: #B58A2A;
         }
 
         .credits-text {
             color: var(--beige-light);
-            font-size: 0.85rem;
-            margin-bottom: 1.5rem;
-            font-family: 'Poppins', sans-serif;
-            line-height: 1.5;
-            opacity: 0.95;
+            font-size: 0.9rem;
+            margin-bottom: 1.8rem;
+            font-family: var(--font-english);
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        .credits-text b {
+            color: var(--gold-primary);
         }
 
         .auth-tabs {
             display: flex;
             gap: 10px;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.8rem;
             border-bottom: 1px solid var(--border-gold);
-            padding-bottom: 8px;
+            padding-bottom: 10px;
         }
 
         .auth-tab-btn {
@@ -105,77 +165,105 @@
             background: transparent;
             border: none;
             color: var(--beige-light);
-            padding: 0.6rem;
-            font-size: 0.95rem;
-            font-weight: bold;
+            padding: 0.7rem;
+            font-size: 1rem;
+            font-weight: 700;
             cursor: pointer;
-            border-bottom: 2px solid transparent;
+            border-bottom: 3px solid transparent;
             transition: 0.3s;
+            font-family: var(--font-english);
         }
-
         .auth-tab-btn.active {
             color: var(--gold-primary);
             border-bottom-color: var(--gold-primary);
         }
 
         .input-group {
-            margin-bottom: 1.1rem;
+            margin-bottom: 1.2rem;
             text-align: right;
         }
-
         .input-group label {
             display: block;
             margin-bottom: 0.4rem;
             color: var(--beige-main);
-            font-size: 0.88rem;
+            font-size: 0.9rem;
+            font-weight: 600;
         }
-
         .input-group input {
             width: 100%;
-            padding: 0.8rem;
-            border-radius: 8px;
-            border: 1px solid var(--border-gold);
-            background: #181614;
+            padding: 0.85rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 22, 20, 0.6);
             color: var(--beige-main);
-            font-size: 0.95rem;
+            font-size: 1rem;
             outline: none;
             transition: 0.3s;
         }
-
+        [data-theme="light"] .input-group input {
+            background: rgba(255, 252, 247, 0.8);
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
         .input-group input:focus {
             border-color: var(--gold-primary);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            background: rgba(24, 22, 20, 0.9);
+        }
+        [data-theme="light"] .input-group input:focus {
+            border-color: #B58A2A;
+            box-shadow: 0 0 15px rgba(184, 138, 42, 0.2);
+            background: #FFFCF7;
         }
 
         .btn-gold {
             width: 100%;
-            padding: 0.85rem;
+            padding: 0.9rem;
             background: var(--gold-primary);
             color: #0A0A0A;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 1.05rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.3s;
             margin-top: 0.5rem;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
         }
-
+        [data-theme="light"] .btn-gold {
+            background: #B58A2A;
+            color: #FFFCF7;
+            box-shadow: 0 6px 20px rgba(184, 138, 42, 0.25);
+        }
         .btn-gold:hover {
             background: var(--gold-secondary);
             color: #FFF;
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+        [data-theme="light"] .btn-gold:hover {
+            background: #8C691F;
+            color: #FFFCF7;
+            box-shadow: 0 10px 30px rgba(140, 105, 31, 0.4);
         }
 
         .alert-msg {
             color: var(--error-red);
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-top: 0.8rem;
             display: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: rgba(231, 76, 60, 0.1);
+            border: 1px solid var(--error-red);
+        }
+        .alert-msg.success {
+            color: var(--success-green);
+            border-color: var(--success-green);
+            background: rgba(46, 204, 113, 0.1);
         }
 
-        /* الهيدر العلوي */
+        /* ===== الهيدر ===== */
         header {
             background: var(--card-black);
             border-bottom: 1px solid var(--border-gold);
@@ -186,6 +274,11 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            backdrop-filter: blur(6px);
+            transition: background var(--transition-speed);
+        }
+        [data-theme="light"] header {
+            border-bottom-color: #E4DCCF;
         }
 
         .logo-container {
@@ -193,237 +286,760 @@
             align-items: center;
             gap: 14px;
         }
-
         .site-logo {
             width: 48px;
             height: 48px;
-            border-radius: 12px;
-            border: 1.5px solid var(--gold-primary);
+            border-radius: 14px;
+            border: 2px solid var(--gold-primary);
             object-fit: cover;
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
         }
-
+        [data-theme="light"] .site-logo {
+            border-color: #B58A2A;
+            box-shadow: 0 0 18px rgba(184, 138, 42, 0.1);
+        }
         .brand-title {
             color: var(--gold-primary);
-            font-size: 1.6rem;
-            font-family: 'Poppins', sans-serif;
+            font-size: 1.8rem;
+            font-family: var(--font-english);
             font-weight: 700;
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
+        }
+        [data-theme="light"] .brand-title {
+            color: #B58A2A;
         }
 
         .user-control {
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
-
         .user-info {
             font-size: 0.9rem;
             color: var(--beige-main);
-            background: #1C1917;
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
+            background: rgba(28, 25, 23, 0.8);
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
             border: 1px solid var(--border-gold);
+            backdrop-filter: blur(4px);
         }
-
+        [data-theme="light"] .user-info {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .theme-toggle {
+            background: transparent;
+            border: 1px solid var(--border-gold);
+            color: var(--gold-primary);
+            padding: 0.4rem 0.9rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.1rem;
+        }
+        .theme-toggle:hover {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+        }
+        [data-theme="light"] .theme-toggle {
+            border-color: #B58A2A;
+            color: #B58A2A;
+        }
+        [data-theme="light"] .theme-toggle:hover {
+            background: #B58A2A;
+            color: #FFFCF7;
+        }
         .logout-btn {
             background: transparent;
-            border: 1px solid var(--error-red);
+            border: 1.5px solid var(--error-red);
             color: var(--error-red);
-            padding: 0.4rem 0.9rem;
-            border-radius: 6px;
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             transition: 0.3s;
+            font-weight: 600;
         }
-
         .logout-btn:hover {
             background: var(--error-red);
             color: #fff;
+            transform: scale(1.05);
         }
 
-        /* الحاوية الرئيسية */
         .container {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 2rem auto;
-            padding: 0 1rem;
+            padding: 0 1.5rem;
             flex: 1;
+            width: 100%;
         }
 
+        /* ===== تبويبات التنقل ===== */
         .nav-tabs {
             display: flex;
             gap: 12px;
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--border-gold);
-            padding-bottom: 12px;
+            padding-bottom: 14px;
             overflow-x: auto;
+            flex-wrap: wrap;
         }
-
         .tab-btn {
-            background: #181614;
+            background: rgba(24, 22, 20, 0.7);
             border: 1px solid var(--border-gold);
             color: var(--beige-main);
-            padding: 0.77rem 1.7rem;
-            border-radius: 10px;
+            padding: 0.7rem 1.8rem;
+            border-radius: 40px;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
             transition: 0.3s;
             white-space: nowrap;
+            font-size: 0.95rem;
+            backdrop-filter: blur(4px);
         }
-
-        .tab-btn.active, .tab-btn:hover {
+        [data-theme="light"] .tab-btn {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .tab-btn i { margin-left: 8px; }
+        .tab-btn.active,
+        .tab-btn:hover {
             background: var(--gold-primary);
             color: #0A0A0A;
             border-color: var(--gold-primary);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+        [data-theme="light"] .tab-btn.active,
+        [data-theme="light"] .tab-btn:hover {
+            background: #B58A2A;
+            color: #FFFCF7;
+            border-color: #B58A2A;
+            box-shadow: 0 4px 20px rgba(184, 138, 42, 0.25);
         }
 
+        /* ===== عنوان القسم ===== */
         .section-title {
             color: var(--gold-primary);
             margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            border-right: 4px solid var(--gold-primary);
-            padding-right: 12px;
+            font-size: 1.7rem;
+            border-right: 5px solid var(--gold-primary);
+            padding-right: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
+            gap: 12px;
+            font-weight: 700;
         }
-
+        [data-theme="light"] .section-title {
+            color: #29251F;
+            border-right-color: #B58A2A;
+        }
         .section-title .back-btn {
             background: var(--gold-primary);
             color: #0A0A0A;
             border: none;
-            padding: 0.4rem 1.2rem;
-            border-radius: 8px;
-            font-weight: bold;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 700;
             cursor: pointer;
             transition: 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
-
+        [data-theme="light"] .section-title .back-btn {
+            background: #B58A2A;
+            color: #FFFCF7;
+        }
         .section-title .back-btn:hover {
             background: var(--gold-secondary);
             color: #fff;
+            transform: scale(1.05);
         }
 
-        /* الشبكة العامة */
+        .search-bar {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 40px;
+            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 22, 20, 0.6);
+            color: var(--beige-main);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(4px);
+        }
+        [data-theme="light"] .search-bar {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .search-bar:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+
         .grid-container {
             display: grid;
-            gap: 1.5rem;
+            gap: 1.8rem;
             margin-bottom: 3rem;
         }
 
-        /* ---- الصفحة الرئيسية ---- */
-        #homeSection .home-banner {
+        /* ===== الصفحة الرئيسية ===== */
+        .home-credit {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--beige-light);
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        .home-credit strong {
+            color: var(--gold-primary);
+        }
+        [data-theme="light"] .home-credit strong {
+            color: #B58A2A;
+        }
+
+        /* ===== كاروسيل ===== */
+        .carousel-container {
+            position: relative;
             width: 100%;
-            border-radius: 16px;
+            border-radius: 24px;
             overflow: hidden;
-            margin-bottom: 1rem;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
-            aspect-ratio: 16 / 6;
-            background: #1a1816;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            aspect-ratio: 16 / 5;
+            background: var(--beige-card);
+        }
+        [data-theme="light"] .carousel-container {
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .carousel-slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s ease-in-out;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            background-size: cover;
+            background-position: center;
+            background-color: var(--beige-card);
         }
-
-        #homeSection .home-banner img {
+        .carousel-slide img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
-        #homeSection .home-banner .fallback-text {
-            font-size: 2.5rem;
+        .carousel-slide .slide-content {
+            position: absolute;
+            bottom: 20%;
+            right: 10%;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 1rem 2rem;
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+            border-right: 4px solid var(--gold-primary);
+            max-width: 60%;
+        }
+        [data-theme="light"] .carousel-slide .slide-content {
+            background: rgba(255, 252, 247, 0.85);
+            border-right-color: #B58A2A;
+        }
+        .carousel-slide .slide-content h3 {
             color: var(--gold-primary);
-            opacity: 0.4;
-            font-weight: 700;
-            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.2rem;
+        }
+        .carousel-slide .slide-content p {
+            color: var(--beige-main);
+            font-size: 0.9rem;
+        }
+        [data-theme="light"] .carousel-slide .slide-content p {
+            color: #29251F;
         }
 
-        #homeSection .home-credit {
-            text-align: center;
-            font-size: 0.85rem;
+        .carousel-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        .carousel-indicators .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .carousel-indicators .dot.active {
+            background: var(--gold-primary);
+            transform: scale(1.2);
+            border-color: var(--gold-primary);
+        }
+        [data-theme="light"] .carousel-indicators .dot {
+            background: rgba(0, 0, 0, 0.2);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+        [data-theme="light"] .carousel-indicators .dot.active {
+            background: #B58A2A;
+            border-color: #B58A2A;
+        }
+
+        /* ===== تبويب أخرى ===== */
+        .other-tools {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* ===== حاسبة التقدير ===== */
+        .gpa-calculator {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            transition: all 0.3s;
+        }
+        [data-theme="light"] .gpa-calculator {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .gpa-calculator h3 {
+            color: var(--gold-primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        [data-theme="light"] .gpa-calculator h3 {
+            color: #B58A2A;
+        }
+        .gpa-input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .gpa-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .gpa-input-group label {
+            font-size: 0.75rem;
             color: var(--beige-light);
-            margin-bottom: 0.5rem;
-            opacity: 0.8;
+            font-weight: 600;
+        }
+        .gpa-input-group .max-score {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            color: var(--beige-light);
+        }
+        .gpa-input-group input {
+            padding: 0.5rem 0.6rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 22, 20, 0.6);
+            color: var(--beige-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+            width: 100%;
+        }
+        [data-theme="light"] .gpa-input-group input {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .gpa-input-group input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
         }
 
-        #homeSection .home-credit strong {
+        .gpa-result {
+            background: rgba(36, 32, 28, 0.5);
+            border-radius: 16px;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            display: none;
+            border: 1px solid var(--border-gold);
+            animation: fadeIn 0.5s ease;
+        }
+        [data-theme="light"] .gpa-result {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+        }
+        .gpa-result .result-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid var(--border-gold);
+        }
+        .gpa-result .result-row:last-child {
+            border-bottom: none;
+        }
+        .gpa-result .result-label {
+            color: var(--beige-light);
+            font-weight: 600;
+        }
+        .gpa-result .result-value {
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        [data-theme="light"] .gpa-result .result-value {
+            color: #B58A2A;
+        }
+        .gpa-result .result-value.excellent { color: #2ECC71; }
+        .gpa-result .result-value.very-good { color: #3498DB; }
+        .gpa-result .result-value.good { color: #F1C40F; }
+        .gpa-result .result-value.pass { color: #E67E22; }
+        .gpa-result .result-value.fail { color: var(--error-red); }
+
+        /* ===== عداد تنازلي ===== */
+        .countdown-section {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+        [data-theme="light"] .countdown-section {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .countdown-section h3 {
+            color: var(--gold-primary);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        [data-theme="light"] .countdown-section h3 {
+            color: #B58A2A;
+        }
+        .countdown-timer {
+            display: flex;
+            gap: 1.5rem;
+            font-family: var(--font-english);
+            font-weight: 700;
+            font-size: 1.8rem;
             color: var(--gold-primary);
         }
+        [data-theme="light"] .countdown-timer {
+            color: #B58A2A;
+        }
+        .countdown-timer .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--beige-light);
+            font-weight: 400;
+        }
+        .countdown-timer .time-unit span {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+        }
+        [data-theme="light"] .countdown-timer .time-unit span {
+            color: #B58A2A;
+        }
+        .countdown-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .countdown-input input[type="date"] {
+            padding: 0.5rem 0.8rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 22, 20, 0.6);
+            color: var(--beige-main);
+            font-size: 0.9rem;
+            outline: none;
+            transition: 0.3s;
+        }
+        [data-theme="light"] .countdown-input input[type="date"] {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .countdown-input input[type="date"]:focus {
+            border-color: var(--gold-primary);
+        }
+        .countdown-input button {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+            border: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        [data-theme="light"] .countdown-input button {
+            background: #B58A2A;
+            color: #FFFCF7;
+        }
+        .countdown-input button:hover {
+            transform: scale(1.05);
+            background: var(--gold-secondary);
+            color: #FFF;
+        }
+        [data-theme="light"] .countdown-input button:hover {
+            background: #8C691F;
+        }
 
-        /* زر التواصل الجديد */
+        /* ===== To-Do List ===== */
+        .todo-section {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 24px;
+            padding: 1.5rem 2rem;
+        }
+        [data-theme="light"] .todo-section {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .todo-section h3 {
+            color: var(--gold-primary);
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        [data-theme="light"] .todo-section h3 {
+            color: #B58A2A;
+        }
+        .todo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .todo-input-group input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-gold);
+            background: rgba(24, 22, 20, 0.6);
+            color: var(--beige-main);
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s;
+            min-width: 150px;
+        }
+        [data-theme="light"] .todo-input-group input {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+            color: #29251F;
+        }
+        .todo-input-group input:focus {
+            border-color: var(--gold-primary);
+        }
+        .todo-input-group button {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+        [data-theme="light"] .todo-input-group button {
+            background: #B58A2A;
+            color: #FFFCF7;
+        }
+        .todo-input-group button:hover {
+            transform: scale(1.05);
+            background: var(--gold-secondary);
+            color: #FFF;
+        }
+        [data-theme="light"] .todo-input-group button:hover {
+            background: #8C691F;
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+        }
+        .todo-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border-gold);
+            transition: 0.2s;
+            color: var(--beige-main);
+        }
+        [data-theme="light"] .todo-list li {
+            color: #29251F;
+        }
+        .todo-list li:last-child {
+            border-bottom: none;
+        }
+        .todo-list li .todo-checkbox {
+            width: 22px;
+            height: 22px;
+            accent-color: var(--gold-primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        [data-theme="light"] .todo-list li .todo-checkbox {
+            accent-color: #B58A2A;
+        }
+        .todo-list li .todo-text {
+            flex: 1;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        .todo-list li .todo-text.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .todo-list li .todo-delete {
+            background: var(--error-red);
+            color: #fff;
+            border: none;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .todo-list li .todo-delete:hover {
+            transform: scale(1.1);
+            background: #c0392b;
+        }
+
+        /* ===== باقي العناصر ===== */
         .contact-btn-wrapper {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
         }
-
         .contact-btn {
             display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             background: var(--gold-primary);
             color: #0A0A0A;
-            padding: 0.8rem 2.5rem;
-            border-radius: 50px;
+            padding: 0.9rem 3rem;
+            border-radius: 60px;
             font-weight: 700;
             font-size: 1.2rem;
             text-decoration: none;
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.4);
             transition: 0.3s;
             border: 1px solid var(--gold-primary);
         }
-
+        [data-theme="light"] .contact-btn {
+            background: #B58A2A;
+            color: #FFFCF7;
+            border-color: #B58A2A;
+            box-shadow: 0 6px 30px rgba(184, 138, 42, 0.3);
+        }
         .contact-btn:hover {
             background: var(--gold-secondary);
             color: #FFF;
-            transform: scale(1.05);
-            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.6);
+            transform: scale(1.06) translateY(-3px);
+            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.6);
         }
-
+        [data-theme="light"] .contact-btn:hover {
+            background: #8C691F;
+            color: #FFFCF7;
+            box-shadow: 0 10px 40px rgba(140, 105, 31, 0.4);
+        }
         .contact-btn i {
-            font-size: 1.8rem;
+            font-size: 2rem;
         }
 
-        /* ---- المواد الأساسية ---- */
+        /* ===== المواد الأساسية ===== */
         #coreSection .grid-container {
             grid-template-columns: repeat(5, 1fr);
         }
 
-        #coreSection .subject-card {
-            aspect-ratio: 1 / 1;
-            justify-content: center;
-            padding: 0.8rem;
+        .subject-card {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 18px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            transition: 0.4s;
+            cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            cursor: pointer;
+            justify-content: center;
+            overflow: hidden;
+            aspect-ratio: 1 / 1;
+            position: relative;
         }
-
-        #coreSection .subject-card .subject-cover-img {
+        [data-theme="light"] .subject-card {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .subject-card:hover {
+            border-color: var(--gold-primary);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 35px rgba(212, 175, 55, 0.25);
+            background: rgba(36, 32, 28, 0.95);
+        }
+        [data-theme="light"] .subject-card:hover {
+            border-color: #B58A2A;
+            background: #FFFCF7;
+            box-shadow: 0 12px 35px rgba(184, 138, 42, 0.12);
+        }
+        .subject-card .subject-cover-img {
             height: 60%;
             width: 100%;
             object-fit: cover;
-            border-radius: 10px;
-            margin-bottom: 0.4rem;
+            border-radius: 12px;
+            margin-bottom: 0.6rem;
             border: 1px solid var(--border-gold);
         }
-
-        #coreSection .subject-card i {
-            font-size: 2.8rem;
-            margin-bottom: 0.3rem;
+        .subject-card i {
+            font-size: 3rem;
+            color: var(--gold-primary);
+            margin-bottom: 0.5rem;
         }
-
-        #coreSection .subject-card h3 {
-            font-size: 0.9rem;
+        [data-theme="light"] .subject-card i {
+            color: #D8B866;
+        }
+        .subject-card h3 {
+            font-size: 1rem;
             margin: 0;
+            font-weight: 700;
         }
 
-        /* ---- تفاصيل المادة (B1-B6) ---- */
+        /* ===== تفاصيل المادة ===== */
         #subjectDetailSection .grid-container {
             grid-template-columns: repeat(3, 1fr);
         }
@@ -431,231 +1047,607 @@
         .b-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 1.2rem 0.8rem;
+            border-radius: 18px;
+            padding: 1.4rem 0.8rem;
             text-align: center;
-            transition: 0.3s;
+            transition: 0.4s;
         }
-
+        [data-theme="light"] .b-card {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
         .b-card:hover {
             border-color: var(--gold-primary);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
-            background: #24201C;
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+            background: rgba(36, 32, 28, 0.95);
         }
-
+        [data-theme="light"] .b-card:hover {
+            border-color: #B58A2A;
+            background: #FFFCF7;
+            box-shadow: 0 10px 30px rgba(184, 138, 42, 0.08);
+        }
         .b-card h4 {
             color: var(--gold-primary);
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             margin-bottom: 0.2rem;
         }
-
+        [data-theme="light"] .b-card h4 {
+            color: #B58A2A;
+        }
         .b-card .b-subtitle {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             color: var(--beige-light);
             margin-bottom: 0.8rem;
             opacity: 0.85;
-            line-height: 1.3;
+            line-height: 1.4;
         }
 
         .b-icons {
             display: flex;
             justify-content: center;
-            gap: 0.6rem;
+            gap: 0.8rem;
             flex-wrap: wrap;
         }
-
         .b-icons .icon-item {
-            background: #181614;
+            background: rgba(24, 22, 20, 0.8);
             border: 1px solid var(--border-gold);
-            border-radius: 10px;
-            padding: 0.5rem 0.7rem;
-            min-width: 70px;
+            border-radius: 14px;
+            padding: 0.5rem 0.8rem;
+            min-width: 75px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.1rem;
+            gap: 0.2rem;
             cursor: pointer;
             transition: 0.3s;
             color: var(--beige-light);
             font-size: 0.7rem;
             text-decoration: none;
         }
-
+        [data-theme="light"] .b-icons .icon-item {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+            color: #6F685D;
+        }
         .b-icons .icon-item i {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             color: var(--gold-primary);
         }
-
+        [data-theme="light"] .b-icons .icon-item i {
+            color: #D8B866;
+        }
         .b-icons .icon-item:hover {
             background: var(--gold-primary);
             color: #0A0A0A;
             border-color: var(--gold-primary);
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
-
+        [data-theme="light"] .b-icons .icon-item:hover {
+            background: #B58A2A;
+            color: #FFFCF7;
+            border-color: #B58A2A;
+        }
         .b-icons .icon-item:hover i {
             color: #0A0A0A;
         }
+        [data-theme="light"] .b-icons .icon-item:hover i {
+            color: #FFFCF7;
+        }
 
-        /* ---- بقية الأقسام (إضافية، بورتفوليو) ---- */
-        #extraSection .grid-container,
+        /* ===== المواد الإضافية (تبويبات) ===== */
+        .extra-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-gold);
+            padding-bottom: 10px;
+        }
+
+        .extra-tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.7rem 2rem;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            color: var(--beige-light);
+            border: 2px solid transparent;
+            background: var(--beige-card);
+            backdrop-filter: blur(4px);
+        }
+        [data-theme="light"] .extra-tab-btn {
+            background: #FFFCF7;
+            color: #6F685D;
+        }
+        .extra-tab-btn.active {
+            color: var(--gold-primary);
+            border-color: var(--gold-primary);
+            background: rgba(36, 32, 28, 0.8);
+            box-shadow: 0 4px 15px var(--shadow-gold);
+        }
+        [data-theme="light"] .extra-tab-btn.active {
+            background: #FFFCF7;
+            border-color: #B58A2A;
+            color: #B58A2A;
+            box-shadow: 0 4px 15px rgba(184, 138, 42, 0.15);
+        }
+        .extra-tab-btn i {
+            margin-left: 8px;
+        }
+
+        .extra-tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .extra-tab-content.active {
+            display: block;
+        }
+
+        .extra-tab-content .grid-container {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+
+        /* ===== البورتفوليو ===== */
         #portfolioSection .grid-container {
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         }
 
-        /* بطاقات عامة */
-        .subject-card {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 1.2rem 1rem;
-            text-align: center;
-            transition: 0.3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+        #portfolioSection .subject-card {
+            aspect-ratio: 1 / 1;
+            padding: 1rem 0.5rem;
         }
 
-        .subject-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-6px);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
-            background: #24201C;
+        #portfolioSection .subject-card i {
+            font-size: 2.2rem;
         }
 
-        .subject-cover-img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 10px;
-            border: 1px solid var(--border-gold);
-            margin-bottom: 0.8rem;
+        #portfolioSection .subject-card h3 {
+            font-size: 0.85rem;
         }
 
-        .subject-card i {
-            font-size: 2.4rem;
-            color: var(--gold-primary);
-            margin-bottom: 0.9rem;
-            margin-top: 0.6rem;
-        }
-
-        .subject-card h3 {
-            color: var(--beige-main);
-            font-size: 1.15rem;
-        }
-
-        /* المودالات */
+        /* ===== مودالات ===== */
         .modal {
             display: none;
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.88);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.88);
             z-index: 500;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(6px);
+            animation: fadeIn 0.3s ease;
+        }
+        [data-theme="light"] .modal {
+            background: rgba(247, 244, 238, 0.92);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
         .modal-content {
             background: var(--card-black);
             border: 1.5px solid var(--gold-primary);
             width: 90%;
-            max-width: 700px;
-            border-radius: 18px;
-            padding: 2rem;
+            max-width: 750px;
+            border-radius: 24px;
+            padding: 2.2rem;
             max-height: 80vh;
             overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+        [data-theme="light"] .modal-content {
+            background: #FFFCF7;
+            border-color: #B58A2A;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        }
+        .modal-content h2 {
+            color: var(--gold-primary);
+            margin-bottom: 1.2rem;
+            font-size: 1.8rem;
+        }
+        [data-theme="light"] .modal-content h2 {
+            color: #29251F;
         }
 
         .block-card {
             background: var(--beige-card);
             border: 1px solid var(--border-gold);
-            padding: 1.2rem;
-            border-radius: 12px;
-            text-align: center;
+            padding: 1.2rem 1.5rem;
+            border-radius: 14px;
+            text-align: right;
             transition: 0.3s;
+            margin-bottom: 1rem;
         }
-
+        [data-theme="light"] .block-card {
+            background: #F7F4EE;
+            border-color: #E4DCCF;
+        }
         .block-card:hover {
             border-color: var(--gold-primary);
-            background: #24201C;
+            background: rgba(36, 32, 28, 0.95);
+            transform: translateX(-4px);
         }
-
+        [data-theme="light"] .block-card:hover {
+            border-color: #B58A2A;
+            background: #FFFCF7;
+            transform: translateX(-4px);
+        }
         .block-card h4 {
             color: var(--gold-primary);
             margin-bottom: 0.4rem;
+            font-size: 1.2rem;
+        }
+        [data-theme="light"] .block-card h4 {
+            color: #B58A2A;
+        }
+        .block-card p {
+            color: var(--beige-light);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        [data-theme="light"] .block-card p {
+            color: #6F685D;
         }
 
         .close-btn {
             background: var(--error-red);
             color: white;
             border: none;
-            padding: 0.4rem 1rem;
-            border-radius: 6px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 40px;
             cursor: pointer;
             float: left;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+        .close-btn:hover {
+            background: #c0392b;
+            transform: scale(1.05);
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--beige-card);
+            border-radius: 16px;
+            border: 1px solid var(--border-gold);
+        }
+        [data-theme="light"] .stats-bar {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--beige-light);
+            font-size: 0.95rem;
+        }
+        [data-theme="light"] .stat-item {
+            color: #6F685D;
+        }
+        .stat-item i {
+            color: var(--gold-primary);
+            font-size: 1.3rem;
+        }
+        [data-theme="light"] .stat-item i {
+            color: #D8B866;
+        }
+        .stat-item strong {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+        [data-theme="light"] .stat-item strong {
+            color: #B58A2A;
+        }
+
+        .loader {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 1rem auto;
+            border: 4px solid var(--border-gold);
+            border-top-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         footer {
             background: var(--card-black);
             border-top: 1px solid var(--border-gold);
-            padding: 1.5rem;
+            padding: 1.8rem;
             text-align: center;
             margin-top: 3rem;
+            transition: background var(--transition-speed);
         }
-
+        [data-theme="light"] footer {
+            border-top-color: #E4DCCF;
+        }
         footer p {
             color: var(--beige-light);
-            font-size: 0.9rem;
-            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-family: var(--font-english);
             letter-spacing: 0.5px;
         }
-
+        [data-theme="light"] footer p {
+            color: #6F685D;
+        }
         footer p span {
             color: var(--gold-primary);
-            font-weight: 600;
+            font-weight: 700;
+        }
+        [data-theme="light"] footer p span {
+            color: #B58A2A;
         }
 
-        /* ---- استجابة ---- */
-        @media (max-width: 767px) {
-            #coreSection .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            #coreSection .subject-card i {
-                font-size: 2.2rem;
-            }
-            #coreSection .subject-card h3 {
-                font-size: 0.8rem;
-            }
+        .file-section {
+            margin-bottom: 1.5rem;
+        }
+        .file-section-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            border-bottom: 2px solid var(--border-gold);
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        [data-theme="light"] .file-section-title {
+            color: #B58A2A;
+            border-bottom-color: #E4DCCF;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.8rem;
+            background: var(--beige-card);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+            border: 1px solid var(--border-gold);
+            transition: 0.2s;
+        }
+        [data-theme="light"] .file-item {
+            background: #FFFCF7;
+            border-color: #E4DCCF;
+        }
+        .file-item:hover {
+            border-color: var(--gold-primary);
+            background: rgba(36, 32, 28, 0.95);
+        }
+        [data-theme="light"] .file-item:hover {
+            border-color: #B58A2A;
+            background: #F7F4EE;
+        }
+        .file-item .file-name {
+            color: var(--beige-main);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        [data-theme="light"] .file-item .file-name {
+            color: #29251F;
+        }
+        .file-item .file-name i {
+            color: var(--gold-primary);
+            font-size: 1.2rem;
+        }
+        [data-theme="light"] .file-item .file-name i {
+            color: #D8B866;
+        }
+        .file-item .file-actions a {
+            color: var(--gold-primary);
+            margin-left: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            padding: 0.2rem 0.6rem;
+            border-radius: 6px;
+            border: 1px solid transparent;
+        }
+        .file-item .file-actions a:hover {
+            background: var(--gold-primary);
+            color: #0A0A0A;
+            border-color: var(--gold-primary);
+        }
+        [data-theme="light"] .file-item .file-actions a {
+            color: #B58A2A;
+        }
+        [data-theme="light"] .file-item .file-actions a:hover {
+            background: #B58A2A;
+            color: #FFFCF7;
+            border-color: #B58A2A;
+        }
+        .file-item .file-actions a i {
+            margin-left: 4px;
+        }
 
+        /* ===== استجابة ===== */
+        @media (max-width: 1024px) {
+            #coreSection .grid-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
             #subjectDetailSection .grid-container {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .carousel-slide .slide-content {
+                max-width: 80%;
+                bottom: 15%;
+                right: 5%;
+                padding: 0.8rem 1.2rem;
+            }
+            .carousel-slide .slide-content h3 {
+                font-size: 1.2rem;
+            }
+            .countdown-timer {
+                font-size: 1.4rem;
+                gap: 1rem;
+            }
+            .countdown-timer .time-unit span {
+                font-size: 1.6rem;
+            }
+            .extra-tab-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.95rem;
+            }
+        }
 
+        @media (max-width: 767px) {
+            header {
+                padding: 0.6rem 1rem;
+                flex-wrap: wrap;
+            }
+            .brand-title {
+                font-size: 1.4rem;
+            }
+            .user-control {
+                gap: 8px;
+            }
+            .user-info {
+                font-size: 0.8rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .nav-tabs {
+                gap: 8px;
+            }
+            .tab-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.85rem;
+            }
+            #coreSection .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            #subjectDetailSection .grid-container {
+                grid-template-columns: 1fr;
+            }
             .b-icons .icon-item {
                 min-width: 60px;
                 padding: 0.4rem 0.5rem;
                 font-size: 0.65rem;
             }
             .b-icons .icon-item i {
+                font-size: 1.3rem;
+            }
+            .carousel-container {
+                aspect-ratio: 16 / 7;
+            }
+            .carousel-slide .slide-content {
+                max-width: 90%;
+                bottom: 10%;
+                right: 5%;
+                padding: 0.6rem 1rem;
+            }
+            .carousel-slide .slide-content h3 {
+                font-size: 1rem;
+            }
+            .carousel-slide .slide-content p {
+                font-size: 0.7rem;
+            }
+            .gpa-input-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .gpa-calculator {
+                padding: 1.2rem;
+            }
+            .countdown-section {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.2rem;
+            }
+            .countdown-timer {
+                justify-content: center;
                 font-size: 1.2rem;
             }
-
-            #homeSection .home-banner {
-                aspect-ratio: 16 / 5;
+            .countdown-timer .time-unit span {
+                font-size: 1.4rem;
             }
-            #homeSection .home-banner .fallback-text {
-                font-size: 1.5rem;
+            .countdown-input {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .todo-input-group {
+                flex-direction: column;
+            }
+            .todo-input-group button {
+                width: 100%;
             }
             .contact-btn {
-                padding: 0.6rem 1.8rem;
+                padding: 0.7rem 2rem;
                 font-size: 1rem;
             }
             .contact-btn i {
-                font-size: 1.4rem;
+                font-size: 1.5rem;
+            }
+            .section-title {
+                font-size: 1.3rem;
+            }
+            .search-bar {
+                max-width: 100%;
+            }
+            .modal-content {
+                padding: 1.5rem;
+            }
+            .auth-box {
+                padding: 1.8rem 1.2rem;
+            }
+            .file-item {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .file-item .file-actions {
+                margin-top: 4px;
+                width: 100%;
+                display: flex;
+                justify-content: flex-start;
+            }
+            .extra-tabs {
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            .extra-tab-btn {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.85rem;
+                flex: 1;
+                text-align: center;
+            }
+            .extra-tab-content .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            #portfolioSection .grid-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .todo-list li {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            .todo-list li .todo-text {
+                width: 100%;
+                order: 2;
+            }
+            .todo-list li .todo-checkbox {
+                order: 1;
+            }
+            .todo-list li .todo-delete {
+                order: 3;
             }
         }
 
@@ -663,14 +1655,17 @@
             #coreSection .grid-container {
                 grid-template-columns: repeat(3, 1fr);
             }
-            #subjectDetailSection .grid-container {
+            .extra-tab-content .grid-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            #portfolioSection .grid-container {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        /* إخفاء الأقسام */
         .section-content {
             display: none;
+            animation: fadeIn 0.5s ease;
         }
         .section-content.active {
             display: block;
@@ -679,7 +1674,9 @@
 </head>
 <body>
 
-    <!-- نافذة تسجيل الدخول / إنشاء حساب -->
+    <div class="bg-animation"></div>
+
+    <!-- ===== نافذة تسجيل الدخول ===== -->
     <div class="auth-overlay" id="authOverlay">
         <div class="auth-box">
             <img src="logo.jpg" alt="NOVA Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/110/D4AF37/080808?text=NOVA';">
@@ -688,12 +1685,10 @@
                 This website was created by <b>Amin</b><br>
                 for Medical Students at East Port Said National University
             </p>
-            
             <div class="auth-tabs">
                 <button class="auth-tab-btn active" id="loginTabBtn" type="button" onclick="switchAuthMode('login')">Log In (دخول)</button>
                 <button class="auth-tab-btn" id="signupTabBtn" type="button" onclick="switchAuthMode('signup')">Sign Up (حساب جديد)</button>
             </div>
-
             <form id="loginForm">
                 <div class="input-group">
                     <label>الـ ID الجامعي أو الرقم القومي</label>
@@ -706,7 +1701,6 @@
                 <button type="submit" class="btn-gold">تسجيل الدخول</button>
                 <div class="alert-msg" id="loginAlert"></div>
             </form>
-
             <form id="signupForm" style="display: none;">
                 <div class="input-group">
                     <label>الاسم الكامل (الرباعي)</label>
@@ -730,7 +1724,7 @@
         </div>
     </div>
 
-    <!-- الشريط العلوي -->
+    <!-- ===== الهيدر ===== -->
     <header>
         <div class="logo-container">
             <img src="logo.jpg" alt="NOVA Logo" class="site-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/48/D4AF37/080808?text=N';">
@@ -738,30 +1732,74 @@
         </div>
         <div class="user-control">
             <span class="user-info" id="userInfoDisplay">أهلاً بك</span>
-            <button class="logout-btn" type="button" onclick="logout()">خروج <i class="fa-solid fa-right-from-bracket"></i></button>
+            <button class="theme-toggle" onclick="toggleTheme()" title="تبديل السمة"><i class="fa-solid fa-moon"></i></button>
+            <button class="logout-btn" onclick="logout()">خروج <i class="fa-solid fa-right-from-bracket"></i></button>
         </div>
     </header>
 
-    <!-- المحتوى الرئيسي -->
+    <!-- ===== المحتوى الرئيسي ===== -->
     <div class="container">
+
         <!-- تبويبات التنقل -->
         <div class="nav-tabs">
-            <button class="tab-btn active" type="button" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
-            <button class="tab-btn" type="button" onclick="showSection('core', this)">المواد الأساسية</button>
-            <button class="tab-btn" type="button" onclick="showSection('extra', this)">المواد الإضافية</button>
-            <button class="tab-btn" type="button" onclick="showSection('portfolio', this)">البورتفوليو</button>
+            <button class="tab-btn active" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="tab-btn" onclick="showSection('core', this)"><i class="fa-solid fa-book-open"></i> المواد الأساسية</button>
+            <button class="tab-btn" onclick="showSection('extra', this)"><i class="fa-solid fa-plus-circle"></i> المواد الإضافية</button>
+            <button class="tab-btn" onclick="showSection('portfolio', this)"><i class="fa-solid fa-folder-tree"></i> البورتفوليو</button>
+            <button class="tab-btn" onclick="showSection('other', this)"><i class="fa-solid fa-toolbox"></i> أخرى</button>
         </div>
 
-        <!-- 1. الصفحة الرئيسية -->
+        <div class="loader" id="globalLoader"></div>
+
+        <!-- ===== الصفحة الرئيسية ===== -->
         <div class="section-content active" id="homeSection">
-            <div class="home-banner">
-                <img src="banner.jpg" alt="NOVA Banner" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                <div class="fallback-text" style="display:none;">NOVA<br><span style="font-size:0.4em; color:var(--beige-light);">FOM-EPNU</span></div>
+            
+            <!-- كاروسيل -->
+            <div class="carousel-container" id="mainCarousel">
+                <div class="carousel-slides" id="carouselSlides">
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/seed/med1/1200/500" alt="Slide 1">
+                        <div class="slide-content">
+                            <h3>📚 ابدأ رحلتك</h3>
+                            <p>النجاح يبدأ بالخطوة الأولى. حدد هدفك وانطلق.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/seed/med2/1200/500" alt="Slide 2">
+                        <div class="slide-content">
+                            <h3>🧠 استراتيجية المذاكرة</h3>
+                            <p>نظم وقتك بين المواد المختلفة لتحقيق أقصى استفادة.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/seed/med3/1200/500" alt="Slide 3">
+                        <div class="slide-content">
+                            <h3>🏆 امتياز بكل ثقة</h3>
+                            <p>استخدم أدواتنا لتتبع تقدمك وتحقيق أعلى الدرجات.</p>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://picsum.photos/seed/med4/1200/500" alt="Slide 4">
+                        <div class="slide-content">
+                            <h3>🤝 مجتمع NOVA</h3>
+                            <p>شارك زملاءك وابنِ بيئة تعليمية تعاونية.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
+
             <div class="home-credit">
                 <strong>created by Dr.Amin</strong> — FOM-EPNU
             </div>
-            <!-- زر التواصل الجديد (بدلاً من الروابط السريعة) -->
+
+            <!-- إحصائيات -->
+            <div class="stats-bar" id="statsBar">
+                <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
+                <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
+                <div class="stat-item"><i class="fa-solid fa-clock"></i> وقت الجلسة: <strong id="sessionTime">00:00</strong></div>
+            </div>
+
             <div class="contact-btn-wrapper">
                 <a href="https://wa.me/201098919599" target="_blank" class="contact-btn">
                     <i class="fa-brands fa-whatsapp"></i>
@@ -772,40 +1810,77 @@
 
         <!-- 2. المواد الأساسية -->
         <div class="section-content" id="coreSection">
-            <h2 class="section-title">المواد الأساسية (Core Subjects)</h2>
-            <div class="grid-container" id="coreGrid">
-                <!-- يتم إنشاؤها بواسطة JavaScript -->
-            </div>
+            <h2 class="section-title">
+                <span>المواد الأساسية (Core Subjects)</span>
+                <input type="text" class="search-bar" id="coreSearch" placeholder="🔍 بحث في المواد..." oninput="filterCoreSubjects(this.value)">
+            </h2>
+            <div class="grid-container" id="coreGrid"></div>
         </div>
 
-        <!-- 3. تفاصيل المادة (B1-B6) -->
+        <!-- 3. تفاصيل المادة -->
         <div class="section-content" id="subjectDetailSection">
             <h2 class="section-title">
                 <span id="subjectDetailTitle">المادة</span>
-                <button class="back-btn" type="button" onclick="backToCore()"><i class="fa-solid fa-arrow-right"></i> العودة</button>
+                <button class="back-btn" onclick="backToCore()"><i class="fa-solid fa-arrow-right"></i> العودة</button>
             </h2>
-            <div class="grid-container" id="subjectBlocksContainer">
-                <!-- يتم إنشاؤها بواسطة JavaScript -->
-            </div>
+            <div class="grid-container" id="subjectBlocksContainer"></div>
         </div>
 
         <!-- 4. المواد الإضافية -->
         <div class="section-content" id="extraSection">
-            <h2 class="section-title">مواد تُضاف للمجموع</h2>
-            <div class="grid-container">
-                <div class="subject-card" onclick="alert('محتوى Skill Lab 1')"><i class="fa-solid fa-user-doctor"></i><h3>Skill Lab 1</h3></div>
-                <div class="subject-card" onclick="alert('محتوى Skill Lab 2')"><i class="fa-solid fa-kit-medical"></i><h3>Skill Lab 2</h3></div>
-                <div class="subject-card" onclick="alert('محتوى Research')"><i class="fa-solid fa-book-bookmark"></i><h3>Research</h3></div>
+            <div class="extra-tabs">
+                <button class="extra-tab-btn active" data-tab="tab1" onclick="switchExtraTab('tab1', this)">
+                    <i class="fa-solid fa-star"></i> مواد تضاف للمجموع
+                </button>
+                <button class="extra-tab-btn" data-tab="tab2" onclick="switchExtraTab('tab2', this)">
+                    <i class="fa-regular fa-circle-xmark"></i> مواد لا تضاف للمجموع
+                </button>
             </div>
 
-            <h2 class="section-title" style="margin-top: 2rem;">مواد لا تُضاف للمجموع</h2>
-            <div class="grid-container">
-                <div class="subject-card" onclick="alert('محتوى Field 1')"><i class="fa-solid fa-map-location-dot"></i><h3>Field 1</h3></div>
-                <div class="subject-card" onclick="alert('محتوى Field 2')"><i class="fa-solid fa-location-dot"></i><h3>Field 2</h3></div>
-                <div class="subject-card" onclick="alert('محتوى English')"><i class="fa-solid fa-language"></i><h3>English</h3></div>
-                <div class="subject-card" onclick="alert('محتوى قضايا مجتمعية')"><i class="fa-solid fa-handshake"></i><h3>قضايا مجتمعية</h3></div>
-                <div class="subject-card" onclick="alert('محتوى جودة')"><i class="fa-solid fa-award"></i><h3>جودة</h3></div>
-                <div class="subject-card" onclick="alert('محتوى تنمية ذاتية')"><i class="fa-solid fa-brain"></i><h3>تنمية ذاتية</h3></div>
+            <div class="extra-tab-content active" id="tab1">
+                <div class="grid-container">
+                    <div class="subject-card" onclick="openExtraContent('Skill Lab 1')">
+                        <i class="fa-solid fa-user-doctor"></i>
+                        <h3>Skill Lab 1</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Skill Lab 2')">
+                        <i class="fa-solid fa-kit-medical"></i>
+                        <h3>Skill Lab 2</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Research 1')">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                        <h3>Research 1</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="extra-tab-content" id="tab2">
+                <div class="grid-container">
+                    <div class="subject-card" onclick="openExtraContent('Field 1')">
+                        <i class="fa-solid fa-map-location-dot"></i>
+                        <h3>Field 1</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Field 2')">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <h3>Field 2</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('English')">
+                        <i class="fa-solid fa-language"></i>
+                        <h3>English</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Quality')">
+                        <i class="fa-solid fa-award"></i>
+                        <h3>Quality</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Self Development Skills')">
+                        <i class="fa-solid fa-brain"></i>
+                        <h3>Self Development Skills</h3>
+                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Community Issues')">
+                        <i class="fa-solid fa-handshake"></i>
+                        <h3>Community Issues</h3>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -821,27 +1896,121 @@
                 <div class="subject-card" onclick="openPortfolioBlock('B6')"><i class="fa-solid fa-folder-open"></i><h3>Portfolio B6</h3></div>
             </div>
         </div>
-    </div>
 
-    <!-- نافذة المودال للبورتفوليو -->
-    <div class="modal" id="portfolioModal">
-        <div class="modal-content">
-            <button class="close-btn" type="button" onclick="closeModal('portfolioModal')">إغلاق</button>
-            <h2 id="portfolioTitle" style="color: var(--gold-primary); margin-bottom: 1rem;"></h2>
-            <div style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;">
-                <div class="block-card" style="text-align: right;">
-                    <h4 style="color:var(--gold-primary);">📁 شكل البورتفوليو</h4>
-                    <p style="font-size: 0.88rem; color: var(--beige-light);">تحميل النماذج وقوالب الملفات.</p>
+        <!-- 6. تبويب "أخرى" -->
+        <div class="section-content" id="otherSection">
+            <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
+            
+            <div class="other-tools">
+                <!-- حاسبة التقدير -->
+                <div class="gpa-calculator" id="gpaCalculator">
+                    <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي (المجموع الكلي 849 درجة)</h3>
+                    <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">أدخل درجاتك الفعلية في كل مادة، وسنحسب النسبة المئوية والتقدير العام.</p>
+                    <div class="gpa-input-grid">
+                        <div class="gpa-input-group">
+                            <label>Research <span class="max-score">(من 30)</span></label>
+                            <input type="number" id="gpaResearch" min="0" max="30" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>Skill Lab 1 <span class="max-score">(من 15)</span></label>
+                            <input type="number" id="gpaSkill1" min="0" max="15" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>Skill Lab 2 <span class="max-score">(من 15)</span></label>
+                            <input type="number" id="gpaSkill2" min="0" max="15" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B1 <span class="max-score">(من 113)</span></label>
+                            <input type="number" id="gpaB1" min="0" max="113" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B2 <span class="max-score">(من 180)</span></label>
+                            <input type="number" id="gpaB2" min="0" max="180" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B3 <span class="max-score">(من 113)</span></label>
+                            <input type="number" id="gpaB3" min="0" max="113" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B4 <span class="max-score">(من 135)</span></label>
+                            <input type="number" id="gpaB4" min="0" max="135" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B5 <span class="max-score">(من 135)</span></label>
+                            <input type="number" id="gpaB5" min="0" max="135" placeholder="0" value="0">
+                        </div>
+                        <div class="gpa-input-group">
+                            <label>B6 <span class="max-score">(من 113)</span></label>
+                            <input type="number" id="gpaB6" min="0" max="113" placeholder="0" value="0">
+                        </div>
+                    </div>
+                    <button class="btn-gold" onclick="calculateGPA()" style="width: auto; padding: 0.7rem 3rem; margin: 0 auto; display: block;">احسب النسبة</button>
+                    
+                    <div class="gpa-result" id="gpaResult">
+                        <div class="result-row">
+                            <span class="result-label">المجموع الكلي</span>
+                            <span class="result-value" id="gpaTotal">0 / 849</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">النسبة المئوية</span>
+                            <span class="result-value" id="gpaPercent">0%</span>
+                        </div>
+                        <div class="result-row">
+                            <span class="result-label">التقدير العام</span>
+                            <span class="result-value" id="gpaGrade">-</span>
+                        </div>
+                        <div class="result-row" style="border-bottom: none; padding-top: 0.8rem;">
+                            <span class="result-label" style="font-size: 0.85rem; opacity: 0.7;">📌 الامتياز من 85% فأعلى</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="block-card" style="text-align: right;">
-                    <h4 style="color:var(--gold-primary);">❓ أسئلة Incision</h4>
-                    <p style="font-size: 0.88rem; color: var(--beige-light);">أسئلة وملفات Incision المعتمدة.</p>
+
+                <!-- عداد تنازلي -->
+                <div class="countdown-section">
+                    <h3><i class="fa-solid fa-hourglass-half"></i> العد التنازلي للامتحان القادم</h3>
+                    <div class="countdown-timer" id="countdownDisplay">
+                        <div class="time-unit"><span id="cdDays">00</span> أيام</div>
+                        <div class="time-unit"><span id="cdHours">00</span> ساعات</div>
+                        <div class="time-unit"><span id="cdMinutes">00</span> دقائق</div>
+                        <div class="time-unit"><span id="cdSeconds">00</span> ثواني</div>
+                    </div>
+                    <div class="countdown-input">
+                        <input type="date" id="examDateInput">
+                        <button onclick="setExamDate()">تحديث التاريخ</button>
+                    </div>
                 </div>
-                <div class="block-card" style="text-align: right;">
-                    <h4 style="color:var(--gold-primary);">📝 أسئلة Formative</h4>
-                    <p style="font-size: 0.88rem; color: var(--beige-light);">نماذج واختبارات Formative المقررة.</p>
+
+                <!-- To-Do List -->
+                <div class="todo-section">
+                    <h3><i class="fa-solid fa-list-check"></i> قائمة المهام (To-Do List)</h3>
+                    <div class="todo-input-group">
+                        <input type="text" id="todoInput" placeholder="أضف مهمة جديدة..." onkeypress="if(event.key==='Enter') addTodo();">
+                        <button onclick="addTodo()">➕ إضافة</button>
+                    </div>
+                    <ul class="todo-list" id="todoList"></ul>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- ===== مودالات ===== -->
+    <div class="modal" id="portfolioModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('portfolioModal')">إغلاق</button>
+            <h2 id="portfolioTitle"></h2>
+            <div style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">
+                <div class="block-card"><h4>📁 شكل البورتفوليو</h4><p>تحميل النماذج وقوالب الملفات: <a href="#" style="color:var(--gold-primary);">model.pdf</a></p></div>
+                <div class="block-card"><h4>❓ أسئلة Incision</h4><p>أسئلة وملفات Incision المعتمدة: <a href="#" style="color:var(--gold-primary);">incision_questions.pdf</a></p></div>
+                <div class="block-card"><h4>📝 أسئلة Formative</h4><p>نماذج واختبارات Formative المقررة: <a href="#" style="color:var(--gold-primary);">formative_tests.pdf</a></p></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="extraModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal('extraModal')">إغلاق</button>
+            <h2 id="extraTitle" style="color:var(--gold-primary);"></h2>
+            <div id="extraContentContainer" style="margin-top:1rem;"></div>
         </div>
     </div>
 
@@ -850,21 +2019,20 @@
     </footer>
 
     <script>
-        // ===== بيانات المواد الأساسية مع صور Cover =====
+        // ===== بيانات المواد =====
         const coreSubjects = [
-            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
-            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
-            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg', fallbackIcon: 'fa-bug' },
-            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg', fallbackIcon: 'fa-vial-virus' },
-            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg', fallbackIcon: 'fa-heart-pulse' },
-            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg', fallbackIcon: 'fa-capsules' },
-            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg', fallbackIcon: 'fa-virus' },
-            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg', fallbackIcon: 'fa-microscope' },
-            { id: 'community', name: 'Community', cover: 'community-cover.jpg', fallbackIcon: 'fa-users' },
-            { id: 'family', name: 'Family', cover: 'family-cover.jpg', fallbackIcon: 'fa-people-group' }
+            { id: 'anatomy', name: 'Anatomy', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Anatomy', fallbackIcon: 'fa-bone' },
+            { id: 'biochemistry', name: 'Biochemistry', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Biochemistry', fallbackIcon: 'fa-dna' },
+            { id: 'parasitology', name: 'Parasitology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Parasitology', fallbackIcon: 'fa-bug' },
+            { id: 'pathology', name: 'Pathology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Pathology', fallbackIcon: 'fa-vial-virus' },
+            { id: 'physiology', name: 'Physiology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Physiology', fallbackIcon: 'fa-heart-pulse' },
+            { id: 'pharmacology', name: 'Pharmacology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Pharmacology', fallbackIcon: 'fa-capsules' },
+            { id: 'microbiology', name: 'Microbiology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Microbiology', fallbackIcon: 'fa-virus' },
+            { id: 'histology', name: 'Histology', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Histology', fallbackIcon: 'fa-microscope' },
+            { id: 'community', name: 'Community', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Community', fallbackIcon: 'fa-users' },
+            { id: 'family', name: 'Family', cover: 'https://via.placeholder.com/200/D4AF37/080808?text=Family', fallbackIcon: 'fa-people-group' }
         ];
 
-        // ===== العناوين الفرعية لكل B =====
         const bSubtitles = {
             1: "Introduction To Medicine",
             2: "Man & Environment",
@@ -874,11 +2042,260 @@
             6: "Urinary System"
         };
 
-        // ===== دالة عرض المواد الأساسية =====
-        function renderCoreSubjects() {
+        let currentSubject = '';
+        let sessionSeconds = 0;
+        let carouselInterval;
+        let countdownInterval;
+
+        // ===== CAROUSEL =====
+        function initCarousel() {
+            const slides = document.querySelector('.carousel-slides');
+            const indicators = document.getElementById('carouselIndicators');
+            const totalSlides = document.querySelectorAll('.carousel-slide').length;
+            let currentIndex = 0;
+
+            indicators.innerHTML = '';
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('span');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => goToSlide(i));
+                indicators.appendChild(dot);
+            }
+
+            function goToSlide(index) {
+                currentIndex = index;
+                slides.style.transform = `translateX(-${index * 100}%)`;
+                document.querySelectorAll('.dot').forEach((d, i) => {
+                    d.classList.toggle('active', i === index);
+                });
+            }
+
+            function nextSlide() {
+                goToSlide((currentIndex + 1) % totalSlides);
+            }
+
+            if (carouselInterval) clearInterval(carouselInterval);
+            carouselInterval = setInterval(nextSlide, 4000);
+
+            const container = document.getElementById('mainCarousel');
+            container.addEventListener('mouseenter', () => clearInterval(carouselInterval));
+            container.addEventListener('mouseleave', () => {
+                if (carouselInterval) clearInterval(carouselInterval);
+                carouselInterval = setInterval(nextSlide, 4000);
+            });
+
+            window.goToSlide = goToSlide;
+        }
+
+        // ===== GPA CALCULATOR =====
+        function calculateGPA() {
+            const research = parseFloat(document.getElementById('gpaResearch').value) || 0;
+            const skill1 = parseFloat(document.getElementById('gpaSkill1').value) || 0;
+            const skill2 = parseFloat(document.getElementById('gpaSkill2').value) || 0;
+            const b1 = parseFloat(document.getElementById('gpaB1').value) || 0;
+            const b2 = parseFloat(document.getElementById('gpaB2').value) || 0;
+            const b3 = parseFloat(document.getElementById('gpaB3').value) || 0;
+            const b4 = parseFloat(document.getElementById('gpaB4').value) || 0;
+            const b5 = parseFloat(document.getElementById('gpaB5').value) || 0;
+            const b6 = parseFloat(document.getElementById('gpaB6').value) || 0;
+
+            const maxResearch = 30, maxSkill1 = 15, maxSkill2 = 15;
+            const maxB1 = 113, maxB2 = 180, maxB3 = 113, maxB4 = 135, maxB5 = 135, maxB6 = 113;
+            const totalMax = maxResearch + maxSkill1 + maxSkill2 + maxB1 + maxB2 + maxB3 + maxB4 + maxB5 + maxB6;
+
+            const total = research + skill1 + skill2 + b1 + b2 + b3 + b4 + b5 + b6;
+            const percent = (total / totalMax) * 100;
+
+            let grade = '', gradeClass = '';
+            if (percent >= 85) { grade = 'امتياز (Excellent)'; gradeClass = 'excellent'; }
+            else if (percent >= 75) { grade = 'جيد جداً (Very Good)'; gradeClass = 'very-good'; }
+            else if (percent >= 65) { grade = 'جيد (Good)'; gradeClass = 'good'; }
+            else if (percent >= 50) { grade = 'مقبول (Pass)'; gradeClass = 'pass'; }
+            else { grade = 'راسب (Fail)'; gradeClass = 'fail'; }
+
+            document.getElementById('gpaTotal').innerText = `${total} / ${totalMax}`;
+            document.getElementById('gpaPercent').innerText = `${percent.toFixed(2)}%`;
+            const gradeEl = document.getElementById('gpaGrade');
+            gradeEl.innerText = grade;
+            gradeEl.className = `result-value ${gradeClass}`;
+
+            document.getElementById('gpaResult').style.display = 'block';
+        }
+
+        // ===== COUNTDOWN =====
+        function startCountdown(targetDate) {
+            if (countdownInterval) clearInterval(countdownInterval);
+            countdownInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+                if (distance < 0) {
+                    document.getElementById('cdDays').innerText = '00';
+                    document.getElementById('cdHours').innerText = '00';
+                    document.getElementById('cdMinutes').innerText = '00';
+                    document.getElementById('cdSeconds').innerText = '00';
+                    clearInterval(countdownInterval);
+                    return;
+                }
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                document.getElementById('cdDays').innerText = String(days).padStart(2, '0');
+                document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
+                document.getElementById('cdMinutes').innerText = String(minutes).padStart(2, '0');
+                document.getElementById('cdSeconds').innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        function setExamDate() {
+            const input = document.getElementById('examDateInput');
+            const dateVal = input.value;
+            if (!dateVal) return;
+            const target = new Date(dateVal + 'T00:00:00').getTime();
+            localStorage.setItem('nova_exam_date', dateVal);
+            startCountdown(target);
+        }
+
+        function loadExamDate() {
+            const saved = localStorage.getItem('nova_exam_date');
+            if (saved) {
+                document.getElementById('examDateInput').value = saved;
+                const target = new Date(saved + 'T00:00:00').getTime();
+                startCountdown(target);
+            } else {
+                const defaultDate = new Date();
+                defaultDate.setDate(defaultDate.getDate() + 30);
+                const iso = defaultDate.toISOString().split('T')[0];
+                document.getElementById('examDateInput').value = iso;
+                localStorage.setItem('nova_exam_date', iso);
+                startCountdown(defaultDate.getTime());
+            }
+        }
+
+        // ===== TO-DO LIST (مع Checkbox) =====
+        function loadTodos() {
+            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
+            const list = document.getElementById('todoList');
+            list.innerHTML = '';
+            todos.forEach((todo, index) => {
+                const li = document.createElement('li');
+                const isChecked = todo.completed ? 'checked' : '';
+                const completedClass = todo.completed ? 'completed' : '';
+                li.innerHTML = `
+                    <input type="checkbox" class="todo-checkbox" ${isChecked} onchange="toggleTodo(${index})">
+                    <span class="todo-text ${completedClass}">${todo.text}</span>
+                    <button class="todo-delete" onclick="deleteTodo(${index})">✖ حذف</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function addTodo() {
+            const input = document.getElementById('todoInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
+            todos.push({ text: text, completed: false });
+            localStorage.setItem('nova_todos', JSON.stringify(todos));
+            input.value = '';
+            loadTodos();
+        }
+
+        function toggleTodo(index) {
+            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
+            todos[index].completed = !todos[index].completed;
+            localStorage.setItem('nova_todos', JSON.stringify(todos));
+            loadTodos();
+        }
+
+        function deleteTodo(index) {
+            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
+            todos.splice(index, 1);
+            localStorage.setItem('nova_todos', JSON.stringify(todos));
+            loadTodos();
+        }
+
+        // ===== EXTRA TABS =====
+        function switchExtraTab(tabId, btn) {
+            document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.extra-tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // ===== OPEN EXTRA CONTENT =====
+        function openExtraContent(title) {
+            const modal = document.getElementById('extraModal');
+            const titleEl = document.getElementById('extraTitle');
+            const container = document.getElementById('extraContentContainer');
+
+            const advancedSubjects = ['English', 'Research 1', 'Community Issues', 'Quality', 'Self Development Skills'];
+
+            titleEl.innerText = title;
+
+            if (advancedSubjects.includes(title)) {
+                container.innerHTML = `
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-chalkboard-user"></i> Lectures</div>
+                        ${generateFileList('lecture', 3)}
+                    </div>
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-microphone"></i> Records</div>
+                        ${generateFileList('record', 2, 'mp3')}
+                    </div>
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-file-pen"></i> Past Exams</div>
+                        ${generateFileList('past_exam', 2)}
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="block-card">
+                        <h4>📄 محتوى المادة</h4>
+                        <p>هنا سيتم عرض الملفات والموارد الخاصة بهذه المادة.</p>
+                        <p style="margin-top:0.5rem;"><a href="#" style="color:var(--gold-primary);">تحميل الملف الرئيسي (PDF)</a></p>
+                    </div>
+                `;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        // ===== GENERATE FILE LIST =====
+        function generateFileList(prefix, count, ext = 'pdf') {
+            let items = '';
+            const fileNames = {
+                lecture: ['محاضرة 1', 'محاضرة 2', 'محاضرة 3'],
+                prelab: ['Prelab 1', 'Prelab 2'],
+                record: ['تسجيل 1', 'تسجيل 2'],
+                from_doctor: ['محاضرة دكتور 1', 'محاضرة دكتور 2', 'محاضرة دكتور 3', 'محاضرة دكتور 4'],
+                past_exam: ['امتحان 2019', 'امتحان 2020']
+            };
+            const names = fileNames[prefix] || ['ملف 1', 'ملف 2'];
+            const selected = names.slice(0, count);
+            selected.forEach((name, idx) => {
+                const fileUrl = `https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf`;
+                const icon = ext === 'mp3' ? 'fa-music' : 'fa-file-pdf';
+                items += `
+                    <div class="file-item">
+                        <span class="file-name"><i class="fa-solid ${icon}"></i> ${name}</span>
+                        <span class="file-actions">
+                            <a href="${fileUrl}" target="_blank" title="فتح"><i class="fa-solid fa-eye"></i> فتح</a>
+                            <a href="${fileUrl}" download="${name}.${ext}" title="تنزيل"><i class="fa-solid fa-download"></i> تنزيل</a>
+                        </span>
+                    </div>
+                `;
+            });
+            return items;
+        }
+
+        // ===== عرض المواد الأساسية =====
+        function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             grid.innerHTML = '';
-            coreSubjects.forEach(sub => {
+            const filtered = coreSubjects.filter(s => s.name.toLowerCase().includes(filter.toLowerCase()));
+            filtered.forEach(sub => {
                 const card = document.createElement('div');
                 card.className = 'subject-card';
                 card.innerHTML = `
@@ -889,18 +2306,21 @@
                 card.onclick = () => openSubject(sub.name);
                 grid.appendChild(card);
             });
+            document.getElementById('totalSubjects').innerText = filtered.length;
+            document.getElementById('totalFiles').innerText = filtered.length * 6;
         }
 
-        // ===== فتح تفاصيل المادة (B1-B6) =====
+        function filterCoreSubjects(value) {
+            renderCoreSubjects(value);
+        }
+
+        // ===== فتح تفاصيل المادة =====
         function openSubject(subjectName) {
-            // إخفاء جميع الأقسام وإظهار قسم التفاصيل
+            currentSubject = subjectName;
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             document.getElementById('subjectDetailSection').classList.add('active');
-
-            // تحديث عنوان المادة
             document.getElementById('subjectDetailTitle').innerText = subjectName;
 
-            // توليد بطاقات B1-B6
             const container = document.getElementById('subjectBlocksContainer');
             container.innerHTML = '';
 
@@ -927,22 +2347,64 @@
                 `;
                 container.appendChild(b);
             }
-
-            // إلغاء تفعيل التبويبات
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // ===== معالجة النقر على أيقونات B =====
+        // ===== أيقونات B =====
         function handleIconClick(subject, b, type) {
-            alert(`📄 ${subject} - ${b} - ${type}\n\nيمكنك ربط هذا الزر بملف PDF.\nمثال: pdfs/${subject}_${b}_${type.replace(/ /g,'_')}.pdf`);
+            document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+            let modalTitle = `${subject} - ${b} - ${type}`;
+            let contentHTML = '';
+
+            if (type === 'Data') {
+                contentHTML = `
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-chalkboard-user"></i> Lectures</div>
+                        ${generateFileList('lecture', 3)}
+                    </div>
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-flask"></i> Prelabs</div>
+                        ${generateFileList('prelab', 2)}
+                    </div>
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-microphone"></i> Records</div>
+                        ${generateFileList('record', 2, 'mp3')}
+                    </div>
+                `;
+            } else if (type === 'From Doctor') {
+                contentHTML = `
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-user-md"></i> محاضرات الدكتور</div>
+                        ${generateFileList('from_doctor', 4)}
+                    </div>
+                `;
+            } else if (type === 'Past Exams') {
+                contentHTML = `
+                    <div class="file-section">
+                        <div class="file-section-title"><i class="fa-solid fa-file-pen"></i> امتحانات سابقة</div>
+                        ${generateFileList('past_exam', 3)}
+                    </div>
+                `;
+            }
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <button class="close-btn" onclick="this.closest('.modal').remove()">إغلاق</button>
+                    <h2 style="color:var(--gold-primary);">${modalTitle}</h2>
+                    <div style="margin-top:1rem;">${contentHTML}</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            modal.addEventListener('click', function(e) { if (e.target === this) this.remove(); });
             return false;
         }
 
-        // ===== العودة إلى قائمة المواد الأساسية =====
         function backToCore() {
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             document.getElementById('coreSection').classList.add('active');
-            // تفعيل تبويب المواد الأساسية
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             const coreTab = document.querySelector('.tab-btn[onclick*="core"]');
             if (coreTab) coreTab.classList.add('active');
@@ -950,35 +2412,35 @@
 
         // ===== عرض الأقسام =====
         function showSection(section, btnElement) {
-            // إخفاء جميع الأقسام
-            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
-
-            // إظهار القسم المطلوب
-            const sectionMap = {
-                'home': 'homeSection',
-                'core': 'coreSection',
-                'extra': 'extraSection',
-                'portfolio': 'portfolioSection'
-            };
-            const targetId = sectionMap[section] || 'homeSection';
-            document.getElementById(targetId).classList.add('active');
-
-            // إذا كان القسم هو المواد الأساسية، تأكد من إخفاء التفاصيل
-            if (section === 'core') {
-                document.getElementById('subjectDetailSection').classList.remove('active');
-            }
-
-            // تحديث التبويبات النشطة
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            if (btnElement) {
-                btnElement.classList.add('active');
-            } else {
-                const tab = document.querySelector(`.tab-btn[onclick*="${section}"]`);
-                if (tab) tab.classList.add('active');
-            }
+            const loader = document.getElementById('globalLoader');
+            loader.style.display = 'block';
+            setTimeout(() => {
+                document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
+                const sectionMap = {
+                    'home': 'homeSection',
+                    'core': 'coreSection',
+                    'extra': 'extraSection',
+                    'portfolio': 'portfolioSection',
+                    'other': 'otherSection'
+                };
+                const targetId = sectionMap[section] || 'homeSection';
+                document.getElementById(targetId).classList.add('active');
+                if (section === 'core') {
+                    document.getElementById('subjectDetailSection').classList.remove('active');
+                    renderCoreSubjects();
+                }
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                if (btnElement) {
+                    btnElement.classList.add('active');
+                } else {
+                    const tab = document.querySelector(`.tab-btn[onclick*="${section}"]`);
+                    if (tab) tab.classList.add('active');
+                }
+                loader.style.display = 'none';
+                updateStats();
+            }, 300);
         }
 
-        // ===== البورتفوليو =====
         function openPortfolioBlock(blockName) {
             document.getElementById('portfolioTitle').innerText = `تفاصيل Portfolio - ${blockName}`;
             document.getElementById('portfolioModal').style.display = 'flex';
@@ -995,11 +2457,13 @@
                 if (activeUser && activeUser.name) {
                     showMainApp(activeUser.name);
                 }
-            } catch(e) {
-                console.error(e);
-            }
-            // عرض المواد الأساسية
+            } catch (e) { console.error(e); }
             renderCoreSubjects();
+            updateStats();
+            startSessionTimer();
+            initCarousel();
+            loadExamDate();
+            loadTodos();
         };
 
         function switchAuthMode(mode) {
@@ -1007,8 +2471,7 @@
             const signupForm = document.getElementById('signupForm');
             const loginBtn = document.getElementById('loginTabBtn');
             const signupBtn = document.getElementById('signupTabBtn');
-
-            if(mode === 'login') {
+            if (mode === 'login') {
                 loginForm.style.display = 'block';
                 signupForm.style.display = 'none';
                 loginBtn.classList.add('active');
@@ -1023,6 +2486,9 @@
             document.getElementById('signupAlert').style.display = 'none';
         }
 
+        function encryptPassword(pwd) { return btoa(pwd); }
+        function decryptPassword(encrypted) { try { return atob(encrypted); } catch (e) { return ''; } }
+
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('signupName').value.trim();
@@ -1034,28 +2500,25 @@
             if (!/^\d{14}$/.test(nationalId)) {
                 alertBox.innerText = 'الرقم القومي يجب أن يتكون من 14 رقمًا فقط.';
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-msg';
                 return;
             }
-
             let users = [];
-            try {
-                users = JSON.parse(localStorage.getItem('nova_registered_users')) || [];
-            } catch(err) { users = []; }
-
-            const existingUser = users.find(u => u.studentId === studentId || u.nationalId === nationalId);
-            if(existingUser) {
+            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch (err) { users = []; }
+            if (users.find(u => u.studentId === studentId || u.nationalId === nationalId)) {
                 alertBox.innerText = 'هذا الـ ID أو الرقم القومي مسجل بالفعل!';
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-msg';
                 return;
             }
-
-            const newUser = { name, studentId, nationalId, password };
+            const newUser = { name, studentId, nationalId, password: encryptPassword(password) };
             users.push(newUser);
             localStorage.setItem('nova_registered_users', JSON.stringify(users));
-            localStorage.setItem('nova_active_user', JSON.stringify(newUser));
-
-            alertBox.style.display = 'none';
-            showMainApp(newUser.name);
+            localStorage.setItem('nova_active_user', JSON.stringify({ name }));
+            alertBox.innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
+            alertBox.style.display = 'block';
+            alertBox.className = 'alert-msg success';
+            setTimeout(() => { showMainApp(name); }, 800);
         });
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -1063,29 +2526,29 @@
             const loginId = document.getElementById('loginId').value.trim();
             const password = document.getElementById('loginPassword').value;
             const alertBox = document.getElementById('loginAlert');
-
             let users = [];
-            try {
-                users = JSON.parse(localStorage.getItem('nova_registered_users')) || [];
-            } catch(err) { users = []; }
-
-            const matchedUser = users.find(u => (u.studentId === loginId || u.nationalId === loginId) && u.password === password);
-
-            if(matchedUser) {
-                localStorage.setItem('nova_active_user', JSON.stringify(matchedUser));
+            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch (err) { users = []; }
+            const matchedUser = users.find(u =>
+                (u.studentId === loginId || u.nationalId === loginId) &&
+                decryptPassword(u.password) === password
+            );
+            if (matchedUser) {
+                localStorage.setItem('nova_active_user', JSON.stringify({ name: matchedUser.name }));
                 alertBox.style.display = 'none';
                 showMainApp(matchedUser.name);
             } else {
                 alertBox.innerText = 'البيانات غير صحيحة، أو الحساب غير موجود. يرجى إنشاء حساب أولاً.';
                 alertBox.style.display = 'block';
+                alertBox.className = 'alert-msg';
             }
         });
 
         function showMainApp(userName) {
             document.getElementById('userInfoDisplay').innerText = `الطالب: ${userName}`;
             document.getElementById('authOverlay').style.display = 'none';
-            // التأكد من عرض الصفحة الرئيسية
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
+            startSessionTimer();
+            updateStats();
         }
 
         function logout() {
@@ -1097,9 +2560,47 @@
             document.getElementById('loginPassword').value = '';
             document.getElementById('loginAlert').style.display = 'none';
             document.getElementById('signupAlert').style.display = 'none';
-            // العودة للصفحة الرئيسية
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
+            clearInterval(window.sessionInterval);
         }
+
+        function startSessionTimer() {
+            clearInterval(window.sessionInterval);
+            sessionSeconds = 0;
+            window.sessionInterval = setInterval(() => {
+                sessionSeconds++;
+                const mins = String(Math.floor(sessionSeconds / 60)).padStart(2, '0');
+                const secs = String(sessionSeconds % 60).padStart(2, '0');
+                document.getElementById('sessionTime').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function updateStats() {
+            const total = coreSubjects.length;
+            document.getElementById('totalSubjects').innerText = total;
+            document.getElementById('totalFiles').innerText = total * 6;
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const btn = document.querySelector('.theme-toggle i');
+            if (current === 'light') {
+                html.removeAttribute('data-theme');
+                btn.className = 'fa-solid fa-moon';
+            } else {
+                html.setAttribute('data-theme', 'light');
+                btn.className = 'fa-solid fa-sun';
+            }
+        }
+
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        console.log('NOVA Portal loaded successfully with Other tab.');
     </script>
 </body>
 </html>
