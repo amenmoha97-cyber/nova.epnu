@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        /* ===== المتغيرات العامة ===== */
+        /* جميع الأنماط (نفسها السابقة) - اختصار للطول */
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -26,8 +26,6 @@
             --font-arabic: 'Cairo', sans-serif;
             --font-english: 'Poppins', sans-serif;
         }
-
-        /* ===== الوضع الفاتح ===== */
         [data-theme="light"] {
             --bg-black: #F7F4EE;
             --card-black: #FFFCF7;
@@ -39,14 +37,7 @@
             --gold-secondary: #8C691F;
             --shadow-gold: rgba(184, 138, 42, 0.2);
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: var(--font-arabic), var(--font-english);
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-arabic), var(--font-english); }
         body {
             background-color: var(--bg-black);
             color: var(--beige-main);
@@ -55,1689 +46,369 @@
             flex-direction: column;
             transition: background-color var(--transition-speed), color var(--transition-speed);
         }
-
         .bg-animation {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            background: radial-gradient(circle at 30% 40%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
-                radial-gradient(circle at 70% 60%, rgba(212, 175, 55, 0.05) 0%, transparent 50%);
+            top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%),
+                        radial-gradient(circle at 70% 60%, rgba(212,175,55,0.05) 0%, transparent 50%);
             animation: pulseBg 8s ease-in-out infinite alternate;
         }
-
-        @keyframes pulseBg {
-            0% { opacity: 0.6; transform: scale(1); }
-            100% { opacity: 1; transform: scale(1.05); }
-        }
-
-        /* ===== نافذة تسجيل الدخول ===== */
+        @keyframes pulseBg { 0% { opacity:0.6; transform:scale(1); } 100% { opacity:1; transform:scale(1.05); } }
         .auth-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 5, 5, 0.97);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 1rem;
-            overflow-y: auto;
-            backdrop-filter: blur(8px);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5,5,5,0.97); display: flex; justify-content: center; align-items: center;
+            z-index: 1000; padding: 1rem; overflow-y: auto; backdrop-filter: blur(8px);
         }
-        [data-theme="light"] .auth-overlay {
-            background: rgba(247, 244, 238, 0.97);
-        }
-
+        [data-theme="light"] .auth-overlay { background: rgba(247,244,238,0.97); }
         .auth-box {
-            background: var(--card-black);
-            border: 1.5px solid var(--gold-primary);
-            padding: 2.5rem 2rem;
-            border-radius: 28px;
-            width: 100%;
-            max-width: 480px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(212, 175, 55, 0.25);
-            animation: fadeUp 0.8s ease;
+            background: var(--card-black); border: 1.5px solid var(--gold-primary); padding: 2.5rem 2rem;
+            border-radius: 28px; width: 100%; max-width: 480px; text-align: center;
+            box-shadow: 0 0 40px rgba(212,175,55,0.25); animation: fadeUp 0.8s ease;
             transition: background var(--transition-speed);
         }
-        [data-theme="light"] .auth-box {
-            border-color: #B58A2A;
-            box-shadow: 0 0 40px rgba(184, 138, 42, 0.15);
-        }
-
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(40px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
+        [data-theme="light"] .auth-box { border-color: #B58A2A; box-shadow: 0 0 40px rgba(184,138,42,0.15); }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
         .auth-logo {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid var(--gold-primary);
-            margin-bottom: 1rem;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-            transition: transform 0.3s;
+            width: 110px; height: 110px; border-radius: 50%; object-fit: cover;
+            border: 3px solid var(--gold-primary); margin-bottom: 1rem;
+            box-shadow: 0 0 30px rgba(212,175,55,0.3); transition: transform 0.3s;
         }
-        .auth-logo:hover {
-            transform: scale(1.05) rotate(-3deg);
-        }
-
-        .auth-box h2 {
-            color: var(--gold-primary);
-            font-size: 2.5rem;
-            letter-spacing: 3px;
-            font-family: var(--font-english);
-            font-weight: 700;
-        }
-        [data-theme="light"] .auth-box h2 {
-            color: #B58A2A;
-        }
-
-        .credits-text {
-            color: var(--beige-light);
-            font-size: 0.9rem;
-            margin-bottom: 1.8rem;
-            font-family: var(--font-english);
-            line-height: 1.6;
-            opacity: 0.9;
-        }
-        .credits-text b {
-            color: var(--gold-primary);
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.8rem;
-            border-bottom: 1px solid var(--border-gold);
-            padding-bottom: 10px;
-        }
-
+        .auth-logo:hover { transform: scale(1.05) rotate(-3deg); }
+        .auth-box h2 { color: var(--gold-primary); font-size: 2.5rem; letter-spacing: 3px; font-family: var(--font-english); font-weight: 700; }
+        [data-theme="light"] .auth-box h2 { color: #B58A2A; }
+        .credits-text { color: var(--beige-light); font-size: 0.9rem; margin-bottom: 1.8rem; font-family: var(--font-english); line-height: 1.6; opacity: 0.9; }
+        .credits-text b { color: var(--gold-primary); }
+        .auth-tabs { display: flex; gap: 10px; margin-bottom: 1.8rem; border-bottom: 1px solid var(--border-gold); padding-bottom: 10px; }
         .auth-tab-btn {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--beige-light);
-            padding: 0.7rem;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            transition: 0.3s;
+            flex: 1; background: transparent; border: none; color: var(--beige-light); padding: 0.7rem;
+            font-size: 1rem; font-weight: 700; cursor: pointer; border-bottom: 3px solid transparent; transition: 0.3s;
             font-family: var(--font-english);
         }
-        .auth-tab-btn.active {
-            color: var(--gold-primary);
-            border-bottom-color: var(--gold-primary);
-        }
-
-        .input-group {
-            margin-bottom: 1.2rem;
-            text-align: right;
-        }
-        .input-group label {
-            display: block;
-            margin-bottom: 0.4rem;
-            color: var(--beige-main);
-            font-size: 0.9rem;
-            font-weight: 600;
-        }
+        .auth-tab-btn.active { color: var(--gold-primary); border-bottom-color: var(--gold-primary); }
+        .input-group { margin-bottom: 1.2rem; text-align: right; }
+        .input-group label { display: block; margin-bottom: 0.4rem; color: var(--beige-main); font-size: 0.9rem; font-weight: 600; }
         .input-group input {
-            width: 100%;
-            padding: 0.85rem 1rem;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-gold);
-            background: rgba(24, 22, 20, 0.6);
-            color: var(--beige-main);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
+            width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1.5px solid var(--border-gold);
+            background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; transition: 0.3s;
         }
-        [data-theme="light"] .input-group input {
-            background: rgba(255, 252, 247, 0.8);
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .input-group input:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-            background: rgba(24, 22, 20, 0.9);
-        }
-        [data-theme="light"] .input-group input:focus {
-            border-color: #B58A2A;
-            box-shadow: 0 0 15px rgba(184, 138, 42, 0.2);
-            background: #FFFCF7;
-        }
-
+        [data-theme="light"] .input-group input { background: rgba(255,252,247,0.8); border-color: #E4DCCF; color: #29251F; }
+        .input-group input:focus { border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(212,175,55,0.3); background: rgba(24,22,20,0.9); }
+        [data-theme="light"] .input-group input:focus { border-color: #B58A2A; box-shadow: 0 0 15px rgba(184,138,42,0.2); background: #FFFCF7; }
         .btn-gold {
-            width: 100%;
-            padding: 0.9rem;
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            border-radius: 12px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            margin-top: 0.5rem;
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.25);
+            width: 100%; padding: 0.9rem; background: var(--gold-primary); color: #0A0A0A; border: none;
+            border-radius: 12px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
+            margin-top: 0.5rem; box-shadow: 0 6px 20px rgba(212,175,55,0.25);
         }
-        [data-theme="light"] .btn-gold {
-            background: #B58A2A;
-            color: #FFFCF7;
-            box-shadow: 0 6px 20px rgba(184, 138, 42, 0.25);
-        }
-        .btn-gold:hover {
-            background: var(--gold-secondary);
-            color: #FFF;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
-        }
-        [data-theme="light"] .btn-gold:hover {
-            background: #8C691F;
-            color: #FFFCF7;
-            box-shadow: 0 10px 30px rgba(140, 105, 31, 0.4);
-        }
+        [data-theme="light"] .btn-gold { background: #B58A2A; color: #FFFCF7; box-shadow: 0 6px 20px rgba(184,138,42,0.25); }
+        .btn-gold:hover { background: var(--gold-secondary); color: #FFF; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.4); }
+        [data-theme="light"] .btn-gold:hover { background: #8C691F; color: #FFFCF7; box-shadow: 0 10px 30px rgba(140,105,31,0.4); }
+        .alert-msg { color: var(--error-red); font-size: 0.9rem; margin-top: 0.8rem; display: none; padding: 0.5rem; border-radius: 8px; background: rgba(231,76,60,0.1); border: 1px solid var(--error-red); }
+        .alert-msg.success { color: var(--success-green); border-color: var(--success-green); background: rgba(46,204,113,0.1); }
 
-        .alert-msg {
-            color: var(--error-red);
-            font-size: 0.9rem;
-            margin-top: 0.8rem;
-            display: none;
-            padding: 0.5rem;
-            border-radius: 8px;
-            background: rgba(231, 76, 60, 0.1);
-            border: 1px solid var(--error-red);
-        }
-        .alert-msg.success {
-            color: var(--success-green);
-            border-color: var(--success-green);
-            background: rgba(46, 204, 113, 0.1);
-        }
-
-        /* ===== الهيدر ===== */
         header {
-            background: var(--card-black);
-            border-bottom: 1px solid var(--border-gold);
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(6px);
+            background: var(--card-black); border-bottom: 1px solid var(--border-gold);
+            padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 100; backdrop-filter: blur(6px);
             transition: background var(--transition-speed);
         }
-        [data-theme="light"] header {
-            border-bottom-color: #E4DCCF;
-        }
+        [data-theme="light"] header { border-bottom-color: #E4DCCF; }
+        .logo-container { display: flex; align-items: center; gap: 14px; }
+        .site-logo { width: 48px; height: 48px; border-radius: 14px; border: 2px solid var(--gold-primary); object-fit: cover; box-shadow: 0 0 18px rgba(212,175,55,0.2); }
+        [data-theme="light"] .site-logo { border-color: #B58A2A; box-shadow: 0 0 18px rgba(184,138,42,0.1); }
+        .brand-title { color: var(--gold-primary); font-size: 1.8rem; font-family: var(--font-english); font-weight: 700; letter-spacing: 2px; }
+        [data-theme="light"] .brand-title { color: #B58A2A; }
+        .user-control { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .user-info { font-size: 0.9rem; color: var(--beige-main); background: rgba(28,25,23,0.8); padding: 0.4rem 1.2rem; border-radius: 30px; border: 1px solid var(--border-gold); backdrop-filter: blur(4px); }
+        [data-theme="light"] .user-info { background: #FFFCF7; border-color: #E4DCCF; color: #29251F; }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-gold); color: var(--gold-primary); padding: 0.4rem 0.9rem; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
+        .theme-toggle:hover { background: var(--gold-primary); color: #0A0A0A; }
+        [data-theme="light"] .theme-toggle { border-color: #B58A2A; color: #B58A2A; }
+        [data-theme="light"] .theme-toggle:hover { background: #B58A2A; color: #FFFCF7; }
+        .logout-btn { background: transparent; border: 1.5px solid var(--error-red); color: var(--error-red); padding: 0.4rem 1.2rem; border-radius: 30px; cursor: pointer; font-size: 0.9rem; transition: 0.3s; font-weight: 600; }
+        .logout-btn:hover { background: var(--error-red); color: #fff; transform: scale(1.05); }
+        .dev-badge { background: var(--gold-primary); color: #0A0A0A; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.7rem; font-weight: 700; margin-right: 8px; }
+        [data-theme="light"] .dev-badge { color: #FFFCF7; background: #B58A2A; }
+        .container { max-width: 1300px; margin: 2rem auto; padding: 0 1.5rem; flex: 1; width: 100%; }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .site-logo {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
-            border: 2px solid var(--gold-primary);
-            object-fit: cover;
-            box-shadow: 0 0 18px rgba(212, 175, 55, 0.2);
-        }
-        [data-theme="light"] .site-logo {
-            border-color: #B58A2A;
-            box-shadow: 0 0 18px rgba(184, 138, 42, 0.1);
-        }
-        .brand-title {
-            color: var(--gold-primary);
-            font-size: 1.8rem;
-            font-family: var(--font-english);
-            font-weight: 700;
-            letter-spacing: 2px;
-        }
-        [data-theme="light"] .brand-title {
-            color: #B58A2A;
-        }
-
-        .user-control {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .user-info {
-            font-size: 0.9rem;
-            color: var(--beige-main);
-            background: rgba(28, 25, 23, 0.8);
-            padding: 0.4rem 1.2rem;
-            border-radius: 30px;
-            border: 1px solid var(--border-gold);
-            backdrop-filter: blur(4px);
-        }
-        [data-theme="light"] .user-info {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .theme-toggle {
-            background: transparent;
-            border: 1px solid var(--border-gold);
-            color: var(--gold-primary);
-            padding: 0.4rem 0.9rem;
-            border-radius: 30px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 1.1rem;
-        }
-        .theme-toggle:hover {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-        }
-        [data-theme="light"] .theme-toggle {
-            border-color: #B58A2A;
-            color: #B58A2A;
-        }
-        [data-theme="light"] .theme-toggle:hover {
-            background: #B58A2A;
-            color: #FFFCF7;
-        }
-        .logout-btn {
-            background: transparent;
-            border: 1.5px solid var(--error-red);
-            color: var(--error-red);
-            padding: 0.4rem 1.2rem;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: 0.3s;
-            font-weight: 600;
-        }
-        .logout-btn:hover {
-            background: var(--error-red);
-            color: #fff;
-            transform: scale(1.05);
-        }
-
-        .dev-badge {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            margin-right: 8px;
-        }
-        [data-theme="light"] .dev-badge {
-            color: #FFFCF7;
-            background: #B58A2A;
-        }
-
-        .container {
-            max-width: 1300px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-            flex: 1;
-            width: 100%;
-        }
-
-        /* ===== تبويبات التنقل ===== */
-        .nav-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-gold);
-            padding-bottom: 14px;
-            overflow-x: auto;
-            flex-wrap: wrap;
-        }
+        .nav-tabs { display: flex; gap: 12px; margin-bottom: 2rem; border-bottom: 1px solid var(--border-gold); padding-bottom: 14px; overflow-x: auto; flex-wrap: wrap; }
         .tab-btn {
-            background: rgba(24, 22, 20, 0.7);
-            border: 1px solid var(--border-gold);
-            color: var(--beige-main);
-            padding: 0.7rem 1.8rem;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: 0.3s;
-            white-space: nowrap;
-            font-size: 0.95rem;
-            backdrop-filter: blur(4px);
+            background: rgba(24,22,20,0.7); border: 1px solid var(--border-gold); color: var(--beige-main);
+            padding: 0.7rem 1.8rem; border-radius: 40px; cursor: pointer; font-weight: 700; transition: 0.3s;
+            white-space: nowrap; font-size: 0.95rem; backdrop-filter: blur(4px);
         }
-        [data-theme="light"] .tab-btn {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
+        [data-theme="light"] .tab-btn { background: #FFFCF7; border-color: #E4DCCF; color: #29251F; }
         .tab-btn i { margin-left: 8px; }
-        .tab-btn.active,
-        .tab-btn:hover {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border-color: var(--gold-primary);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
-            transform: translateY(-2px);
-        }
-        [data-theme="light"] .tab-btn.active,
-        [data-theme="light"] .tab-btn:hover {
-            background: #B58A2A;
-            color: #FFFCF7;
-            border-color: #B58A2A;
-            box-shadow: 0 4px 20px rgba(184, 138, 42, 0.25);
-        }
+        .tab-btn.active, .tab-btn:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); box-shadow: 0 4px 20px rgba(212,175,55,0.3); transform: translateY(-2px); }
+        [data-theme="light"] .tab-btn.active, [data-theme="light"] .tab-btn:hover { background: #B58A2A; color: #FFFCF7; border-color: #B58A2A; box-shadow: 0 4px 20px rgba(184,138,42,0.25); }
 
-        /* ===== عنوان القسم ===== */
-        .section-title {
-            color: var(--gold-primary);
-            margin-bottom: 1.5rem;
-            font-size: 1.7rem;
-            border-right: 5px solid var(--gold-primary);
-            padding-right: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-weight: 700;
-        }
-        [data-theme="light"] .section-title {
-            color: #29251F;
-            border-right-color: #B58A2A;
-        }
-        .section-title .back-btn {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 40px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.95rem;
-        }
-        [data-theme="light"] .section-title .back-btn {
-            background: #B58A2A;
-            color: #FFFCF7;
-        }
-        .section-title .back-btn:hover {
-            background: var(--gold-secondary);
-            color: #fff;
-            transform: scale(1.05);
-        }
+        .section-title { color: var(--gold-primary); margin-bottom: 1.5rem; font-size: 1.7rem; border-right: 5px solid var(--gold-primary); padding-right: 16px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-weight: 700; }
+        [data-theme="light"] .section-title { color: #29251F; border-right-color: #B58A2A; }
+        .section-title .back-btn { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.5rem 1.5rem; border-radius: 40px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.95rem; }
+        [data-theme="light"] .section-title .back-btn { background: #B58A2A; color: #FFFCF7; }
+        .section-title .back-btn:hover { background: var(--gold-secondary); color: #fff; transform: scale(1.05); }
 
-        .search-bar {
-            width: 100%;
-            max-width: 400px;
-            padding: 0.7rem 1.2rem;
-            border-radius: 40px;
-            border: 1.5px solid var(--border-gold);
-            background: rgba(24, 22, 20, 0.6);
-            color: var(--beige-main);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-            backdrop-filter: blur(4px);
-        }
-        [data-theme="light"] .search-bar {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .search-bar:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
-        }
+        .search-bar { width: 100%; max-width: 400px; padding: 0.7rem 1.2rem; border-radius: 40px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; transition: 0.3s; backdrop-filter: blur(4px); }
+        [data-theme="light"] .search-bar { background: #FFFCF7; border-color: #E4DCCF; color: #29251F; }
+        .search-bar:focus { border-color: var(--gold-primary); box-shadow: 0 0 20px rgba(212,175,55,0.2); }
 
-        .grid-container {
-            display: grid;
-            gap: 1.8rem;
-            margin-bottom: 3rem;
-        }
+        .grid-container { display: grid; gap: 1.8rem; margin-bottom: 3rem; }
 
-        /* ===== الصفحة الرئيسية ===== */
-        .home-credit {
-            text-align: center;
-            font-size: 0.9rem;
-            color: var(--beige-light);
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-        .home-credit strong {
-            color: var(--gold-primary);
-        }
-        [data-theme="light"] .home-credit strong {
-            color: #B58A2A;
-        }
+        .home-credit { text-align: center; font-size: 0.9rem; color: var(--beige-light); margin-bottom: 0.5rem; opacity: 0.9; }
+        .home-credit strong { color: var(--gold-primary); }
+        [data-theme="light"] .home-credit strong { color: #B58A2A; }
 
-        /* ===== كاروسيل (Fade Effect - سلس) ===== */
-        .carousel-container {
-            position: relative;
-            width: 100%;
-            border-radius: 24px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-            aspect-ratio: 16 / 5;
-            background: var(--beige-card);
-        }
-        [data-theme="light"] .carousel-container {
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
-        }
+        .carousel-container { position: relative; width: 100%; border-radius: 24px; overflow: hidden; margin-bottom: 1.5rem; box-shadow: 0 12px 40px rgba(0,0,0,0.5); aspect-ratio: 16/5; background: var(--beige-card); }
+        [data-theme="light"] .carousel-container { box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+        .carousel-slides { position: relative; width: 100%; height: 100%; }
+        .carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out; z-index: 1; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; background-color: var(--beige-card); }
+        .carousel-slide.active { opacity: 1; z-index: 2; }
+        .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+        .carousel-slide .slide-content { position: absolute; bottom: 20%; right: 10%; background: rgba(0,0,0,0.6); padding: 1rem 2rem; border-radius: 16px; backdrop-filter: blur(4px); border-right: 4px solid var(--gold-primary); max-width: 60%; z-index: 3; }
+        [data-theme="light"] .carousel-slide .slide-content { background: rgba(255,252,247,0.85); border-right-color: #B58A2A; }
+        .carousel-slide .slide-content h3 { color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 0.2rem; }
+        .carousel-slide .slide-content p { color: var(--beige-main); font-size: 0.9rem; }
+        [data-theme="light"] .carousel-slide .slide-content p { color: #29251F; }
+        .carousel-indicators { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 10; }
+        .carousel-indicators .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.2); }
+        .carousel-indicators .dot.active { background: var(--gold-primary); transform: scale(1.2); border-color: var(--gold-primary); }
+        [data-theme="light"] .carousel-indicators .dot { background: rgba(0,0,0,0.2); border-color: rgba(0,0,0,0.1); }
+        [data-theme="light"] .carousel-indicators .dot.active { background: #B58A2A; border-color: #B58A2A; }
 
-        .carousel-slides {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
+        .other-tools { display: flex; flex-direction: column; gap: 2rem; }
 
-        .carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
-            z-index: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-size: cover;
-            background-position: center;
-            background-color: var(--beige-card);
-        }
-        .carousel-slide.active {
-            opacity: 1;
-            z-index: 2;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-slide .slide-content {
-            position: absolute;
-            bottom: 20%;
-            right: 10%;
-            background: rgba(0, 0, 0, 0.6);
-            padding: 1rem 2rem;
-            border-radius: 16px;
-            backdrop-filter: blur(4px);
-            border-right: 4px solid var(--gold-primary);
-            max-width: 60%;
-            z-index: 3;
-        }
-        [data-theme="light"] .carousel-slide .slide-content {
-            background: rgba(255, 252, 247, 0.85);
-            border-right-color: #B58A2A;
-        }
-        .carousel-slide .slide-content h3 {
-            color: var(--gold-primary);
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-        }
-        .carousel-slide .slide-content p {
-            color: var(--beige-main);
-            font-size: 0.9rem;
-        }
-        [data-theme="light"] .carousel-slide .slide-content p {
-            color: #29251F;
-        }
-
-        .carousel-indicators {
-            position: absolute;
-            bottom: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-        .carousel-indicators .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.4);
-            cursor: pointer;
-            transition: 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        .carousel-indicators .dot.active {
-            background: var(--gold-primary);
-            transform: scale(1.2);
-            border-color: var(--gold-primary);
-        }
-        [data-theme="light"] .carousel-indicators .dot {
-            background: rgba(0, 0, 0, 0.2);
-            border-color: rgba(0, 0, 0, 0.1);
-        }
-        [data-theme="light"] .carousel-indicators .dot.active {
-            background: #B58A2A;
-            border-color: #B58A2A;
-        }
-
-        /* ===== تبويب أخرى ===== */
-        .other-tools {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        /* ===== حاسبة التقدير ===== */
-        .gpa-calculator {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 24px;
-            padding: 1.8rem 2rem;
-            transition: all 0.3s;
-        }
-        [data-theme="light"] .gpa-calculator {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .gpa-calculator h3 {
-            color: var(--gold-primary);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        [data-theme="light"] .gpa-calculator h3 {
-            color: #B58A2A;
-        }
-        .gpa-input-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
-        }
-        .gpa-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-        .gpa-input-group label {
-            font-size: 0.75rem;
-            color: var(--beige-light);
-            font-weight: 600;
-        }
-        .gpa-input-group .max-score {
-            font-size: 0.65rem;
-            opacity: 0.7;
-            color: var(--beige-light);
-        }
-        .gpa-input-group input {
-            padding: 0.5rem 0.6rem;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-gold);
-            background: rgba(24, 22, 20, 0.6);
-            color: var(--beige-main);
-            font-size: 0.95rem;
-            outline: none;
-            transition: 0.3s;
-            width: 100%;
-        }
-        [data-theme="light"] .gpa-input-group input {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .gpa-input-group input:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 12px rgba(212, 175, 55, 0.2);
-        }
-
-        .gpa-result {
-            background: rgba(36, 32, 28, 0.5);
-            border-radius: 16px;
-            padding: 1.2rem;
-            margin-top: 1rem;
-            display: none;
-            border: 1px solid var(--border-gold);
-            animation: fadeIn 0.5s ease;
-        }
-        [data-theme="light"] .gpa-result {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-        }
-        .gpa-result .result-row {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 0.4rem 0;
-            border-bottom: 1px solid var(--border-gold);
-        }
-        .gpa-result .result-row:last-child {
-            border-bottom: none;
-        }
-        .gpa-result .result-label {
-            color: var(--beige-light);
-            font-weight: 600;
-        }
-        .gpa-result .result-value {
-            color: var(--gold-primary);
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-        [data-theme="light"] .gpa-result .result-value {
-            color: #B58A2A;
-        }
+        .gpa-calculator { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.8rem 2rem; transition: all 0.3s; }
+        [data-theme="light"] .gpa-calculator { background: #FFFCF7; border-color: #E4DCCF; }
+        .gpa-calculator h3 { color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        [data-theme="light"] .gpa-calculator h3 { color: #B58A2A; }
+        .gpa-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
+        .gpa-input-group { display: flex; flex-direction: column; gap: 2px; }
+        .gpa-input-group label { font-size: 0.75rem; color: var(--beige-light); font-weight: 600; }
+        .gpa-input-group .max-score { font-size: 0.65rem; opacity: 0.7; color: var(--beige-light); }
+        .gpa-input-group input { padding: 0.5rem 0.6rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.95rem; outline: none; transition: 0.3s; width: 100%; }
+        [data-theme="light"] .gpa-input-group input { background: #F7F4EE; border-color: #E4DCCF; color: #29251F; }
+        .gpa-input-group input:focus { border-color: var(--gold-primary); box-shadow: 0 0 12px rgba(212,175,55,0.2); }
+        .gpa-result { background: rgba(36,32,28,0.5); border-radius: 16px; padding: 1.2rem; margin-top: 1rem; display: none; border: 1px solid var(--border-gold); animation: fadeIn 0.5s ease; }
+        [data-theme="light"] .gpa-result { background: #F7F4EE; border-color: #E4DCCF; }
+        .gpa-result .result-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 0.4rem 0; border-bottom: 1px solid var(--border-gold); }
+        .gpa-result .result-row:last-child { border-bottom: none; }
+        .gpa-result .result-label { color: var(--beige-light); font-weight: 600; }
+        .gpa-result .result-value { color: var(--gold-primary); font-weight: 700; font-size: 1.1rem; }
+        [data-theme="light"] .gpa-result .result-value { color: #B58A2A; }
         .gpa-result .result-value.excellent { color: #2ECC71; }
         .gpa-result .result-value.very-good { color: #3498DB; }
         .gpa-result .result-value.good { color: #F1C40F; }
         .gpa-result .result-value.pass { color: #E67E22; }
         .gpa-result .result-value.fail { color: var(--error-red); }
 
-        /* ===== عداد تنازلي ===== */
-        .countdown-section {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 24px;
-            padding: 1.5rem 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1.5rem;
-        }
-        [data-theme="light"] .countdown-section {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .countdown-section h3 {
-            color: var(--gold-primary);
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        [data-theme="light"] .countdown-section h3 {
-            color: #B58A2A;
-        }
-        .countdown-timer {
-            display: flex;
-            gap: 1.5rem;
-            font-family: var(--font-english);
-            font-weight: 700;
-            font-size: 1.8rem;
-            color: var(--gold-primary);
-        }
-        [data-theme="light"] .countdown-timer {
-            color: #B58A2A;
-        }
-        .countdown-timer .time-unit {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.7rem;
-            color: var(--beige-light);
-            font-weight: 400;
-        }
-        .countdown-timer .time-unit span {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--gold-primary);
-        }
-        [data-theme="light"] .countdown-timer .time-unit span {
-            color: #B58A2A;
-        }
-        .countdown-input {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .countdown-input input[type="date"] {
-            padding: 0.5rem 0.8rem;
-            border-radius: 10px;
-            border: 1.5px solid var(--border-gold);
-            background: rgba(24, 22, 20, 0.6);
-            color: var(--beige-main);
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.3s;
-        }
-        [data-theme="light"] .countdown-input input[type="date"] {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .countdown-input input[type="date"]:focus {
-            border-color: var(--gold-primary);
-        }
-        .countdown-input button {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            padding: 0.5rem 1.2rem;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        [data-theme="light"] .countdown-input button {
-            background: #B58A2A;
-            color: #FFFCF7;
-        }
-        .countdown-input button:hover {
-            transform: scale(1.05);
-            background: var(--gold-secondary);
-            color: #FFF;
-        }
-        [data-theme="light"] .countdown-input button:hover {
-            background: #8C691F;
-        }
+        .countdown-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+        [data-theme="light"] .countdown-section { background: #FFFCF7; border-color: #E4DCCF; }
+        .countdown-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
+        [data-theme="light"] .countdown-section h3 { color: #B58A2A; }
+        .countdown-timer { display: flex; gap: 1.5rem; font-family: var(--font-english); font-weight: 700; font-size: 1.8rem; color: var(--gold-primary); }
+        [data-theme="light"] .countdown-timer { color: #B58A2A; }
+        .countdown-timer .time-unit { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--beige-light); font-weight: 400; }
+        .countdown-timer .time-unit span { font-size: 2rem; font-weight: 700; color: var(--gold-primary); }
+        [data-theme="light"] .countdown-timer .time-unit span { color: #B58A2A; }
+        .countdown-input { display: flex; align-items: center; gap: 8px; }
+        .countdown-input input[type="date"] { padding: 0.5rem 0.8rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.9rem; outline: none; transition: 0.3s; }
+        [data-theme="light"] .countdown-input input[type="date"] { background: #F7F4EE; border-color: #E4DCCF; color: #29251F; }
+        .countdown-input input[type="date"]:focus { border-color: var(--gold-primary); }
+        .countdown-input button { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        [data-theme="light"] .countdown-input button { background: #B58A2A; color: #FFFCF7; }
+        .countdown-input button:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
+        [data-theme="light"] .countdown-input button:hover { background: #8C691F; }
 
-        /* ===== To-Do List ===== */
-        .todo-section {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 24px;
-            padding: 1.5rem 2rem;
-        }
-        [data-theme="light"] .todo-section {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .todo-section h3 {
-            color: var(--gold-primary);
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-        [data-theme="light"] .todo-section h3 {
-            color: #B58A2A;
-        }
-        .todo-input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 1.2rem;
-            flex-wrap: wrap;
-        }
-        .todo-input-group input {
-            flex: 1;
-            padding: 0.7rem 1rem;
-            border-radius: 12px;
-            border: 1.5px solid var(--border-gold);
-            background: rgba(24, 22, 20, 0.6);
-            color: var(--beige-main);
-            font-size: 1rem;
-            outline: none;
-            transition: 0.3s;
-            min-width: 150px;
-        }
-        [data-theme="light"] .todo-input-group input {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-            color: #29251F;
-        }
-        .todo-input-group input:focus {
-            border-color: var(--gold-primary);
-        }
-        .todo-input-group button {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            padding: 0.7rem 2rem;
-            border-radius: 30px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            white-space: nowrap;
-        }
-        [data-theme="light"] .todo-input-group button {
-            background: #B58A2A;
-            color: #FFFCF7;
-        }
-        .todo-input-group button:hover {
-            transform: scale(1.05);
-            background: var(--gold-secondary);
-            color: #FFF;
-        }
-        [data-theme="light"] .todo-input-group button:hover {
-            background: #8C691F;
-        }
+        .todo-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; }
+        [data-theme="light"] .todo-section { background: #FFFCF7; border-color: #E4DCCF; }
+        .todo-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+        [data-theme="light"] .todo-section h3 { color: #B58A2A; }
+        .todo-input-group { display: flex; gap: 10px; margin-bottom: 1.2rem; flex-wrap: wrap; }
+        .todo-input-group input { flex: 1; padding: 0.7rem 1rem; border-radius: 12px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; transition: 0.3s; min-width: 150px; }
+        [data-theme="light"] .todo-input-group input { background: #F7F4EE; border-color: #E4DCCF; color: #29251F; }
+        .todo-input-group input:focus { border-color: var(--gold-primary); }
+        .todo-input-group button { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.7rem 2rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; white-space: nowrap; }
+        [data-theme="light"] .todo-input-group button { background: #B58A2A; color: #FFFCF7; }
+        .todo-input-group button:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
+        [data-theme="light"] .todo-input-group button:hover { background: #8C691F; }
+        .todo-list { list-style: none; padding: 0; }
+        .todo-list li { display: flex; align-items: center; gap: 12px; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border-gold); transition: 0.2s; color: var(--beige-main); }
+        [data-theme="light"] .todo-list li { color: #29251F; }
+        .todo-list li:last-child { border-bottom: none; }
+        .todo-list li .todo-checkbox { width: 22px; height: 22px; accent-color: var(--gold-primary); cursor: pointer; flex-shrink: 0; }
+        [data-theme="light"] .todo-list li .todo-checkbox { accent-color: #B58A2A; }
+        .todo-list li .todo-text { flex: 1; font-size: 1rem; transition: 0.3s; }
+        .todo-list li .todo-text.completed { text-decoration: line-through; opacity: 0.6; }
+        .todo-list li .todo-delete { background: var(--error-red); color: #fff; border: none; padding: 0.2rem 0.8rem; border-radius: 20px; cursor: pointer; transition: 0.3s; font-size: 0.8rem; font-weight: 700; }
+        .todo-list li .todo-delete:hover { transform: scale(1.1); background: #c0392b; }
 
-        .todo-list {
-            list-style: none;
-            padding: 0;
-        }
-        .todo-list li {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 0.7rem 1rem;
-            border-bottom: 1px solid var(--border-gold);
-            transition: 0.2s;
-            color: var(--beige-main);
-        }
-        [data-theme="light"] .todo-list li {
-            color: #29251F;
-        }
-        .todo-list li:last-child {
-            border-bottom: none;
-        }
-        .todo-list li .todo-checkbox {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--gold-primary);
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        [data-theme="light"] .todo-list li .todo-checkbox {
-            accent-color: #B58A2A;
-        }
-        .todo-list li .todo-text {
-            flex: 1;
-            font-size: 1rem;
-            transition: 0.3s;
-        }
-        .todo-list li .todo-text.completed {
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-        .todo-list li .todo-delete {
-            background: var(--error-red);
-            color: #fff;
-            border: none;
-            padding: 0.2rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.8rem;
-            font-weight: 700;
-        }
-        .todo-list li .todo-delete:hover {
-            transform: scale(1.1);
-            background: #c0392b;
-        }
+        .contact-btn-wrapper { text-align: center; margin-top: 2rem; }
+        .contact-btn { display: inline-flex; align-items: center; gap: 14px; background: var(--gold-primary); color: #0A0A0A; padding: 0.9rem 3rem; border-radius: 60px; font-weight: 700; font-size: 1.2rem; text-decoration: none; box-shadow: 0 6px 30px rgba(212,175,55,0.4); transition: 0.3s; border: 1px solid var(--gold-primary); }
+        [data-theme="light"] .contact-btn { background: #B58A2A; color: #FFFCF7; border-color: #B58A2A; box-shadow: 0 6px 30px rgba(184,138,42,0.3); }
+        .contact-btn:hover { background: var(--gold-secondary); color: #FFF; transform: scale(1.06) translateY(-3px); box-shadow: 0 10px 40px rgba(212,175,55,0.6); }
+        [data-theme="light"] .contact-btn:hover { background: #8C691F; color: #FFFCF7; box-shadow: 0 10px 40px rgba(140,105,31,0.4); }
+        .contact-btn i { font-size: 2rem; }
 
-        .contact-btn-wrapper {
-            text-align: center;
-            margin-top: 2rem;
-        }
-        .contact-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 14px;
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            padding: 0.9rem 3rem;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            text-decoration: none;
-            box-shadow: 0 6px 30px rgba(212, 175, 55, 0.4);
-            transition: 0.3s;
-            border: 1px solid var(--gold-primary);
-        }
-        [data-theme="light"] .contact-btn {
-            background: #B58A2A;
-            color: #FFFCF7;
-            border-color: #B58A2A;
-            box-shadow: 0 6px 30px rgba(184, 138, 42, 0.3);
-        }
-        .contact-btn:hover {
-            background: var(--gold-secondary);
-            color: #FFF;
-            transform: scale(1.06) translateY(-3px);
-            box-shadow: 0 10px 40px rgba(212, 175, 55, 0.6);
-        }
-        [data-theme="light"] .contact-btn:hover {
-            background: #8C691F;
-            color: #FFFCF7;
-            box-shadow: 0 10px 40px rgba(140, 105, 31, 0.4);
-        }
-        .contact-btn i {
-            font-size: 2rem;
-        }
+        #coreSection .grid-container { grid-template-columns: repeat(5, 1fr); }
+        .subject-card { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 18px; padding: 1.2rem 0.8rem; text-align: center; transition: 0.4s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; aspect-ratio: 1/1; position: relative; }
+        [data-theme="light"] .subject-card { background: #FFFCF7; border-color: #E4DCCF; }
+        .subject-card:hover { border-color: var(--gold-primary); transform: translateY(-8px) scale(1.02); box-shadow: 0 12px 35px rgba(212,175,55,0.25); background: rgba(36,32,28,0.95); }
+        [data-theme="light"] .subject-card:hover { border-color: #B58A2A; background: #FFFCF7; box-shadow: 0 12px 35px rgba(184,138,42,0.12); }
+        .subject-card .subject-cover-img { height: 60%; width: 100%; object-fit: cover; border-radius: 12px; margin-bottom: 0.6rem; border: 1px solid var(--border-gold); }
+        .subject-card i { font-size: 3rem; color: var(--gold-primary); margin-bottom: 0.5rem; }
+        [data-theme="light"] .subject-card i { color: #D8B866; }
+        .subject-card h3 { font-size: 1rem; margin: 0; font-weight: 700; }
 
-        /* ===== المواد الأساسية ===== */
-        #coreSection .grid-container {
-            grid-template-columns: repeat(5, 1fr);
-        }
+        #subjectDetailSection .grid-container { grid-template-columns: repeat(3, 1fr); }
+        .b-card { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 18px; padding: 1.4rem 0.8rem; text-align: center; transition: 0.4s; }
+        [data-theme="light"] .b-card { background: #FFFCF7; border-color: #E4DCCF; }
+        .b-card:hover { border-color: var(--gold-primary); transform: translateY(-6px); box-shadow: 0 10px 30px rgba(212,175,55,0.15); background: rgba(36,32,28,0.95); }
+        [data-theme="light"] .b-card:hover { border-color: #B58A2A; background: #FFFCF7; box-shadow: 0 10px 30px rgba(184,138,42,0.08); }
+        .b-card h4 { color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 0.2rem; }
+        [data-theme="light"] .b-card h4 { color: #B58A2A; }
+        .b-card .b-subtitle { font-size: 0.8rem; color: var(--beige-light); margin-bottom: 0.8rem; opacity: 0.85; line-height: 1.4; }
+        .b-icons { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+        .b-icons .icon-item { background: rgba(24,22,20,0.8); border: 1px solid var(--border-gold); border-radius: 14px; padding: 0.5rem 0.8rem; min-width: 75px; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; cursor: pointer; transition: 0.3s; color: var(--beige-light); font-size: 0.7rem; text-decoration: none; }
+        [data-theme="light"] .b-icons .icon-item { background: #F7F4EE; border-color: #E4DCCF; color: #6F685D; }
+        .b-icons .icon-item i { font-size: 1.6rem; color: var(--gold-primary); }
+        [data-theme="light"] .b-icons .icon-item i { color: #D8B866; }
+        .b-icons .icon-item:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); transform: scale(1.08); }
+        [data-theme="light"] .b-icons .icon-item:hover { background: #B58A2A; color: #FFFCF7; border-color: #B58A2A; }
+        .b-icons .icon-item:hover i { color: #0A0A0A; }
+        [data-theme="light"] .b-icons .icon-item:hover i { color: #FFFCF7; }
 
-        .subject-card {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 18px;
-            padding: 1.2rem 0.8rem;
-            text-align: center;
-            transition: 0.4s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-            position: relative;
-        }
-        [data-theme="light"] .subject-card {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .subject-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 12px 35px rgba(212, 175, 55, 0.25);
-            background: rgba(36, 32, 28, 0.95);
-        }
-        [data-theme="light"] .subject-card:hover {
-            border-color: #B58A2A;
-            background: #FFFCF7;
-            box-shadow: 0 12px 35px rgba(184, 138, 42, 0.12);
-        }
-        .subject-card .subject-cover-img {
-            height: 60%;
-            width: 100%;
-            object-fit: cover;
-            border-radius: 12px;
-            margin-bottom: 0.6rem;
-            border: 1px solid var(--border-gold);
-        }
-        .subject-card i {
-            font-size: 3rem;
-            color: var(--gold-primary);
-            margin-bottom: 0.5rem;
-        }
-        [data-theme="light"] .subject-card i {
-            color: #D8B866;
-        }
-        .subject-card h3 {
-            font-size: 1rem;
-            margin: 0;
-            font-weight: 700;
-        }
+        .extra-tabs { display: flex; gap: 12px; margin-bottom: 2rem; border-bottom: 2px solid var(--border-gold); padding-bottom: 10px; }
+        .extra-tab-btn { background: transparent; border: none; padding: 0.7rem 2rem; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; color: var(--beige-light); border: 2px solid transparent; background: var(--beige-card); backdrop-filter: blur(4px); }
+        [data-theme="light"] .extra-tab-btn { background: #FFFCF7; color: #6F685D; }
+        .extra-tab-btn.active { color: var(--gold-primary); border-color: var(--gold-primary); background: rgba(36,32,28,0.8); box-shadow: 0 4px 15px var(--shadow-gold); }
+        [data-theme="light"] .extra-tab-btn.active { background: #FFFCF7; border-color: #B58A2A; color: #B58A2A; box-shadow: 0 4px 15px rgba(184,138,42,0.15); }
+        .extra-tab-btn i { margin-left: 8px; }
+        .extra-tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .extra-tab-content.active { display: block; }
+        .extra-tab-content .grid-container { grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
 
-        /* ===== تفاصيل المادة ===== */
-        #subjectDetailSection .grid-container {
-            grid-template-columns: repeat(3, 1fr);
-        }
+        #portfolioSection .grid-container { grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); }
+        #portfolioSection .subject-card { aspect-ratio: 1/1; padding: 1rem 0.5rem; }
+        #portfolioSection .subject-card i { font-size: 2.2rem; }
+        #portfolioSection .subject-card h3 { font-size: 0.85rem; }
 
-        .b-card {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 18px;
-            padding: 1.4rem 0.8rem;
-            text-align: center;
-            transition: 0.4s;
-        }
-        [data-theme="light"] .b-card {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .b-card:hover {
-            border-color: var(--gold-primary);
-            transform: translateY(-6px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
-            background: rgba(36, 32, 28, 0.95);
-        }
-        [data-theme="light"] .b-card:hover {
-            border-color: #B58A2A;
-            background: #FFFCF7;
-            box-shadow: 0 10px 30px rgba(184, 138, 42, 0.08);
-        }
-        .b-card h4 {
-            color: var(--gold-primary);
-            font-size: 1.5rem;
-            margin-bottom: 0.2rem;
-        }
-        [data-theme="light"] .b-card h4 {
-            color: #B58A2A;
-        }
-        .b-card .b-subtitle {
-            font-size: 0.8rem;
-            color: var(--beige-light);
-            margin-bottom: 0.8rem;
-            opacity: 0.85;
-            line-height: 1.4;
-        }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.88); z-index: 500; justify-content: center; align-items: center; backdrop-filter: blur(6px); animation: fadeIn 0.3s ease; }
+        [data-theme="light"] .modal { background: rgba(247,244,238,0.92); }
+        @keyframes fadeIn { from { opacity:0; transform:scale(0.95); } to { opacity:1; transform:scale(1); } }
+        .modal-content { background: var(--card-black); border: 1.5px solid var(--gold-primary); width: 90%; max-width: 850px; border-radius: 24px; padding: 2.2rem; max-height: 80vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
+        [data-theme="light"] .modal-content { background: #FFFCF7; border-color: #B58A2A; box-shadow: 0 20px 60px rgba(0,0,0,0.08); }
+        .modal-content h2 { color: var(--gold-primary); margin-bottom: 1.2rem; font-size: 1.8rem; }
+        [data-theme="light"] .modal-content h2 { color: #29251F; }
 
-        .b-icons {
-            display: flex;
-            justify-content: center;
-            gap: 0.8rem;
-            flex-wrap: wrap;
-        }
-        .b-icons .icon-item {
-            background: rgba(24, 22, 20, 0.8);
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 0.5rem 0.8rem;
-            min-width: 75px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--beige-light);
-            font-size: 0.7rem;
-            text-decoration: none;
-        }
-        [data-theme="light"] .b-icons .icon-item {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-            color: #6F685D;
-        }
-        .b-icons .icon-item i {
-            font-size: 1.6rem;
-            color: var(--gold-primary);
-        }
-        [data-theme="light"] .b-icons .icon-item i {
-            color: #D8B866;
-        }
-        .b-icons .icon-item:hover {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border-color: var(--gold-primary);
-            transform: scale(1.08);
-        }
-        [data-theme="light"] .b-icons .icon-item:hover {
-            background: #B58A2A;
-            color: #FFFCF7;
-            border-color: #B58A2A;
-        }
-        .b-icons .icon-item:hover i {
-            color: #0A0A0A;
-        }
-        [data-theme="light"] .b-icons .icon-item:hover i {
-            color: #FFFCF7;
-        }
+        .block-card { background: var(--beige-card); border: 1px solid var(--border-gold); padding: 1.2rem 1.5rem; border-radius: 14px; text-align: right; transition: 0.3s; margin-bottom: 1.5rem; }
+        [data-theme="light"] .block-card { background: #F7F4EE; border-color: #E4DCCF; }
+        .block-card:hover { border-color: var(--gold-primary); background: rgba(36,32,28,0.95); transform: translateX(-4px); }
+        [data-theme="light"] .block-card:hover { border-color: #B58A2A; background: #FFFCF7; transform: translateX(-4px); }
+        .block-card h4 { color: var(--gold-primary); margin-bottom: 0.8rem; font-size: 1.2rem; }
+        [data-theme="light"] .block-card h4 { color: #B58A2A; }
+        .block-card p { color: var(--beige-light); font-size: 0.9rem; line-height: 1.6; }
+        [data-theme="light"] .block-card p { color: #6F685D; }
 
-        /* ===== المواد الإضافية (تبويبات) ===== */
-        .extra-tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid var(--border-gold);
-            padding-bottom: 10px;
-        }
+        .close-btn { background: var(--error-red); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 40px; cursor: pointer; float: left; font-weight: 700; transition: 0.3s; margin-bottom: 1rem; }
+        .close-btn:hover { background: #c0392b; transform: scale(1.05); }
 
-        .extra-tab-btn {
-            background: transparent;
-            border: none;
-            padding: 0.7rem 2rem;
-            border-radius: 40px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            color: var(--beige-light);
-            border: 2px solid transparent;
-            background: var(--beige-card);
-            backdrop-filter: blur(4px);
-        }
-        [data-theme="light"] .extra-tab-btn {
-            background: #FFFCF7;
-            color: #6F685D;
-        }
-        .extra-tab-btn.active {
-            color: var(--gold-primary);
-            border-color: var(--gold-primary);
-            background: rgba(36, 32, 28, 0.8);
-            box-shadow: 0 4px 15px var(--shadow-gold);
-        }
-        [data-theme="light"] .extra-tab-btn.active {
-            background: #FFFCF7;
-            border-color: #B58A2A;
-            color: #B58A2A;
-            box-shadow: 0 4px 15px rgba(184, 138, 42, 0.15);
-        }
-        .extra-tab-btn i {
-            margin-left: 8px;
-        }
+        .stats-bar { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem 0; padding: 1rem; background: var(--beige-card); border-radius: 16px; border: 1px solid var(--border-gold); }
+        [data-theme="light"] .stats-bar { background: #FFFCF7; border-color: #E4DCCF; }
+        .stat-item { display: flex; align-items: center; gap: 8px; color: var(--beige-light); font-size: 0.95rem; }
+        [data-theme="light"] .stat-item { color: #6F685D; }
+        .stat-item i { color: var(--gold-primary); font-size: 1.3rem; }
+        [data-theme="light"] .stat-item i { color: #D8B866; }
+        .stat-item strong { color: var(--gold-primary); font-size: 1.2rem; }
+        [data-theme="light"] .stat-item strong { color: #B58A2A; }
 
-        .extra-tab-content {
-            display: none;
-            animation: fadeIn 0.4s ease;
-        }
-        .extra-tab-content.active {
-            display: block;
-        }
+        .loader { display: none; width: 40px; height: 40px; margin: 1rem auto; border: 4px solid var(--border-gold); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .extra-tab-content .grid-container {
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        }
+        footer { background: var(--card-black); border-top: 1px solid var(--border-gold); padding: 1.8rem; text-align: center; margin-top: 3rem; transition: background var(--transition-speed); }
+        [data-theme="light"] footer { border-top-color: #E4DCCF; }
+        footer p { color: var(--beige-light); font-size: 0.95rem; font-family: var(--font-english); letter-spacing: 0.5px; }
+        [data-theme="light"] footer p { color: #6F685D; }
+        footer p span { color: var(--gold-primary); font-weight: 700; }
+        [data-theme="light"] footer p span { color: #B58A2A; }
 
-        /* ===== البورتفوليو ===== */
-        #portfolioSection .grid-container {
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        }
+        .file-section { margin-bottom: 1.5rem; }
+        .file-section-title { font-size: 1.1rem; font-weight: 700; color: var(--gold-primary); border-bottom: 2px solid var(--border-gold); padding-bottom: 0.3rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; }
+        [data-theme="light"] .file-section-title { color: #B58A2A; border-bottom-color: #E4DCCF; }
+        .file-item { display: flex; align-items: center; justify-content: space-between; padding: 0.5rem 0.8rem; background: var(--beige-card); border-radius: 10px; margin-bottom: 0.5rem; border: 1px solid var(--border-gold); transition: 0.2s; }
+        [data-theme="light"] .file-item { background: #FFFCF7; border-color: #E4DCCF; }
+        .file-item:hover { border-color: var(--gold-primary); background: rgba(36,32,28,0.95); }
+        [data-theme="light"] .file-item:hover { border-color: #B58A2A; background: #F7F4EE; }
+        .file-item .file-name { color: var(--beige-main); font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+        [data-theme="light"] .file-item .file-name { color: #29251F; }
+        .file-item .file-name i { color: var(--gold-primary); font-size: 1.2rem; }
+        [data-theme="light"] .file-item .file-name i { color: #D8B866; }
+        .file-item .file-actions a { color: var(--gold-primary); margin-left: 10px; text-decoration: none; font-size: 0.9rem; transition: 0.2s; padding: 0.2rem 0.6rem; border-radius: 6px; border: 1px solid transparent; }
+        .file-item .file-actions a:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); }
+        [data-theme="light"] .file-item .file-actions a { color: #B58A2A; }
+        [data-theme="light"] .file-item .file-actions a:hover { background: #B58A2A; color: #FFFCF7; border-color: #B58A2A; }
+        .file-item .file-actions a i { margin-left: 4px; }
+        .upload-btn { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.3rem 1.2rem; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.85rem; margin-top: 0.5rem; }
+        [data-theme="light"] .upload-btn { background: #B58A2A; color: #FFFCF7; }
+        .upload-btn:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
+        .delete-btn { background: var(--error-red); color: #fff; border: none; padding: 0.1rem 0.6rem; border-radius: 12px; cursor: pointer; font-size: 0.7rem; transition: 0.3s; margin-left: 8px; }
+        .delete-btn:hover { transform: scale(1.1); background: #c0392b; }
+        .no-files-msg { color: var(--beige-light); font-size: 0.85rem; opacity: 0.7; font-style: italic; padding: 0.3rem 0; }
 
-        #portfolioSection .subject-card {
-            aspect-ratio: 1 / 1;
-            padding: 1rem 0.5rem;
-        }
+        .section-content { display: none; animation: fadeIn 0.5s ease; }
+        .section-content.active { display: block; }
 
-        #portfolioSection .subject-card i {
-            font-size: 2.2rem;
+        @media (max-width:1024px) {
+            #coreSection .grid-container { grid-template-columns: repeat(4,1fr); }
+            #subjectDetailSection .grid-container { grid-template-columns: repeat(2,1fr); }
+            .carousel-slide .slide-content { max-width:80%; bottom:15%; right:5%; padding:0.8rem 1.2rem; }
+            .carousel-slide .slide-content h3 { font-size:1.2rem; }
+            .countdown-timer { font-size:1.4rem; gap:1rem; }
+            .countdown-timer .time-unit span { font-size:1.6rem; }
+            .extra-tab-btn { padding:0.5rem 1.2rem; font-size:0.95rem; }
         }
-
-        #portfolioSection .subject-card h3 {
-            font-size: 0.85rem;
+        @media (max-width:767px) {
+            header { padding:0.6rem 1rem; flex-wrap:wrap; }
+            .brand-title { font-size:1.4rem; }
+            .user-control { gap:8px; }
+            .user-info { font-size:0.8rem; padding:0.2rem 0.8rem; }
+            .nav-tabs { gap:8px; }
+            .tab-btn { padding:0.5rem 1.2rem; font-size:0.85rem; }
+            #coreSection .grid-container { grid-template-columns: repeat(2,1fr); }
+            #subjectDetailSection .grid-container { grid-template-columns:1fr; }
+            .b-icons .icon-item { min-width:60px; padding:0.4rem 0.5rem; font-size:0.65rem; }
+            .b-icons .icon-item i { font-size:1.3rem; }
+            .carousel-container { aspect-ratio:16/7; }
+            .carousel-slide .slide-content { max-width:90%; bottom:10%; right:5%; padding:0.6rem 1rem; }
+            .carousel-slide .slide-content h3 { font-size:1rem; }
+            .carousel-slide .slide-content p { font-size:0.7rem; }
+            .gpa-input-grid { grid-template-columns:repeat(2,1fr); }
+            .gpa-calculator { padding:1.2rem; }
+            .countdown-section { flex-direction:column; align-items:stretch; padding:1.2rem; }
+            .countdown-timer { justify-content:center; font-size:1.2rem; }
+            .countdown-timer .time-unit span { font-size:1.4rem; }
+            .countdown-input { justify-content:center; flex-wrap:wrap; }
+            .todo-input-group { flex-direction:column; }
+            .todo-input-group button { width:100%; }
+            .contact-btn { padding:0.7rem 2rem; font-size:1rem; }
+            .contact-btn i { font-size:1.5rem; }
+            .section-title { font-size:1.3rem; }
+            .search-bar { max-width:100%; }
+            .modal-content { padding:1.5rem; }
+            .auth-box { padding:1.8rem 1.2rem; }
+            .file-item { flex-wrap:wrap; gap:8px; }
+            .file-item .file-actions { margin-top:4px; width:100%; display:flex; justify-content:flex-start; }
+            .extra-tabs { gap:6px; flex-wrap:wrap; }
+            .extra-tab-btn { padding:0.4rem 0.8rem; font-size:0.85rem; flex:1; text-align:center; }
+            .extra-tab-content .grid-container { grid-template-columns:repeat(2,1fr); gap:1rem; }
+            #portfolioSection .grid-container { grid-template-columns:repeat(2,1fr); }
+            .todo-list li { flex-wrap:wrap; gap:8px; }
+            .todo-list li .todo-text { width:100%; order:2; }
+            .todo-list li .todo-checkbox { order:1; }
+            .todo-list li .todo-delete { order:3; }
         }
-
-        /* ===== مودالات ===== */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.88);
-            z-index: 500;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(6px);
-            animation: fadeIn 0.3s ease;
-        }
-        [data-theme="light"] .modal {
-            background: rgba(247, 244, 238, 0.92);
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .modal-content {
-            background: var(--card-black);
-            border: 1.5px solid var(--gold-primary);
-            width: 90%;
-            max-width: 850px;
-            border-radius: 24px;
-            padding: 2.2rem;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-        }
-        [data-theme="light"] .modal-content {
-            background: #FFFCF7;
-            border-color: #B58A2A;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-        }
-        .modal-content h2 {
-            color: var(--gold-primary);
-            margin-bottom: 1.2rem;
-            font-size: 1.8rem;
-        }
-        [data-theme="light"] .modal-content h2 {
-            color: #29251F;
-        }
-
-        .block-card {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            padding: 1.2rem 1.5rem;
-            border-radius: 14px;
-            text-align: right;
-            transition: 0.3s;
-            margin-bottom: 1.5rem;
-        }
-        [data-theme="light"] .block-card {
-            background: #F7F4EE;
-            border-color: #E4DCCF;
-        }
-        .block-card:hover {
-            border-color: var(--gold-primary);
-            background: rgba(36, 32, 28, 0.95);
-            transform: translateX(-4px);
-        }
-        [data-theme="light"] .block-card:hover {
-            border-color: #B58A2A;
-            background: #FFFCF7;
-            transform: translateX(-4px);
-        }
-        .block-card h4 {
-            color: var(--gold-primary);
-            margin-bottom: 0.8rem;
-            font-size: 1.2rem;
-        }
-        [data-theme="light"] .block-card h4 {
-            color: #B58A2A;
-        }
-        .block-card p {
-            color: var(--beige-light);
-            font-size: 0.9rem;
-            line-height: 1.6;
-        }
-        [data-theme="light"] .block-card p {
-            color: #6F685D;
-        }
-
-        .close-btn {
-            background: var(--error-red);
-            color: white;
-            border: none;
-            padding: 0.5rem 1.5rem;
-            border-radius: 40px;
-            cursor: pointer;
-            float: left;
-            font-weight: 700;
-            transition: 0.3s;
-            margin-bottom: 1rem;
-        }
-        .close-btn:hover {
-            background: #c0392b;
-            transform: scale(1.05);
-        }
-
-        .stats-bar {
-            display: flex;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background: var(--beige-card);
-            border-radius: 16px;
-            border: 1px solid var(--border-gold);
-        }
-        [data-theme="light"] .stats-bar {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--beige-light);
-            font-size: 0.95rem;
-        }
-        [data-theme="light"] .stat-item {
-            color: #6F685D;
-        }
-        .stat-item i {
-            color: var(--gold-primary);
-            font-size: 1.3rem;
-        }
-        [data-theme="light"] .stat-item i {
-            color: #D8B866;
-        }
-        .stat-item strong {
-            color: var(--gold-primary);
-            font-size: 1.2rem;
-        }
-        [data-theme="light"] .stat-item strong {
-            color: #B58A2A;
-        }
-
-        .loader {
-            display: none;
-            width: 40px;
-            height: 40px;
-            margin: 1rem auto;
-            border: 4px solid var(--border-gold);
-            border-top-color: var(--gold-primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        footer {
-            background: var(--card-black);
-            border-top: 1px solid var(--border-gold);
-            padding: 1.8rem;
-            text-align: center;
-            margin-top: 3rem;
-            transition: background var(--transition-speed);
-        }
-        [data-theme="light"] footer {
-            border-top-color: #E4DCCF;
-        }
-        footer p {
-            color: var(--beige-light);
-            font-size: 0.95rem;
-            font-family: var(--font-english);
-            letter-spacing: 0.5px;
-        }
-        [data-theme="light"] footer p {
-            color: #6F685D;
-        }
-        footer p span {
-            color: var(--gold-primary);
-            font-weight: 700;
-        }
-        [data-theme="light"] footer p span {
-            color: #B58A2A;
-        }
-
-        .file-section {
-            margin-bottom: 1.5rem;
-        }
-        .file-section-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--gold-primary);
-            border-bottom: 2px solid var(--border-gold);
-            padding-bottom: 0.3rem;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        [data-theme="light"] .file-section-title {
-            color: #B58A2A;
-            border-bottom-color: #E4DCCF;
-        }
-        .file-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem 0.8rem;
-            background: var(--beige-card);
-            border-radius: 10px;
-            margin-bottom: 0.5rem;
-            border: 1px solid var(--border-gold);
-            transition: 0.2s;
-        }
-        [data-theme="light"] .file-item {
-            background: #FFFCF7;
-            border-color: #E4DCCF;
-        }
-        .file-item:hover {
-            border-color: var(--gold-primary);
-            background: rgba(36, 32, 28, 0.95);
-        }
-        [data-theme="light"] .file-item:hover {
-            border-color: #B58A2A;
-            background: #F7F4EE;
-        }
-        .file-item .file-name {
-            color: var(--beige-main);
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        [data-theme="light"] .file-item .file-name {
-            color: #29251F;
-        }
-        .file-item .file-name i {
-            color: var(--gold-primary);
-            font-size: 1.2rem;
-        }
-        [data-theme="light"] .file-item .file-name i {
-            color: #D8B866;
-        }
-        .file-item .file-actions a {
-            color: var(--gold-primary);
-            margin-left: 10px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            padding: 0.2rem 0.6rem;
-            border-radius: 6px;
-            border: 1px solid transparent;
-        }
-        .file-item .file-actions a:hover {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border-color: var(--gold-primary);
-        }
-        [data-theme="light"] .file-item .file-actions a {
-            color: #B58A2A;
-        }
-        [data-theme="light"] .file-item .file-actions a:hover {
-            background: #B58A2A;
-            color: #FFFCF7;
-            border-color: #B58A2A;
-        }
-        .file-item .file-actions a i {
-            margin-left: 4px;
-        }
-        .upload-btn {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            padding: 0.3rem 1.2rem;
-            border-radius: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-        }
-        [data-theme="light"] .upload-btn {
-            background: #B58A2A;
-            color: #FFFCF7;
-        }
-        .upload-btn:hover {
-            transform: scale(1.05);
-            background: var(--gold-secondary);
-            color: #FFF;
-        }
-        .delete-btn {
-            background: var(--error-red);
-            color: #fff;
-            border: none;
-            padding: 0.1rem 0.6rem;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 0.7rem;
-            transition: 0.3s;
-            margin-left: 8px;
-        }
-        .delete-btn:hover {
-            transform: scale(1.1);
-            background: #c0392b;
-        }
-        .no-files-msg {
-            color: var(--beige-light);
-            font-size: 0.85rem;
-            opacity: 0.7;
-            font-style: italic;
-            padding: 0.3rem 0;
-        }
-
-        /* ===== استجابة ===== */
-        @media (max-width: 1024px) {
-            #coreSection .grid-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            #subjectDetailSection .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .carousel-slide .slide-content {
-                max-width: 80%;
-                bottom: 15%;
-                right: 5%;
-                padding: 0.8rem 1.2rem;
-            }
-            .carousel-slide .slide-content h3 {
-                font-size: 1.2rem;
-            }
-            .countdown-timer {
-                font-size: 1.4rem;
-                gap: 1rem;
-            }
-            .countdown-timer .time-unit span {
-                font-size: 1.6rem;
-            }
-            .extra-tab-btn {
-                padding: 0.5rem 1.2rem;
-                font-size: 0.95rem;
-            }
-        }
-
-        @media (max-width: 767px) {
-            header {
-                padding: 0.6rem 1rem;
-                flex-wrap: wrap;
-            }
-            .brand-title {
-                font-size: 1.4rem;
-            }
-            .user-control {
-                gap: 8px;
-            }
-            .user-info {
-                font-size: 0.8rem;
-                padding: 0.2rem 0.8rem;
-            }
-            .nav-tabs {
-                gap: 8px;
-            }
-            .tab-btn {
-                padding: 0.5rem 1.2rem;
-                font-size: 0.85rem;
-            }
-            #coreSection .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            #subjectDetailSection .grid-container {
-                grid-template-columns: 1fr;
-            }
-            .b-icons .icon-item {
-                min-width: 60px;
-                padding: 0.4rem 0.5rem;
-                font-size: 0.65rem;
-            }
-            .b-icons .icon-item i {
-                font-size: 1.3rem;
-            }
-            .carousel-container {
-                aspect-ratio: 16 / 7;
-            }
-            .carousel-slide .slide-content {
-                max-width: 90%;
-                bottom: 10%;
-                right: 5%;
-                padding: 0.6rem 1rem;
-            }
-            .carousel-slide .slide-content h3 {
-                font-size: 1rem;
-            }
-            .carousel-slide .slide-content p {
-                font-size: 0.7rem;
-            }
-            .gpa-input-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .gpa-calculator {
-                padding: 1.2rem;
-            }
-            .countdown-section {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 1.2rem;
-            }
-            .countdown-timer {
-                justify-content: center;
-                font-size: 1.2rem;
-            }
-            .countdown-timer .time-unit span {
-                font-size: 1.4rem;
-            }
-            .countdown-input {
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .todo-input-group {
-                flex-direction: column;
-            }
-            .todo-input-group button {
-                width: 100%;
-            }
-            .contact-btn {
-                padding: 0.7rem 2rem;
-                font-size: 1rem;
-            }
-            .contact-btn i {
-                font-size: 1.5rem;
-            }
-            .section-title {
-                font-size: 1.3rem;
-            }
-            .search-bar {
-                max-width: 100%;
-            }
-            .modal-content {
-                padding: 1.5rem;
-            }
-            .auth-box {
-                padding: 1.8rem 1.2rem;
-            }
-            .file-item {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .file-item .file-actions {
-                margin-top: 4px;
-                width: 100%;
-                display: flex;
-                justify-content: flex-start;
-            }
-            .extra-tabs {
-                gap: 6px;
-                flex-wrap: wrap;
-            }
-            .extra-tab-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.85rem;
-                flex: 1;
-                text-align: center;
-            }
-            .extra-tab-content .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            #portfolioSection .grid-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .todo-list li {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-            .todo-list li .todo-text {
-                width: 100%;
-                order: 2;
-            }
-            .todo-list li .todo-checkbox {
-                order: 1;
-            }
-            .todo-list li .todo-delete {
-                order: 3;
-            }
-        }
-
-        @media (min-width: 768px) and (max-width: 1023px) {
-            #coreSection .grid-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .extra-tab-content .grid-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            #portfolioSection .grid-container {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-
-        .section-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        .section-content.active {
-            display: block;
+        @media (min-width:768px) and (max-width:1023px) {
+            #coreSection .grid-container { grid-template-columns:repeat(3,1fr); }
+            .extra-tab-content .grid-container { grid-template-columns:repeat(3,1fr); }
+            #portfolioSection .grid-container { grid-template-columns:repeat(3,1fr); }
         }
     </style>
 </head>
@@ -1750,43 +421,22 @@
         <div class="auth-box">
             <img src="logo.jpg" alt="NOVA Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/110/D4AF37/080808?text=NOVA';">
             <h2>NOVA</h2>
-            <p class="credits-text">
-                This website was created by <b>Amin</b><br>
-                for Medical Students at East Port Said National University
-            </p>
+            <p class="credits-text">This website was created by <b>Amin</b><br>for Medical Students at East Port Said National University</p>
             <div class="auth-tabs">
                 <button class="auth-tab-btn active" id="loginTabBtn" type="button" onclick="switchAuthMode('login')">Log In (دخول)</button>
                 <button class="auth-tab-btn" id="signupTabBtn" type="button" onclick="switchAuthMode('signup')">Sign Up (حساب جديد)</button>
             </div>
             <form id="loginForm">
-                <div class="input-group">
-                    <label>الـ ID الجامعي أو الرقم القومي</label>
-                    <input type="text" id="loginId" required placeholder="أدخل ID الطالب أو الرقم القومي">
-                </div>
-                <div class="input-group">
-                    <label>كلمة السر</label>
-                    <input type="password" id="loginPassword" required placeholder="أدخل كلمة السر">
-                </div>
+                <div class="input-group"><label>الـ ID الجامعي أو الرقم القومي</label><input type="text" id="loginId" required placeholder="أدخل ID الطالب أو الرقم القومي"></div>
+                <div class="input-group"><label>كلمة السر</label><input type="password" id="loginPassword" required placeholder="أدخل كلمة السر"></div>
                 <button type="submit" class="btn-gold">تسجيل الدخول</button>
                 <div class="alert-msg" id="loginAlert"></div>
             </form>
-            <form id="signupForm" style="display: none;">
-                <div class="input-group">
-                    <label>الاسم الكامل (الرباعي)</label>
-                    <input type="text" id="signupName" required placeholder="أدخل اسمك كما في الكارنيه">
-                </div>
-                <div class="input-group">
-                    <label>الـ ID الجامعي</label>
-                    <input type="text" id="signupStudentId" required placeholder="مثال: 202400123">
-                </div>
-                <div class="input-group">
-                    <label>الرقم القومي (14 رقم)</label>
-                    <input type="text" id="signupNationalId" maxlength="14" required placeholder="أدخل الـ 14 رقم" pattern="\d{14}">
-                </div>
-                <div class="input-group">
-                    <label>كلمة السر</label>
-                    <input type="password" id="signupPassword" required placeholder="إنشاء كلمة سر حسابك">
-                </div>
+            <form id="signupForm" style="display:none;">
+                <div class="input-group"><label>الاسم الكامل (الرباعي)</label><input type="text" id="signupName" required placeholder="أدخل اسمك كما في الكارنيه"></div>
+                <div class="input-group"><label>الـ ID الجامعي</label><input type="text" id="signupStudentId" required placeholder="مثال: 202400123"></div>
+                <div class="input-group"><label>الرقم القومي (14 رقم)</label><input type="text" id="signupNationalId" maxlength="14" required placeholder="أدخل الـ 14 رقم" pattern="\d{14}"></div>
+                <div class="input-group"><label>كلمة السر</label><input type="password" id="signupPassword" required placeholder="إنشاء كلمة سر حسابك"></div>
                 <button type="submit" class="btn-gold">إنشاء الحساب</button>
                 <div class="alert-msg" id="signupAlert"></div>
             </form>
@@ -1822,58 +472,23 @@
 
         <!-- ===== الصفحة الرئيسية ===== -->
         <div class="section-content active" id="homeSection">
-            
-            <!-- كاروسيل -->
             <div class="carousel-container" id="mainCarousel">
                 <div class="carousel-slides" id="carouselSlides">
-                    <div class="carousel-slide active" data-index="0">
-                        <img src="banner.jpg" alt="Slide 1">
-                        <div class="slide-content">
-                            <h3>NOVA Team</h3>
-                            <p>Network of Outstanding Medical Students</p>
-                        </div>
-                    </div>
-                    <div class="carousel-slide" data-index="1">
-                        <img src="banner.jpg" alt="Slide 2">
-                        <div class="slide-content">
-                            <h3>استراتيجية المذاكرة</h3>
-                            <p>نظم وقتك بين المواد المختلفة لتحقيق أقصى استفادة.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-slide" data-index="2">
-                        <img src="banner.jpg" alt="Slide 3">
-                        <div class="slide-content">
-                            <h3>امتياز بكل ثقة</h3>
-                            <p>استخدم أدواتنا لتتبع تقدمك وتحقيق أعلى الدرجات.</p>
-                        </div>
-                    </div>
-                    <div class="carousel-slide" data-index="3">
-                        <img src="amin.jpg" alt="Slide 4">
-                        <div class="slide-content">
-                            <h3>Dr.Amin</h3>
-                            <p>Medical Student & Content Creator - NOVA Founder & President</p>
-                        </div>
-                    </div>
+                    <div class="carousel-slide active" data-index="0"><img src="banner.jpg" alt="Slide 1"><div class="slide-content"><h3>NOVA Team</h3><p>Network of Outstanding Medical Students</p></div></div>
+                    <div class="carousel-slide" data-index="1"><img src="banner.jpg" alt="Slide 2"><div class="slide-content"><h3>استراتيجية المذاكرة</h3><p>نظم وقتك بين المواد المختلفة لتحقيق أقصى استفادة.</p></div></div>
+                    <div class="carousel-slide" data-index="2"><img src="banner.jpg" alt="Slide 3"><div class="slide-content"><h3>امتياز بكل ثقة</h3><p>استخدم أدواتنا لتتبع تقدمك وتحقيق أعلى الدرجات.</p></div></div>
+                    <div class="carousel-slide" data-index="3"><img src="amin.jpg" alt="Slide 4"><div class="slide-content"><h3>Dr.Amin</h3><p>Medical Student & Content Creator - NOVA Founder & President</p></div></div>
                 </div>
                 <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
-
-            <div class="home-credit">
-                <strong>created by Dr.Amin</strong> — FOM-EPNU
-            </div>
-
-            <!-- إحصائيات -->
+            <div class="home-credit"><strong>created by Dr.Amin</strong> — FOM-EPNU</div>
             <div class="stats-bar" id="statsBar">
                 <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
                 <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
                 <div class="stat-item"><i class="fa-solid fa-clock"></i> وقت الجلسة: <strong id="sessionTime">00:00</strong></div>
             </div>
-
             <div class="contact-btn-wrapper">
-                <a href="https://wa.me/201098919599" target="_blank" class="contact-btn">
-                    <i class="fa-brands fa-whatsapp"></i>
-                    تواصل
-                </a>
+                <a href="https://wa.me/201098919599" target="_blank" class="contact-btn"><i class="fa-brands fa-whatsapp"></i> تواصل</a>
             </div>
         </div>
 
@@ -1883,9 +498,7 @@
                 <span>المواد الأساسية (Core Subjects)</span>
                 <input type="text" class="search-bar" id="coreSearch" placeholder="🔍 بحث في المواد..." oninput="filterCoreSubjects(this.value)">
             </h2>
-            <div class="grid-container" id="coreGrid">
-                <!-- يتم إنشاؤها بواسطة JavaScript -->
-            </div>
+            <div class="grid-container" id="coreGrid"></div>
         </div>
 
         <!-- 3. تفاصيل المادة -->
@@ -1900,57 +513,24 @@
         <!-- 4. المواد الإضافية -->
         <div class="section-content" id="extraSection">
             <div class="extra-tabs">
-                <button class="extra-tab-btn active" data-tab="tab1" onclick="switchExtraTab('tab1', this)">
-                    <i class="fa-solid fa-star"></i> مواد تضاف للمجموع
-                </button>
-                <button class="extra-tab-btn" data-tab="tab2" onclick="switchExtraTab('tab2', this)">
-                    <i class="fa-regular fa-circle-xmark"></i> مواد لا تضاف للمجموع
-                </button>
+                <button class="extra-tab-btn active" data-tab="tab1" onclick="switchExtraTab('tab1', this)"><i class="fa-solid fa-star"></i> مواد تضاف للمجموع</button>
+                <button class="extra-tab-btn" data-tab="tab2" onclick="switchExtraTab('tab2', this)"><i class="fa-regular fa-circle-xmark"></i> مواد لا تضاف للمجموع</button>
             </div>
-
             <div class="extra-tab-content active" id="tab1">
                 <div class="grid-container">
-                    <div class="subject-card" onclick="openExtraContent('Skill Lab 1')">
-                        <i class="fa-solid fa-user-doctor"></i>
-                        <h3>Skill Lab 1</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Skill Lab 2')">
-                        <i class="fa-solid fa-kit-medical"></i>
-                        <h3>Skill Lab 2</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Research 1')">
-                        <i class="fa-solid fa-book-bookmark"></i>
-                        <h3>Research 1</h3>
-                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Skill Lab 1')"><i class="fa-solid fa-user-doctor"></i><h3>Skill Lab 1</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Skill Lab 2')"><i class="fa-solid fa-kit-medical"></i><h3>Skill Lab 2</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Research 1')"><i class="fa-solid fa-book-bookmark"></i><h3>Research 1</h3></div>
                 </div>
             </div>
-
             <div class="extra-tab-content" id="tab2">
                 <div class="grid-container">
-                    <div class="subject-card" onclick="openExtraContent('Field 1')">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <h3>Field 1</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Field 2')">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <h3>Field 2</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('English')">
-                        <i class="fa-solid fa-language"></i>
-                        <h3>English</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Quality')">
-                        <i class="fa-solid fa-award"></i>
-                        <h3>Quality</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Self Development Skills')">
-                        <i class="fa-solid fa-brain"></i>
-                        <h3>Self Development Skills</h3>
-                    </div>
-                    <div class="subject-card" onclick="openExtraContent('Community Issues')">
-                        <i class="fa-solid fa-handshake"></i>
-                        <h3>Community Issues</h3>
-                    </div>
+                    <div class="subject-card" onclick="openExtraContent('Field 1')"><i class="fa-solid fa-map-location-dot"></i><h3>Field 1</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Field 2')"><i class="fa-solid fa-location-dot"></i><h3>Field 2</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('English')"><i class="fa-solid fa-language"></i><h3>English</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Quality')"><i class="fa-solid fa-award"></i><h3>Quality</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Self Development Skills')"><i class="fa-solid fa-brain"></i><h3>Self Development Skills</h3></div>
+                    <div class="subject-card" onclick="openExtraContent('Community Issues')"><i class="fa-solid fa-handshake"></i><h3>Community Issues</h3></div>
                 </div>
             </div>
         </div>
@@ -1971,68 +551,28 @@
         <!-- 6. تبويب "أخرى" -->
         <div class="section-content" id="otherSection">
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
-            
             <div class="other-tools">
                 <!-- حاسبة التقدير -->
                 <div class="gpa-calculator" id="gpaCalculator">
                     <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي (المجموع الكلي 849 درجة)</h3>
                     <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">أدخل درجاتك الفعلية في كل مادة، وسنحسب النسبة المئوية والتقدير العام.</p>
                     <div class="gpa-input-grid">
-                        <div class="gpa-input-group">
-                            <label>Research <span class="max-score">(من 30)</span></label>
-                            <input type="number" id="gpaResearch" min="0" max="30" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>Skill Lab 1 <span class="max-score">(من 15)</span></label>
-                            <input type="number" id="gpaSkill1" min="0" max="15" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>Skill Lab 2 <span class="max-score">(من 15)</span></label>
-                            <input type="number" id="gpaSkill2" min="0" max="15" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B1 <span class="max-score">(من 113)</span></label>
-                            <input type="number" id="gpaB1" min="0" max="113" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B2 <span class="max-score">(من 180)</span></label>
-                            <input type="number" id="gpaB2" min="0" max="180" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B3 <span class="max-score">(من 113)</span></label>
-                            <input type="number" id="gpaB3" min="0" max="113" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B4 <span class="max-score">(من 135)</span></label>
-                            <input type="number" id="gpaB4" min="0" max="135" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B5 <span class="max-score">(من 135)</span></label>
-                            <input type="number" id="gpaB5" min="0" max="135" placeholder="0" value="0">
-                        </div>
-                        <div class="gpa-input-group">
-                            <label>B6 <span class="max-score">(من 113)</span></label>
-                            <input type="number" id="gpaB6" min="0" max="113" placeholder="0" value="0">
-                        </div>
+                        <div class="gpa-input-group"><label>Research <span class="max-score">(من 30)</span></label><input type="number" id="gpaResearch" min="0" max="30" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>Skill Lab 1 <span class="max-score">(من 15)</span></label><input type="number" id="gpaSkill1" min="0" max="15" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>Skill Lab 2 <span class="max-score">(من 15)</span></label><input type="number" id="gpaSkill2" min="0" max="15" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B1 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB1" min="0" max="113" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B2 <span class="max-score">(من 180)</span></label><input type="number" id="gpaB2" min="0" max="180" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B3 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB3" min="0" max="113" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B4 <span class="max-score">(من 135)</span></label><input type="number" id="gpaB4" min="0" max="135" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B5 <span class="max-score">(من 135)</span></label><input type="number" id="gpaB5" min="0" max="135" placeholder="0" value="0"></div>
+                        <div class="gpa-input-group"><label>B6 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB6" min="0" max="113" placeholder="0" value="0"></div>
                     </div>
                     <button class="btn-gold" onclick="calculateGPA()" style="width: auto; padding: 0.7rem 3rem; margin: 0 auto; display: block;">احسب النسبة</button>
-                    
                     <div class="gpa-result" id="gpaResult">
-                        <div class="result-row">
-                            <span class="result-label">المجموع الكلي</span>
-                            <span class="result-value" id="gpaTotal">0 / 849</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">النسبة المئوية</span>
-                            <span class="result-value" id="gpaPercent">0%</span>
-                        </div>
-                        <div class="result-row">
-                            <span class="result-label">التقدير العام</span>
-                            <span class="result-value" id="gpaGrade">-</span>
-                        </div>
-                        <div class="result-row" style="border-bottom: none; padding-top: 0.8rem;">
-                            <span class="result-label" style="font-size: 0.85rem; opacity: 0.7;">📌 الامتياز من 85% فأعلى</span>
-                        </div>
+                        <div class="result-row"><span class="result-label">المجموع الكلي</span><span class="result-value" id="gpaTotal">0 / 849</span></div>
+                        <div class="result-row"><span class="result-label">النسبة المئوية</span><span class="result-value" id="gpaPercent">0%</span></div>
+                        <div class="result-row"><span class="result-label">التقدير العام</span><span class="result-value" id="gpaGrade">-</span></div>
+                        <div class="result-row" style="border-bottom: none; padding-top: 0.8rem;"><span class="result-label" style="font-size: 0.85rem; opacity: 0.7;">📌 الامتياز من 85% فأعلى</span></div>
                     </div>
                 </div>
 
@@ -2068,7 +608,7 @@
         <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
     </footer>
 
-    <!-- مودال البورتفوليو (يتم إنشاؤه بواسطة JS) -->
+    <!-- مودال البورتفوليو -->
     <div id="portfolioModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
@@ -2087,7 +627,68 @@
     </div>
 
     <script>
-        // ===== بيانات المواد الأساسية مع مسارات الصور المحلية =====
+        // ============================================================
+        // ===== IndexedDB Helper (بديل localStorage) =====
+        // ============================================================
+        const DB_NAME = 'NovaDB';
+        const STORE_NAME = 'files';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = function(event) {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+                request.onsuccess = function(event) { resolve(event.target.result); };
+                request.onerror = function(event) { reject(event.target.error); };
+            });
+        }
+
+        async function saveFile(key, data) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.put({ id: key, data: data });
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function loadFile(key) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readonly');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.get(key);
+                request.onsuccess = () => resolve(request.result ? request.result.data : null);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function deleteFile(key) {
+            const db = await openDB();
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                const request = store.delete(key);
+                request.onsuccess = () => resolve();
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // ============================================================
+        // ===== المتغيرات العامة =====
+        // ============================================================
+        let isDeveloper = false;
+        let currentSubject = '';
+        let sessionSeconds = 0;
+        let carouselInterval;
+        let countdownInterval;
+
         const coreSubjects = [
             { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
             { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
@@ -2110,44 +711,50 @@
             6: "Urinary System"
         };
 
-        let currentSubject = '';
-        let sessionSeconds = 0;
-        let carouselInterval;
-        let countdownInterval;
-        let isDeveloper = false;
-
-        // ======================================================
-        // ===== دوال التخزين الجديدة للمواد الأساسية =====
-        // ======================================================
+        // ============================================================
+        // ===== دوال التخزين (تعتمد على IndexedDB) =====
+        // ============================================================
         function getSubjectStorageKey(subject, bBlock, type, subType = null) {
             let key = `subject_${subject}_${bBlock}_${type}`;
             if (subType) key += `_${subType}`;
             return key;
         }
 
-        function loadSubjectFiles(subject, bBlock, type, subType = null) {
+        async function loadSubjectFiles(subject, bBlock, type, subType = null) {
             const key = getSubjectStorageKey(subject, bBlock, type, subType);
-            try {
-                return JSON.parse(localStorage.getItem(key)) || [];
-            } catch {
-                return [];
+            const data = await loadFile(key);
+            return Array.isArray(data) ? data : [];
+        }
+
+        async function saveSubjectFiles(subject, bBlock, type, subType = null, files) {
+            const key = getSubjectStorageKey(subject, bBlock, type, subType);
+            await saveFile(key, files);
+        }
+
+        function getPortfolioKey(block, type) { return `portfolio_${block}_${type}`; }
+
+        async function loadPortfolioData(block, type) {
+            const key = getPortfolioKey(block, type);
+            const data = await loadFile(key);
+            if (type === 'general_empty' || type === 'general_filled') {
+                return data; // قد يكون null
             }
+            return Array.isArray(data) ? data : [];
         }
 
-        function saveSubjectFiles(subject, bBlock, type, subType = null, files) {
-            const key = getSubjectStorageKey(subject, bBlock, type, subType);
-            localStorage.setItem(key, JSON.stringify(files));
+        async function savePortfolioData(block, type, data) {
+            const key = getPortfolioKey(block, type);
+            await saveFile(key, data);
         }
 
-        // ======================================================
+        // ============================================================
         // ===== CAROUSEL =====
-        // ======================================================
+        // ============================================================
         function initCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.getElementById('carouselIndicators');
             const totalSlides = slides.length;
-            let currentIndex = 0;
-            let interval;
+            let currentIndex = 0, interval;
 
             indicators.innerHTML = '';
             slides.forEach((_, i) => {
@@ -2159,39 +766,26 @@
             });
 
             function goToSlide(index) {
-                slides.forEach((slide, i) => {
-                    slide.classList.toggle('active', i === index);
-                });
-                document.querySelectorAll('.dot').forEach((dot, i) => {
-                    dot.classList.toggle('active', i === index);
-                });
+                slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
+                document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
                 currentIndex = index;
             }
 
-            function nextSlide() {
-                goToSlide((currentIndex + 1) % totalSlides);
-            }
+            function nextSlide() { goToSlide((currentIndex + 1) % totalSlides); }
 
-            function startAutoPlay() {
-                if (interval) clearInterval(interval);
-                interval = setInterval(nextSlide, 4000);
-            }
-
-            function stopAutoPlay() {
-                clearInterval(interval);
-            }
+            function startAutoPlay() { if (interval) clearInterval(interval); interval = setInterval(nextSlide, 4000); }
+            function stopAutoPlay() { clearInterval(interval); }
 
             const container = document.getElementById('mainCarousel');
             container.addEventListener('mouseenter', stopAutoPlay);
             container.addEventListener('mouseleave', startAutoPlay);
-
             goToSlide(0);
             startAutoPlay();
         }
 
-        // ======================================================
-        // ===== GPA CALCULATOR =====
-        // ======================================================
+        // ============================================================
+        // ===== GPA =====
+        // ============================================================
         function calculateGPA() {
             const research = parseFloat(document.getElementById('gpaResearch').value) || 0;
             const skill1 = parseFloat(document.getElementById('gpaSkill1').value) || 0;
@@ -2203,95 +797,80 @@
             const b5 = parseFloat(document.getElementById('gpaB5').value) || 0;
             const b6 = parseFloat(document.getElementById('gpaB6').value) || 0;
 
-            const maxResearch = 30, maxSkill1 = 15, maxSkill2 = 15;
-            const maxB1 = 113, maxB2 = 180, maxB3 = 113, maxB4 = 135, maxB5 = 135, maxB6 = 113;
-            const totalMax = maxResearch + maxSkill1 + maxSkill2 + maxB1 + maxB2 + maxB3 + maxB4 + maxB5 + maxB6;
+            const maxResearch=30, maxSkill1=15, maxSkill2=15;
+            const maxB1=113, maxB2=180, maxB3=113, maxB4=135, maxB5=135, maxB6=113;
+            const totalMax = maxResearch+maxSkill1+maxSkill2+maxB1+maxB2+maxB3+maxB4+maxB5+maxB6;
+            const total = research+skill1+skill2+b1+b2+b3+b4+b5+b6;
+            const percent = (total/totalMax)*100;
 
-            const total = research + skill1 + skill2 + b1 + b2 + b3 + b4 + b5 + b6;
-            const percent = (total / totalMax) * 100;
-
-            let grade = '', gradeClass = '';
-            if (percent >= 85) { grade = 'امتياز (Excellent)'; gradeClass = 'excellent'; }
-            else if (percent >= 75) { grade = 'جيد جداً (Very Good)'; gradeClass = 'very-good'; }
-            else if (percent >= 65) { grade = 'جيد (Good)'; gradeClass = 'good'; }
-            else if (percent >= 50) { grade = 'مقبول (Pass)'; gradeClass = 'pass'; }
-            else { grade = 'راسب (Fail)'; gradeClass = 'fail'; }
+            let grade='', gradeClass='';
+            if (percent>=85) { grade='امتياز (Excellent)'; gradeClass='excellent'; }
+            else if (percent>=75) { grade='جيد جداً (Very Good)'; gradeClass='very-good'; }
+            else if (percent>=65) { grade='جيد (Good)'; gradeClass='good'; }
+            else if (percent>=50) { grade='مقبول (Pass)'; gradeClass='pass'; }
+            else { grade='راسب (Fail)'; gradeClass='fail'; }
 
             document.getElementById('gpaTotal').innerText = `${total} / ${totalMax}`;
             document.getElementById('gpaPercent').innerText = `${percent.toFixed(2)}%`;
             const gradeEl = document.getElementById('gpaGrade');
             gradeEl.innerText = grade;
             gradeEl.className = `result-value ${gradeClass}`;
-
             document.getElementById('gpaResult').style.display = 'block';
         }
 
-        // ======================================================
+        // ============================================================
         // ===== COUNTDOWN =====
-        // ======================================================
+        // ============================================================
         function startCountdown(targetDate) {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
-                const now = new Date().getTime();
+                const now = Date.now();
                 const distance = targetDate - now;
                 if (distance < 0) {
-                    document.getElementById('cdDays').innerText = '00';
-                    document.getElementById('cdHours').innerText = '00';
-                    document.getElementById('cdMinutes').innerText = '00';
-                    document.getElementById('cdSeconds').innerText = '00';
+                    ['cdDays','cdHours','cdMinutes','cdSeconds'].forEach(id => document.getElementById(id).innerText='00');
                     clearInterval(countdownInterval);
                     return;
                 }
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById('cdDays').innerText = String(days).padStart(2, '0');
-                document.getElementById('cdHours').innerText = String(hours).padStart(2, '0');
-                document.getElementById('cdMinutes').innerText = String(minutes).padStart(2, '0');
-                document.getElementById('cdSeconds').innerText = String(seconds).padStart(2, '0');
+                document.getElementById('cdDays').innerText = String(Math.floor(distance/(1000*60*60*24))).padStart(2,'0');
+                document.getElementById('cdHours').innerText = String(Math.floor((distance%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
+                document.getElementById('cdMinutes').innerText = String(Math.floor((distance%(1000*60*60))/(1000*60))).padStart(2,'0');
+                document.getElementById('cdSeconds').innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
             }, 1000);
         }
 
         function setExamDate() {
-            const input = document.getElementById('examDateInput');
-            const dateVal = input.value;
-            if (!dateVal) return;
-            const target = new Date(dateVal + 'T00:00:00').getTime();
-            localStorage.setItem('nova_exam_date', dateVal);
-            startCountdown(target);
+            const val = document.getElementById('examDateInput').value;
+            if (!val) return;
+            localStorage.setItem('nova_exam_date', val);
+            startCountdown(new Date(val+'T00:00:00').getTime());
         }
 
         function loadExamDate() {
             const saved = localStorage.getItem('nova_exam_date');
             if (saved) {
                 document.getElementById('examDateInput').value = saved;
-                const target = new Date(saved + 'T00:00:00').getTime();
-                startCountdown(target);
+                startCountdown(new Date(saved+'T00:00:00').getTime());
             } else {
-                const defaultDate = new Date();
-                defaultDate.setDate(defaultDate.getDate() + 30);
-                const iso = defaultDate.toISOString().split('T')[0];
+                const d = new Date(); d.setDate(d.getDate()+30);
+                const iso = d.toISOString().split('T')[0];
                 document.getElementById('examDateInput').value = iso;
                 localStorage.setItem('nova_exam_date', iso);
-                startCountdown(defaultDate.getTime());
+                startCountdown(d.getTime());
             }
         }
 
-        // ======================================================
+        // ============================================================
         // ===== TO-DO LIST =====
-        // ======================================================
+        // ============================================================
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
             const list = document.getElementById('todoList');
             list.innerHTML = '';
             todos.forEach((todo, index) => {
                 const li = document.createElement('li');
-                const isChecked = todo.completed ? 'checked' : '';
-                const completedClass = todo.completed ? 'completed' : '';
                 li.innerHTML = `
-                    <input type="checkbox" class="todo-checkbox" ${isChecked} onchange="toggleTodo(${index})">
-                    <span class="todo-text ${completedClass}">${todo.text}</span>
+                    <input type="checkbox" class="todo-checkbox" ${todo.completed?'checked':''} onchange="toggleTodo(${index})">
+                    <span class="todo-text ${todo.completed?'completed':''}">${todo.text}</span>
                     <button class="todo-delete" onclick="deleteTodo(${index})">✖ حذف</button>
                 `;
                 list.appendChild(li);
@@ -2303,7 +882,7 @@
             const text = input.value.trim();
             if (!text) return;
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            todos.push({ text: text, completed: false });
+            todos.push({ text, completed: false });
             localStorage.setItem('nova_todos', JSON.stringify(todos));
             input.value = '';
             loadTodos();
@@ -2318,14 +897,14 @@
 
         function deleteTodo(index) {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            todos.splice(index, 1);
+            todos.splice(index,1);
             localStorage.setItem('nova_todos', JSON.stringify(todos));
             loadTodos();
         }
 
-        // ======================================================
+        // ============================================================
         // ===== EXTRA TABS =====
-        // ======================================================
+        // ============================================================
         function switchExtraTab(tabId, btn) {
             document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.extra-tab-btn').forEach(el => el.classList.remove('active'));
@@ -2335,10 +914,8 @@
 
         function openExtraContent(title) {
             const modal = document.getElementById('extraModal');
-            const titleEl = document.getElementById('extraTitle');
-            const container = document.getElementById('extraContentContainer');
-            titleEl.innerText = title;
-            container.innerHTML = `
+            document.getElementById('extraTitle').innerText = title;
+            document.getElementById('extraContentContainer').innerHTML = `
                 <div class="block-card">
                     <h4>📄 محتوى المادة</h4>
                     <p>هنا سيتم عرض الملفات والموارد الخاصة بهذه المادة.</p>
@@ -2348,9 +925,9 @@
             modal.style.display = 'flex';
         }
 
-        // ======================================================
+        // ============================================================
         // ===== عرض المواد الأساسية =====
-        // ======================================================
+        // ============================================================
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             grid.innerHTML = '';
@@ -2370,13 +947,11 @@
             document.getElementById('totalFiles').innerText = filtered.length * 6;
         }
 
-        function filterCoreSubjects(value) {
-            renderCoreSubjects(value);
-        }
+        function filterCoreSubjects(value) { renderCoreSubjects(value); }
 
-        // ======================================================
+        // ============================================================
         // ===== فتح تفاصيل المادة =====
-        // ======================================================
+        // ============================================================
         function openSubject(subjectName) {
             currentSubject = subjectName;
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
@@ -2385,26 +960,16 @@
 
             const container = document.getElementById('subjectBlocksContainer');
             container.innerHTML = '';
-
-            for (let i = 1; i <= 6; i++) {
+            for (let i=1; i<=6; i++) {
                 const b = document.createElement('div');
                 b.className = 'b-card';
                 b.innerHTML = `
                     <h4>B${i}</h4>
                     <div class="b-subtitle">${bSubtitles[i]}</div>
                     <div class="b-icons">
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'Data')">
-                            <i class="fa-solid fa-database"></i>
-                            <span>Data</span>
-                        </a>
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'From Doctor')">
-                            <i class="fa-solid fa-user-md"></i>
-                            <span>From Doctor</span>
-                        </a>
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}', 'B${i}', 'Past Exams')">
-                            <i class="fa-solid fa-file-pen"></i>
-                            <span>Past Exams</span>
-                        </a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Data')"><i class="fa-solid fa-database"></i><span>Data</span></a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','From Doctor')"><i class="fa-solid fa-user-md"></i><span>From Doctor</span></a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Past Exams')"><i class="fa-solid fa-file-pen"></i><span>Past Exams</span></a>
                     </div>
                 `;
                 container.appendChild(b);
@@ -2412,10 +977,10 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // ======================================================
-        // ===== أيقونات B (المودال الجديد مع الأقسام المنفصلة) =====
-        // ======================================================
-        function handleIconClick(subject, b, type) {
+        // ============================================================
+        // ===== أيقونات B (المودال) مع async/await =====
+        // ============================================================
+        async function handleIconClick(subject, b, type) {
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
 
             const modal = document.createElement('div');
@@ -2429,18 +994,17 @@
             if (type === 'Data') {
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'application/pdf')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'audio/mpeg,application/pdf')}
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'application/pdf')}
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'application/pdf')}
+                        ${await renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'audio/mpeg,application/pdf')}
                     </div>
                 `;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
-                const accept = 'application/pdf';
                 contentHTML = `
                     <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, type, null, label, icon, accept)}
+                        ${await renderSubjectFileSection(subject, b, type, null, label, icon, 'application/pdf')}
                     </div>
                 `;
             }
@@ -2457,8 +1021,8 @@
             return false;
         }
 
-        function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, acceptTypes) {
-            const files = loadSubjectFiles(subject, bBlock, type, subType);
+        async function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, acceptTypes) {
+            const files = await loadSubjectFiles(subject, bBlock, type, subType);
             const isDev = isDeveloper;
 
             let itemsHTML = '';
@@ -2476,17 +1040,19 @@
                             <span class="file-actions">
                                 <a href="${viewLink}" ${viewAttr} title="فتح"><i class="fa-solid fa-eye"></i> فتح</a>
                                 <a href="${file.data}" download="${file.name}" title="تنزيل"><i class="fa-solid fa-download"></i> تنزيل</a>
-                                ${isDev ? `<button class="delete-btn" onclick="deleteSubjectFile('${subject}', '${bBlock}', '${type}', '${subType || ''}', ${idx})">✖ حذف</button>` : ''}
+                                ${isDev ? `<button class="delete-btn" onclick="deleteSubjectFile('${subject}','${bBlock}','${type}','${subType||''}',${idx})">✖ حذف</button>` : ''}
                             </span>
                         </div>
                     `;
                 });
             }
 
+            const inputId = `fileInput_${subject}_${bBlock}_${type}_${subType || 'main'}_${Date.now()}`;
+
             const uploadSection = isDev ? `
                 <div style="margin-top:0.8rem;">
-                    <input type="file" accept="${acceptTypes}" id="fileInput_${subject}_${bBlock}_${type}_${subType || 'main'}" style="display:none;" multiple onchange="handleSubjectFileUpload('${subject}', '${bBlock}', '${type}', '${subType || ''}', this)">
-                    <button class="upload-btn" onclick="document.getElementById('fileInput_${subject}_${bBlock}_${type}_${subType || 'main'}').click();">
+                    <input type="file" accept="${acceptTypes}" id="${inputId}" style="display:none;" multiple onchange="handleSubjectFileUpload('${subject}','${bBlock}','${type}','${subType||''}', this)">
+                    <button class="upload-btn" onclick="document.getElementById('${inputId}').click();">
                         <i class="fa-solid fa-upload"></i> رفع ملفات
                     </button>
                 </div>
@@ -2501,11 +1067,15 @@
             `;
         }
 
-        function handleSubjectFileUpload(subject, bBlock, type, subType, input) {
+        // ===== رفع الملفات (للمطور فقط) =====
+        async function handleSubjectFileUpload(subject, bBlock, type, subType, input) {
             if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (input.files.length === 0) return;
+            if (!input || input.files.length === 0) {
+                alert('لم تقم باختيار أي ملف.');
+                return;
+            }
 
-            const existing = loadSubjectFiles(subject, bBlock, type, subType);
+            const existing = await loadSubjectFiles(subject, bBlock, type, subType);
             let loaded = 0;
             const total = input.files.length;
 
@@ -2534,35 +1104,41 @@
                 }
 
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     existing.push({ name: file.name, data: e.target.result });
                     loaded++;
                     if (loaded === total) {
-                        saveSubjectFiles(subject, bBlock, type, subType, existing);
+                        await saveSubjectFiles(subject, bBlock, type, subType, existing);
                         input.value = '';
+                        alert(`تم رفع ${total} ملف بنجاح.`);
+                        // إعادة فتح المودال
                         const modal = document.getElementById('dynamicSubjectModal');
                         if (modal) modal.remove();
-                        handleIconClick(subject, bBlock, type);
+                        await handleIconClick(subject, bBlock, type);
                     }
+                };
+                reader.onerror = function() {
+                    alert('حدث خطأ أثناء قراءة الملف: ' + file.name);
+                    loaded++;
+                    if (loaded === total) input.value = '';
                 };
                 reader.readAsDataURL(file);
             }
-            if (total === 0) {
-                input.value = '';
-            }
+            if (total === 0) input.value = '';
         }
 
-        function deleteSubjectFile(subject, bBlock, type, subType, index) {
+        // ===== حذف ملف (للمطور فقط) =====
+        async function deleteSubjectFile(subject, bBlock, type, subType, index) {
             if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
             if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
 
-            const files = loadSubjectFiles(subject, bBlock, type, subType);
+            const files = await loadSubjectFiles(subject, bBlock, type, subType);
             if (index >= 0 && index < files.length) {
                 files.splice(index, 1);
-                saveSubjectFiles(subject, bBlock, type, subType, files);
+                await saveSubjectFiles(subject, bBlock, type, subType, files);
                 const modal = document.getElementById('dynamicSubjectModal');
                 if (modal) modal.remove();
-                handleIconClick(subject, bBlock, type);
+                await handleIconClick(subject, bBlock, type);
             }
         }
 
@@ -2574,9 +1150,9 @@
             if (coreTab) coreTab.classList.add('active');
         }
 
-        // ======================================================
+        // ============================================================
         // ===== عرض الأقسام =====
-        // ======================================================
+        // ============================================================
         function showSection(section, btnElement) {
             const loader = document.getElementById('globalLoader');
             loader.style.display = 'block';
@@ -2596,9 +1172,8 @@
                     renderCoreSubjects();
                 }
                 document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-                if (btnElement) {
-                    btnElement.classList.add('active');
-                } else {
+                if (btnElement) btnElement.classList.add('active');
+                else {
                     const tab = document.querySelector(`.tab-btn[onclick*="${section}"]`);
                     if (tab) tab.classList.add('active');
                 }
@@ -2607,65 +1182,35 @@
             }, 300);
         }
 
-        // ======================================================
-        // ===== دوال البورتفوليو (المعدلة بالكامل) =====
-        // ======================================================
-        function getPortfolioKey(block, type) {
-            return `portfolio_${block}_${type}`;
-        }
-
-        function loadPortfolioData(block, type) {
-            const key = getPortfolioKey(block, type);
-            try {
-                const data = JSON.parse(localStorage.getItem(key));
-                if (type === 'general_empty' || type === 'general_filled') {
-                    return data; // يمكن أن يكون null
-                }
-                return Array.isArray(data) ? data : [];
-            } catch {
-                return (type === 'general_empty' || type === 'general_filled') ? null : [];
-            }
-        }
-
-        function savePortfolioData(block, type, data) {
-            const key = getPortfolioKey(block, type);
-            localStorage.setItem(key, JSON.stringify(data));
-        }
-
-        // دالة عرض البورتفوليو الجديدة
-        function openPortfolioBlock(blockName) {
+        // ============================================================
+        // ===== دوال البورتفوليو (مع async/await) =====
+        // ============================================================
+        async function openPortfolioBlock(blockName) {
             const modal = document.getElementById('portfolioModal');
             const title = document.getElementById('portfolioTitle');
             const content = document.getElementById('portfolioContent');
 
             title.innerText = `تفاصيل Portfolio - ${blockName}`;
 
-            // تحميل البيانات
-            const emptyFile = loadPortfolioData(blockName, 'general_empty');
-            const filledFile = loadPortfolioData(blockName, 'general_filled');
-            const unsolvedFiles = loadPortfolioData(blockName, 'formative_unsolved') || [];
-            const solvedFiles = loadPortfolioData(blockName, 'formative_solved') || [];
-            const incisionFiles = loadPortfolioData(blockName, 'incision') || [];
+            const emptyFile = await loadPortfolioData(blockName, 'general_empty');
+            const filledFile = await loadPortfolioData(blockName, 'general_filled');
+            const unsolvedFiles = await loadPortfolioData(blockName, 'formative_unsolved') || [];
+            const solvedFiles = await loadPortfolioData(blockName, 'formative_solved') || [];
+            const incisionFiles = await loadPortfolioData(blockName, 'incision') || [];
 
-            // دالة مساعدة لعرض ملف واحد (لفاضي/مليان)
             function renderSingleFile(file, label) {
                 if (file) {
                     return `
                         <div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
-                            <a href="${file.data}" target="_blank" class="file-link" style="color:var(--gold-primary);">
-                                <i class="fa-solid fa-file-pdf"></i> ${file.name}
-                            </a>
-                            <a href="${file.data}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);">
-                                <i class="fa-solid fa-download"></i> تنزيل
-                            </a>
-                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', '${label}', 0)">✖</button>` : ''}
+                            <a href="${file.data}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
+                            <a href="${file.data}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
+                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}','${label}',0)">✖</button>` : ''}
                         </div>
                     `;
                 }
                 return `<span class="no-files-msg">لا يوجد ملف مرفوع</span>`;
             }
 
-            // دالة مساعدة لعرض قائمة ملفات (لـ Incision و Formative)
             function renderFileList(files, type) {
                 if (files.length === 0) return '<li class="no-files-msg">لا توجد ملفات</li>';
                 return files.map((f, idx) => `
@@ -2674,16 +1219,15 @@
                         <span>
                             <a href="${f.data}" target="_blank" class="file-link" title="فتح" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
                             <a href="${f.data}" download="${f.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}', '${type}', ${idx})">✖</button>` : ''}
+                            ${isDeveloper ? `<button class="delete-btn" onclick="deletePortfolioFile('${blockName}','${type}',${idx})">✖</button>` : ''}
                         </span>
                     </li>
                 `).join('');
             }
 
-            // بناء HTML
             let html = '';
 
-            // ===== القسم الأول: شكل البورتفوليو (فاضي + مليان) =====
+            // شكل البورتفوليو
             html += `
                 <div class="block-card" style="margin-bottom:1.5rem;">
                     <h4><i class="fa-regular fa-file-pdf"></i> شكل البورتفوليو</h4>
@@ -2693,7 +1237,7 @@
                             ${renderSingleFile(emptyFile, 'general_empty')}
                             ${isDeveloper ? `
                                 <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="emptyInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}', 'empty', this)">
+                                    <input type="file" accept=".pdf" id="emptyInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}','empty',this)">
                                     <button class="upload-btn" onclick="document.getElementById('emptyInput_${blockName}').click();">رفع ملف PDF</button>
                                 </div>
                             ` : ''}
@@ -2703,7 +1247,7 @@
                             ${renderSingleFile(filledFile, 'general_filled')}
                             ${isDeveloper ? `
                                 <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="filledInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}', 'filled', this)">
+                                    <input type="file" accept=".pdf" id="filledInput_${blockName}" style="display:none;" onchange="handleGeneralUpload('${blockName}','filled',this)">
                                     <button class="upload-btn" onclick="document.getElementById('filledInput_${blockName}').click();">رفع ملف PDF</button>
                                 </div>
                             ` : ''}
@@ -2712,7 +1256,7 @@
                 </div>
             `;
 
-            // ===== القسم الثاني: اسئلة Incision =====
+            // اسئلة Incision
             html += `
                 <div class="block-card" style="margin-bottom:1.5rem;">
                     <h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
@@ -2722,7 +1266,7 @@
                         </ul>
                         ${isDeveloper ? `
                             <div style="margin:0.5rem 0;">
-                                <input type="file" accept=".pdf" id="incisionInput_${blockName}" style="display:none;" multiple onchange="handleIncisionUpload('${blockName}', this)">
+                                <input type="file" accept=".pdf" id="incisionInput_${blockName}" style="display:none;" multiple onchange="handleIncisionUpload('${blockName}',this)">
                                 <button class="upload-btn" onclick="document.getElementById('incisionInput_${blockName}').click();">رفع ملفات PDF</button>
                             </div>
                         ` : ''}
@@ -2730,7 +1274,7 @@
                 </div>
             `;
 
-            // ===== القسم الثالث: اسئلة Formative (محلول + بدون حل) =====
+            // اسئلة Formative
             html += `
                 <div class="block-card" style="margin-bottom:0;">
                     <h4><i class="fa-regular fa-file-lines"></i> اسئلة Formative</h4>
@@ -2742,7 +1286,7 @@
                             </ul>
                             ${isDeveloper ? `
                                 <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="unsolvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}', 'unsolved', this)">
+                                    <input type="file" accept=".pdf" id="unsolvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}','unsolved',this)">
                                     <button class="upload-btn" onclick="document.getElementById('unsolvedInput_${blockName}').click();">رفع ملفات PDF</button>
                                 </div>
                             ` : ''}
@@ -2754,7 +1298,7 @@
                             </ul>
                             ${isDeveloper ? `
                                 <div style="margin:0.5rem 0;">
-                                    <input type="file" accept=".pdf" id="solvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}', 'solved', this)">
+                                    <input type="file" accept=".pdf" id="solvedInput_${blockName}" style="display:none;" multiple onchange="handleFormativeUpload('${blockName}','solved',this)">
                                     <button class="upload-btn" onclick="document.getElementById('solvedInput_${blockName}').click();">رفع ملفات PDF</button>
                                 </div>
                             ` : ''}
@@ -2767,130 +1311,104 @@
             modal.style.display = 'flex';
         }
 
-        // ===== دوال رفع البورتفوليو (مع حد 500 ميجابايت) =====
-        function handleGeneralUpload(block, type, input) {
+        // ===== دوال رفع البورتفوليو =====
+        async function handleGeneralUpload(block, type, input) {
             if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            if (input.files.length === 0) return;
+            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملف.'); return; }
             const file = input.files[0];
-            if (file.size > 500 * 1024 * 1024) {
-                alert('حجم الملف يتجاوز الحد الأقصى (500 ميجابايت).');
-                input.value = '';
-                return;
-            }
-            if (file.type !== 'application/pdf') {
-                alert('يرجى رفع ملف PDF فقط.');
-                input.value = '';
-                return;
-            }
+            if (file.size > 500*1024*1024) { alert('حجم الملف يتجاوز 500 ميجابايت.'); input.value=''; return; }
+            if (file.type !== 'application/pdf') { alert('يرجى رفع ملف PDF فقط.'); input.value=''; return; }
+
             const reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = async function(e) {
                 const key = (type === 'empty') ? 'general_empty' : 'general_filled';
-                savePortfolioData(block, key, { name: file.name, data: e.target.result });
-                openPortfolioBlock(block);
+                await savePortfolioData(block, key, { name: file.name, data: e.target.result });
+                alert('تم رفع الملف بنجاح.');
+                await openPortfolioBlock(block);
             };
+            reader.onerror = function() { alert('حدث خطأ أثناء قراءة الملف.'); };
             reader.readAsDataURL(file);
         }
 
-        function handleFormativeUpload(block, type, input) {
+        async function handleFormativeUpload(block, type, input) {
             if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            const files = input.files;
-            if (files.length === 0) return;
+            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملفات.'); return; }
+
             const key = (type === 'unsolved') ? 'formative_unsolved' : 'formative_solved';
-            const existing = loadPortfolioData(block, key) || [];
+            const existing = await loadPortfolioData(block, key) || [];
             let loaded = 0;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.size > 500 * 1024 * 1024) {
-                    alert(`الملف "${file.name}" يتجاوز الحد الأقصى (500 ميجابايت).`);
-                    continue;
-                }
-                if (file.type !== 'application/pdf') {
-                    alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
-                    continue;
-                }
+            const total = input.files.length;
+
+            for (let i=0; i<total; i++) {
+                const file = input.files[i];
+                if (file.size > 500*1024*1024) { alert(`"${file.name}" يتجاوز 500 ميجابايت.`); continue; }
+                if (file.type !== 'application/pdf') { alert(`"${file.name}" ليس PDF.`); continue; }
+
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     existing.push({ name: file.name, data: e.target.result });
                     loaded++;
-                    if (loaded === files.length) {
-                        savePortfolioData(block, key, existing);
-                        openPortfolioBlock(block);
+                    if (loaded === total) {
+                        await savePortfolioData(block, key, existing);
+                        alert(`تم رفع ${total} ملف بنجاح.`);
+                        await openPortfolioBlock(block);
                     }
                 };
+                reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
                 reader.readAsDataURL(file);
             }
             input.value = '';
         }
 
-        function handleIncisionUpload(block, input) {
+        async function handleIncisionUpload(block, input) {
             if (!isDeveloper) { alert('غير مسموح لك برفع الملفات.'); return; }
-            const files = input.files;
-            if (files.length === 0) return;
-            const existing = loadPortfolioData(block, 'incision') || [];
+            if (!input || input.files.length === 0) { alert('لم تقم باختيار ملفات.'); return; }
+
+            const existing = await loadPortfolioData(block, 'incision') || [];
             let loaded = 0;
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                if (file.size > 500 * 1024 * 1024) {
-                    alert(`الملف "${file.name}" يتجاوز الحد الأقصى (500 ميجابايت).`);
-                    continue;
-                }
-                if (file.type !== 'application/pdf') {
-                    alert(`الملف "${file.name}" ليس PDF، سيتم تخطيه.`);
-                    continue;
-                }
+            const total = input.files.length;
+
+            for (let i=0; i<total; i++) {
+                const file = input.files[i];
+                if (file.size > 500*1024*1024) { alert(`"${file.name}" يتجاوز 500 ميجابايت.`); continue; }
+                if (file.type !== 'application/pdf') { alert(`"${file.name}" ليس PDF.`); continue; }
+
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = async function(e) {
                     existing.push({ name: file.name, data: e.target.result });
                     loaded++;
-                    if (loaded === files.length) {
-                        savePortfolioData(block, 'incision', existing);
-                        openPortfolioBlock(block);
+                    if (loaded === total) {
+                        await savePortfolioData(block, 'incision', existing);
+                        alert(`تم رفع ${total} ملف بنجاح.`);
+                        await openPortfolioBlock(block);
                     }
                 };
+                reader.onerror = function() { alert('خطأ في قراءة الملف: '+file.name); };
                 reader.readAsDataURL(file);
             }
             input.value = '';
         }
 
-        // ===== حذف ملفات البورتفوليو (للمطور فقط) =====
-        function deletePortfolioFile(block, type, index) {
+        // ===== حذف ملفات البورتفوليو =====
+        async function deletePortfolioFile(block, type, index) {
             if (!isDeveloper) { alert('غير مسموح لك بحذف الملفات.'); return; }
             if (!confirm('هل أنت متأكد من حذف هذا الملف؟')) return;
 
             if (type === 'general_empty' || type === 'general_filled') {
-                savePortfolioData(block, type, null);
+                await savePortfolioData(block, type, null);
             } else {
-                const data = loadPortfolioData(block, type);
+                const data = await loadPortfolioData(block, type);
                 if (Array.isArray(data) && index >= 0 && index < data.length) {
                     data.splice(index, 1);
-                    savePortfolioData(block, type, data);
+                    await savePortfolioData(block, type, data);
                 }
             }
-            openPortfolioBlock(block);
+            await openPortfolioBlock(block);
         }
 
-        // ======================================================
+        // ============================================================
         // ===== نظام تسجيل الدخول =====
-        // ======================================================
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        window.onload = function() {
-            try {
-                const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
-                if (activeUser && activeUser.name) {
-                    showMainApp(activeUser.name, activeUser.isDeveloper || false);
-                }
-            } catch (e) { console.error(e); }
-            renderCoreSubjects();
-            updateStats();
-            startSessionTimer();
-            initCarousel();
-            loadExamDate();
-            loadTodos();
-        };
-
+        // ============================================================
         function switchAuthMode(mode) {
             const loginForm = document.getElementById('loginForm');
             const signupForm = document.getElementById('signupForm');
@@ -2912,7 +1430,7 @@
         }
 
         function encryptPassword(pwd) { return btoa(pwd); }
-        function decryptPassword(encrypted) { try { return atob(encrypted); } catch (e) { return ''; } }
+        function decryptPassword(encrypted) { try { return atob(encrypted); } catch { return ''; } }
 
         const DEVELOPER_ID = 'admin';
         const DEVELOPER_PASSWORD = 'admin123';
@@ -2932,7 +1450,7 @@
                 return;
             }
             let users = [];
-            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch (err) { users = []; }
+            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch { users = []; }
             if (users.find(u => u.studentId === studentId || u.nationalId === nationalId)) {
                 alertBox.innerText = 'هذا الـ ID أو الرقم القومي مسجل بالفعل!';
                 alertBox.style.display = 'block';
@@ -2969,7 +1487,7 @@
             }
 
             let users = [];
-            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch (err) { users = []; }
+            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch { users = []; }
             const matchedUser = users.find(u =>
                 (u.studentId === loginId || u.nationalId === loginId) &&
                 decryptPassword(u.password) === password
@@ -2992,7 +1510,6 @@
             showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
             startSessionTimer();
             updateStats();
-            // إعادة تعيين الـ isDeveloper في الدوال الأخرى
             console.log('Developer status:', isDeveloper);
         }
 
@@ -3015,16 +1532,15 @@
             sessionSeconds = 0;
             window.sessionInterval = setInterval(() => {
                 sessionSeconds++;
-                const mins = String(Math.floor(sessionSeconds / 60)).padStart(2, '0');
-                const secs = String(sessionSeconds % 60).padStart(2, '0');
+                const mins = String(Math.floor(sessionSeconds/60)).padStart(2,'0');
+                const secs = String(sessionSeconds%60).padStart(2,'0');
                 document.getElementById('sessionTime').innerText = `${mins}:${secs}`;
             }, 1000);
         }
 
         function updateStats() {
-            const total = coreSubjects.length;
-            document.getElementById('totalSubjects').innerText = total;
-            document.getElementById('totalFiles').innerText = total * 6;
+            document.getElementById('totalSubjects').innerText = coreSubjects.length;
+            document.getElementById('totalFiles').innerText = coreSubjects.length * 6;
         }
 
         function toggleTheme() {
@@ -3041,13 +1557,28 @@
         }
 
         document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) {
-                e.target.style.display = 'none';
-            }
+            if (e.target.classList.contains('modal')) e.target.style.display = 'none';
         });
 
-        console.log('NOVA Portal loaded successfully. Developer mode available with login: admin/admin123');
-        console.log('Students can view and download files, but only the developer can upload/delete.');
+        // ============================================================
+        // ===== تحميل الصفحة =====
+        // ============================================================
+        window.onload = async function() {
+            try {
+                const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
+                if (activeUser && activeUser.name) {
+                    showMainApp(activeUser.name, activeUser.isDeveloper || false);
+                }
+            } catch (e) { console.error(e); }
+            renderCoreSubjects();
+            updateStats();
+            startSessionTimer();
+            initCarousel();
+            loadExamDate();
+            loadTodos();
+        };
+
+        console.log('NOVA Portal loaded successfully. Developer: admin/admin123');
     </script>
 </body>
 </html>
