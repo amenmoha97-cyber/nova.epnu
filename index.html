@@ -296,6 +296,31 @@
         .block-card h4 { color: var(--gold-primary); margin-bottom: 0.8rem; font-size: 1.2rem; }
         .block-card p { color: var(--beige-light); font-size: 0.9rem; line-height: 1.6; }
 
+        /* ===== Colored file sections (Lectures / Prelabs / Records / Doctor / Past Exams) ===== */
+        .block-card.file-section-lectures { border-color: rgba(212,175,55,0.75); border-right: 4px solid #D4AF37; }
+        .block-card.file-section-prelabs  { border-color: rgba(52,152,219,0.75); border-right: 4px solid #3498DB; }
+        .block-card.file-section-records  { border-color: rgba(46,204,113,0.75); border-right: 4px solid #2ECC71; }
+        .block-card.file-section-doctor   { border-color: rgba(155,89,182,0.75); border-right: 4px solid #9B59B6; }
+        .block-card.file-section-exams    { border-color: rgba(230,126,34,0.75); border-right: 4px solid #E67E22; }
+
+        .block-card.file-section-lectures .file-section-title { color: #D4AF37; border-bottom-color: rgba(212,175,55,0.55); }
+        .block-card.file-section-prelabs  .file-section-title { color: #3498DB; border-bottom-color: rgba(52,152,219,0.55); }
+        .block-card.file-section-records  .file-section-title { color: #2ECC71; border-bottom-color: rgba(46,204,113,0.55); }
+        .block-card.file-section-doctor   .file-section-title { color: #9B59B6; border-bottom-color: rgba(155,89,182,0.55); }
+        .block-card.file-section-exams    .file-section-title { color: #E67E22; border-bottom-color: rgba(230,126,34,0.55); }
+
+        .block-card.file-section-lectures .file-section-title i,
+        .block-card.file-section-prelabs  .file-section-title i,
+        .block-card.file-section-records  .file-section-title i,
+        .block-card.file-section-doctor   .file-section-title i,
+        .block-card.file-section-exams    .file-section-title i { color: inherit; }
+
+        [data-theme="light"] .block-card.file-section-lectures .file-section-title { color: #B58A2A; }
+        [data-theme="light"] .block-card.file-section-prelabs  .file-section-title { color: #2980B9; }
+        [data-theme="light"] .block-card.file-section-records  .file-section-title { color: #27AE60; }
+        [data-theme="light"] .block-card.file-section-doctor   .file-section-title { color: #8E44AD; }
+        [data-theme="light"] .block-card.file-section-exams    .file-section-title { color: #CA6F1E; }
+
         .close-btn { background: var(--error-red); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 40px; cursor: pointer; float: left; font-weight: 700; margin-bottom: 1rem; }
 
         .stats-bar { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin: 1.5rem 0; padding: 1rem; background: var(--beige-card); border-radius: 16px; border: 1px solid var(--border-gold); }
@@ -740,9 +765,10 @@
 
     <!-- ===== Main Content ===== -->
     <div class="container">
+        <!-- ✅ الترتيب الجديد: الرئيسية قبل لوحة التحكم -->
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="showSection('dashboard', this)"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
-            <button class="tab-btn" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="tab-btn active" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
+            <button class="tab-btn" onclick="showSection('dashboard', this)"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
             <button class="tab-btn" onclick="showSection('core', this)"><i class="fa-solid fa-book-open"></i> المواد الأساسية</button>
             <button class="tab-btn" onclick="showSection('extra', this)"><i class="fa-solid fa-plus-circle"></i> المواد الإضافية</button>
             <button class="tab-btn" onclick="showSection('portfolio', this)"><i class="fa-solid fa-folder-tree"></i> البورتفوليو</button>
@@ -752,8 +778,30 @@
 
         <div class="loader" id="globalLoader"></div>
 
+        <!-- ===================== HOME (default active) ===================== -->
+        <div class="section-content active" id="homeSection">
+            <div class="carousel-container" id="mainCarousel">
+                <div class="carousel-slides" id="carouselSlides">
+                    <div class="carousel-slide active" data-index="0"><img src="banner.jpg" alt="Slide 1"><div class="slide-content"><h3>NOVA Team</h3><p>Network of Outstanding Medical Students</p></div></div>
+                    <div class="carousel-slide" data-index="1"><img src="banner.jpg" alt="Slide 2"><div class="slide-content"><h3>استراتيجية المذاكرة</h3><p>نظم وقتك بين المواد المختلفة لتحقيق أقصى استفادة.</p></div></div>
+                    <div class="carousel-slide" data-index="2"><img src="banner.jpg" alt="Slide 3"><div class="slide-content"><h3>امتياز بكل ثقة</h3><p>استخدم أدواتنا لتتبع تقدمك وتحقيق أعلى الدرجات.</p></div></div>
+                    <div class="carousel-slide" data-index="3"><img src="amin.jpg" alt="Slide 4"><div class="slide-content"><h3>Dr.Amin</h3><p>NOVA Founder & President</p></div></div>
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators"></div>
+            </div>
+            <div class="home-credit"><strong>created by Dr.Amin</strong> — FOM-EPNU</div>
+            <div class="stats-bar">
+                <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
+                <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
+                <div class="stat-item"><i class="fa-solid fa-clock"></i> وقت الجلسة: <strong id="sessionTime">00:00</strong></div>
+            </div>
+            <div class="contact-btn-wrapper">
+                <a href="https://wa.me/201098919599" target="_blank" class="contact-btn"><i class="fa-brands fa-whatsapp"></i> تواصل</a>
+            </div>
+        </div>
+
         <!-- ===================== DASHBOARD ===================== -->
-        <div class="section-content active" id="dashboardSection">
+        <div class="section-content" id="dashboardSection">
             <div class="dash-hero">
                 <svg class="dash-hero-art" viewBox="0 0 360 360" fill="none" stroke="#D4AF37" stroke-width="1.1" aria-hidden="true">
                     <circle cx="240" cy="180" r="140"/><circle cx="240" cy="180" r="104" stroke-dasharray="5 11"/><circle cx="240" cy="180" r="30"/>
@@ -833,28 +881,6 @@
 
             <h2 class="dash-section-title">النشاط الأخير <span class="dash-title-en">— Recent Activity</span></h2>
             <div class="activity-card" id="dashActivityList"></div>
-        </div>
-
-        <!-- ===================== HOME ===================== -->
-        <div class="section-content" id="homeSection">
-            <div class="carousel-container" id="mainCarousel">
-                <div class="carousel-slides" id="carouselSlides">
-                    <div class="carousel-slide active" data-index="0"><img src="banner.jpg" alt="Slide 1"><div class="slide-content"><h3>NOVA Team</h3><p>Network of Outstanding Medical Students</p></div></div>
-                    <div class="carousel-slide" data-index="1"><img src="banner.jpg" alt="Slide 2"><div class="slide-content"><h3>استراتيجية المذاكرة</h3><p>نظم وقتك بين المواد المختلفة لتحقيق أقصى استفادة.</p></div></div>
-                    <div class="carousel-slide" data-index="2"><img src="banner.jpg" alt="Slide 3"><div class="slide-content"><h3>امتياز بكل ثقة</h3><p>استخدم أدواتنا لتتبع تقدمك وتحقيق أعلى الدرجات.</p></div></div>
-                    <div class="carousel-slide" data-index="3"><img src="amin.jpg" alt="Slide 4"><div class="slide-content"><h3>Dr.Amin</h3><p>NOVA Founder & President</p></div></div>
-                </div>
-                <div class="carousel-indicators" id="carouselIndicators"></div>
-            </div>
-            <div class="home-credit"><strong>created by Dr.Amin</strong> — FOM-EPNU</div>
-            <div class="stats-bar">
-                <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
-                <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
-                <div class="stat-item"><i class="fa-solid fa-clock"></i> وقت الجلسة: <strong id="sessionTime">00:00</strong></div>
-            </div>
-            <div class="contact-btn-wrapper">
-                <a href="https://wa.me/201098919599" target="_blank" class="contact-btn"><i class="fa-brands fa-whatsapp"></i> تواصل</a>
-            </div>
         </div>
 
         <!-- ===================== CORE ===================== -->
@@ -1137,7 +1163,32 @@
         // ================================================================
         const subjectFiles = {
             'Anatomy': {
-                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - تشريح عام', url: 'files/anatomy/B1/Lectures/lecture1.pdf' }, { name: 'محاضرة 2 - العظام', url: 'files/anatomy/B1/Lectures/lecture2.pdf' }, { name: 'محاضرة 3 - المفاصل', url: 'files/anatomy/B1/Lectures/lecture3.pdf' }], 'Prelabs': [{ name: 'Prelab 1 - عظام', url: 'files/anatomy/B1/Prelabs/prelab1.pdf' }], 'Records': [{ name: 'تسجيل صوتي 1', url: 'files/anatomy/B1/Records/record1.mp3' }, { name: 'تسجيل صوتي 2', url: 'files/anatomy/B1/Records/record2.mp3' }] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B1', url: 'files/anatomy/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }] },
+                'B1': { 'Data': { 
+                  'Lectures': [
+                { name: 'Lec 1 - name', url: 'Anatomy/B1/Lec1.pdf' }, 
+                { name: 'Lec 2 - name', url: 'Anatomy/B1/Lec2.pdf' }, 
+                { name: 'Lec 3 - name', url: 'Anatomy/B1/Lec3.pdf' }, 
+                { name: 'Lec 4 - name', url: 'Anatomy/B1/Lec4.pdf' }, 
+                ],
+                  'Prelabs': [
+                  { name: 'Prelab 1 - name', url: 'Anatomy/B1/Prelab1.pdf' },
+                  { name: 'Prelab 2 - name', url: 'Anatomy/B1/Prelab2.pdf' },
+                  { name: 'Prelab 3 - name', url: 'Anatomy/B1/Prelab3.pdf' },
+                  { name: 'Prelab 4 - name', url: 'Anatomy/B1/Prelabb4.pdf' },
+                ], 
+                  'Records': [
+                  { name: 'Lec 1', url: 'Anatomy/B1/Record/Lec1.mp3' },
+                  { name: 'Lec 2', url: 'Anatomy/B1/Record/Lec2.mp3' },
+                  { name: 'Lec 3', url: 'Anatomy/B1/Record/Lec1.mp3' },
+                  { name: 'Lec 4', url: 'Anatomy/B1/Record/Lec1.mp3' },
+                 ]},
+                 'From Doctor': [
+                  { name: ' OSPE ', url: 'Anatomy/B1/OSPE.pdf' },
+                  { name: ' EBE (MCQ) ', url: 'Anatomy/B1/MCQ.pdf' },
+                  { name: ' EBE (SEQ) ', url: 'Anatomy/B1/SEQ.pdf' },
+                 ],
+                  'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }] },
+                  
                 'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }, { name: 'محاضرة B2-2', url: 'files/anatomy/B2/Lectures/lec2.pdf' }], 'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }] },
                 'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }] },
                 'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/anatomy/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/anatomy/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/anatomy/B4/PastExams/exam2024.pdf' }] },
@@ -2245,7 +2296,8 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        function renderSubjectFileSection(subject, bBlock, type, subType, label, icon) {
+        // ✅ أضفنا باراميتر sectionClass لتلوين الإطار حسب النوع
+        function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, sectionClass) {
             let files = [];
             try {
                 if (type === 'Data') files = subjectFiles[subject]?.[bBlock]?.['Data']?.[subType] || [];
@@ -2282,7 +2334,8 @@
                         </div>`;
                 });
             }
-            return `<div class="block-card" style="margin-bottom:1rem;"><div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>${itemsHTML}</div>`;
+            const cls = sectionClass ? `file-section-${sectionClass}` : '';
+            return `<div class="block-card ${cls}" style="margin-bottom:1rem;"><div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>${itemsHTML}</div>`;
         }
 
         function handleIconClick(subject, b, type) {
@@ -2296,14 +2349,15 @@
             let contentHTML = '';
             if (type === 'Data') {
                 contentHTML = `<div style="margin-bottom:1rem;">
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'lectures')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'prelabs')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'records')}
                 </div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
-                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon)}</div>`;
+                const sectionClass = type === 'From Doctor' ? 'doctor' : 'exams';
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon, sectionClass)}</div>`;
             }
             modal.innerHTML = `<div class="modal-content">
                 <button class="close-btn" onclick="this.closest('.modal').remove()">إغلاق</button>
@@ -2328,14 +2382,15 @@
             let contentHTML = '';
             if (type === 'Data') {
                 contentHTML = `<div style="margin-bottom:1rem;">
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
-                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user', 'lectures')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'prelabs')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'records')}
                 </div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
-                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon)}</div>`;
+                const sectionClass = type === 'From Doctor' ? 'doctor' : 'exams';
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon, sectionClass)}</div>`;
             }
             const contentDiv = modal.querySelector('.modal-content > div:last-child');
             if (contentDiv) contentDiv.innerHTML = contentHTML;
@@ -2359,7 +2414,7 @@
                     'dashboard': 'dashboardSection', 'home': 'homeSection', 'core': 'coreSection',
                     'extra': 'extraSection', 'portfolio': 'portfolioSection', 'saved': 'savedSection', 'other': 'otherSection'
                 };
-                const targetId = sectionMap[section] || 'dashboardSection';
+                const targetId = sectionMap[section] || 'homeSection';
                 const target = document.getElementById(targetId);
                 if (target) target.classList.add('active');
                 if (section === 'core') {
@@ -2783,7 +2838,8 @@
         function showMainApp(userName) {
             document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
             document.getElementById("authOverlay").style.display = "none";
-            showSection("dashboard", document.querySelector('.tab-btn[onclick*="dashboard"]'));
+            // ✅ نبدأ من الرئيسية (أول تابة)
+            showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             renderDashboard();
             startSessionTimer();
             updateStats();
@@ -2798,7 +2854,7 @@
             document.getElementById("loginPassword").value = "";
             document.getElementById("loginAlert").style.display = "none";
             document.getElementById("signupAlert").style.display = "none";
-            showSection("dashboard", document.querySelector('.tab-btn[onclick*="dashboard"]'));
+            showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             clearInterval(window.sessionInterval);
         }
         let sessionSeconds = 0;
