@@ -1118,7 +1118,7 @@
                     <button class="audio-speed-btn" data-speed="2" onclick="audioSetSpeed(2, this)">2x</button>
                 </div>
                 <div class="audio-status-wrap">
-                    <button class="audio-status-btn" id="audioMemBtn" onclick="audioToggleStatus('memorized')"><i class="fa-regular fa-square-check"></i> <span>ذاكرة</span></button>
+                    <button class="audio-status-btn" id="audioMemBtn" onclick="audioToggleStatus('memorized')"><i class="fa-regular fa-square-check"></i> <span>ذاكرته</span></button>
                     <button class="audio-status-btn" id="audioRevBtn" onclick="audioToggleStatus('reviewed')"><i class="fa-regular fa-square-check"></i> <span>مراجعة</span></button>
                 </div>
                 <audio id="novaAudioPlayer" preload="metadata"></audio>
@@ -1139,7 +1139,7 @@
                     <button class="pdf-tool-btn" onclick="pdfZoom(-0.1)" title="تصغير"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                     <span id="pdfZoomLevel" style="font-family:var(--font-ui);font-size:0.75rem;color:var(--beige-light);min-width:42px;text-align:center;">100%</span>
                     <button class="pdf-tool-btn" onclick="pdfZoom(0.1)" title="تكبير"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
-                    <button class="pdf-tool-btn status-memorized" id="pdfMemBtn" onclick="pdfToggleStatus('memorized')" title="ذاكرته"><i class="fa-regular fa-square-check"></i> ذاكرة</button>
+                    <button class="pdf-tool-btn status-memorized" id="pdfMemBtn" onclick="pdfToggleStatus('memorized')" title="ذاكرته"><i class="fa-regular fa-square-check"></i> ذاكرته</button>
                     <button class="pdf-tool-btn status-reviewed"  id="pdfRevBtn" onclick="pdfToggleStatus('reviewed')"  title="راجعته"><i class="fa-regular fa-square-check"></i> مراجعة</button>
                     <button class="pdf-tool-btn" id="pdfBookmarkBtn" onclick="pdfToggleBookmark()" title="حفظ"><i class="fa-regular fa-star"></i></button>
                     <button class="pdf-tool-btn" id="pdfCompleteBtn" onclick="pdfToggleComplete()" title="إكمال"><i class="fa-regular fa-circle-check"></i></button>
@@ -1286,7 +1286,7 @@
         const portfolioFiles = {
             'B1': { 'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' }, 'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' }, 'formative_unsolved': [{ name: 'F1 Unsolved', url: 'f1-u.pdf' }], 'formative_solved': [{ name: 'F1 Solved', url: 'f1-s.pdf' }], 'incision': [{ name: 'Incision B1', url: 'ia-b1.pdf' }] },
             'B2': { 'general_empty': { name: 'P2 Empty', url: '2th-e.pdf' }, 'general_filled': { name: 'P2 Filled', url: '2th-f.pdf' }, 'formative_unsolved': [{ name: 'F2 Unsolved', url: 'f2-u.pdf' }], 'formative_solved': [{ name: 'F2 Solved', url: 'f2-s.pdf' }], 'incision': [{ name: 'Incision B2', url: 'ia-b2.pdf' }] },
-            'B3': { 'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' }, 'general_filled': { name: 'P3 Filled', url: '3th-f.pdf' }, 'formative_unsolved': [{ name: 'F3 Unsolved', url: 'f3-u.pdf' }], 'formative_solved': [{ name: 'F3 Solved', url: 'f3-s.pdf' }], 'incision': [{ name: 'Incision B3', url: 'ia-b3.pdf' }] },
+            'B3': { 'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' }, 'general_filled': { name: 'P3 filled', url: '3th-f.pdf' }, 'formative_unsolved': [{ name: 'F3 Unsolved', url: 'f3-u.pdf' }], 'formative_solved': [{ name: 'F3 Solved', url: 'f3-s.pdf' }], 'incision': [{ name: 'Incision B3', url: 'ia-b3.pdf' }] },
             'B4': { 'general_empty': { name: 'P4 Empty', url: '4th-e.pdf' }, 'general_filled': { name: 'P4 Filled', url: '4th-f.pdf' }, 'formative_unsolved': [{ name: 'F4 Unsolved', url: 'f4-u.pdf' }], 'formative_solved': [{ name: 'F4 Solved', url: 'f4-s.pdf' }], 'incision': [{ name: 'Incision B4', url: 'ia-b4.pdf' }] },
             'B5': { 'general_empty': { name: 'P5 Empty', url: '5th-e.pdf' }, 'general_filled': { name: 'P5 Filled', url: '5th-f.pdf' }, 'formative_unsolved': [{ name: 'F5 Unsolved', url: 'f5-u.pdf' }], 'formative_solved': [{ name: 'F5 Solved', url: 'f5-s.pdf' }], 'incision': [{ name: 'Incision B5', url: 'ia-b5.pdf' }] },
             'B6': { 'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' }, 'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' }, 'formative_unsolved': [{ name: 'F6 Unsolved', url: 'f6-u.pdf' }], 'formative_solved': [{ name: 'F6 Solved', url: 'f6-s.pdf' }], 'incision': [{ name: 'Incision B6', url: 'ia-b6.pdf' }] }
@@ -1437,7 +1437,7 @@
                     fill.className = 'bd-progress-fill ' + (st.status === 'completed' ? 'completed' : (st.status === 'not-started' ? 'not-started' : ''));
                 }
                 const meta = card.querySelector('.bd-progress-meta');
-                if (meta) meta.innerHTML = `<span>ذاكرة ${st.memorized}/${st.total} · مراجعة ${st.reviewed}/${st.total}</span><strong>${st.progress}%</strong>`;
+                if (meta) meta.innerHTML = `<span>ذاكرته${st.memorized}/${st.total} · مراجعة ${st.reviewed}/${st.total}</span><strong>${st.progress}%</strong>`;
                 const badge = card.querySelector('.bd-status');
                 if (badge) {
                     const info = blockStatusLabels[st.status];
@@ -2078,7 +2078,7 @@
         const DASH_ACTIVITY = [
             { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
             { icon: 'fa-book-open', text: 'تصفح المواد الأساسية', sub: 'Core Subjects', time: '' },
-            { icon: 'fa-file-pdf', text: 'افتح أي ملف لتعليمه كـ ذاكرة أو مراجعة', sub: 'Data · Doctor · Past Exams', time: '' },
+            { icon: 'fa-file-pdf', text: 'افتح أي ملف لتعليمه كـ ذاكرته أو مراجعة', sub: 'Data · Doctor · Past Exams', time: '' },
             { icon: 'fa-bell', text: 'أضف مواعيدك لمتابعة العد التنازلي', sub: 'المواعيد', time: '' }
         ];
         function renderDashActivity() {
@@ -2168,7 +2168,7 @@
                         <span class="bd-status ${stats.status}"><i class="fa-solid ${statusInfo.icon}"></i> ${statusInfo.text}</span>
                     </div>
                     <div class="bd-progress-wrap">
-                        <div class="bd-progress-meta"><span>ذاكرة ${stats.memorized}/${stats.total} · مراجعة ${stats.reviewed}/${stats.total}</span><strong>${stats.progress}%</strong></div>
+                        <div class="bd-progress-meta"><span>ذاكرته ${stats.memorized}/${stats.total} · مراجعة ${stats.reviewed}/${stats.total}</span><strong>${stats.progress}%</strong></div>
                         <div class="bd-progress-track"><div class="bd-progress-fill ${pClass}" style="width:0%" data-target="${stats.progress}"></div></div>
                     </div>
                     <div class="bd-stats-row">
@@ -2213,10 +2213,10 @@
                             <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${file.name}</span>
                             <span class="file-actions">
                                 <button class="status-btn memorized ${st.memorized ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'memorized',event)" title="ذاكرته؟">
-                                    <i class="fa-${st.memorized ? 'solid' : 'regular'} fa-square-check"></i><span>ذاكرة</span>
+                                    <i class="fa-${st.memorized ? 'solid' : 'regular'} fa-square-check"></i><span>ذاكرته<span>
                                 </button>
                                 <button class="status-btn reviewed ${st.reviewed ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'reviewed',event)" title="راجعته؟">
-                                    <i class="fa-${st.reviewed ? 'solid' : 'regular'} fa-square-check"></i><span>مراجعة</span>
+                                    <i class="fa-${st.reviewed ? 'solid' : 'regular'} fa-square-check"></i><span>راجعته</span>
                                 </button>
                                 <button class="save-btn ${saved ? 'saved' : ''}" onclick="toggleSave(decodeURIComponent('${enc(file.url)}'), decodeURIComponent('${enc(file.name)}'), decodeURIComponent('${enc(subject)}'), decodeURIComponent('${enc(bBlock)}'), decodeURIComponent('${enc(type)}'), decodeURIComponent('${enc(subType || '')}'), event)" title="${saved ? 'إزالة من المحفوظات' : 'حفظ'}">
                                     <i class="fa-${saved ? 'solid' : 'regular'} fa-star"></i>
