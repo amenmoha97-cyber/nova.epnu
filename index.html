@@ -187,7 +187,6 @@
         [data-theme="light"] .subject-card i { color: #D8B866; }
         .subject-card h3 { font-size: 1rem; margin: 0; font-weight: 700; }
 
-        /* ===== Block Dashboard Cards ===== */
         #subjectDetailSection .grid-container { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
         .block-dash-card { position: relative; background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 22px; padding: 1.4rem 1.3rem 1.2rem; transition: 0.4s; overflow: hidden; display: flex; flex-direction: column; gap: 1rem; }
         [data-theme="light"] .block-dash-card { background: #FFFCF7; }
@@ -282,6 +281,35 @@
 
         .section-content { display: none; }
         .section-content.active { display: block; }
+
+        /* ===== File Status Buttons ===== */
+        .file-item .status-btn {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: transparent; border: 1px solid var(--border-gold);
+            color: var(--beige-light); padding: 0.25rem 0.6rem;
+            border-radius: 8px; cursor: pointer; font-size: 0.72rem;
+            font-weight: 700; font-family: var(--font-ui);
+            transition: 0.2s; line-height: 1; white-space: nowrap;
+        }
+        .file-item .status-btn i { font-size: 0.85rem; }
+        .file-item .status-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+        .file-item .status-btn.memorized.active { background: rgba(46,204,113,0.15); border-color: #2ECC71; color: #2ECC71; }
+        .file-item .status-btn.reviewed.active  { background: rgba(52,152,219,0.15); border-color: #3498DB; color: #3498DB; }
+
+        .pdf-tool-btn.status-memorized.active { background: #2ECC71; border-color: #2ECC71; color: #0A0A0A; }
+        .pdf-tool-btn.status-reviewed.active  { background: #3498DB; border-color: #3498DB; color: #0A0A0A; }
+
+        .audio-status-wrap { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 0.4rem; }
+        .audio-status-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: transparent; border: 1px solid var(--border-gold);
+            color: var(--beige-light); padding: 0.45rem 1.2rem; border-radius: 20px;
+            cursor: pointer; font-family: var(--font-ui); font-size: 0.82rem;
+            font-weight: 700; transition: 0.25s;
+        }
+        .audio-status-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+        .audio-status-btn.memorized.active { background: rgba(46,204,113,0.15); border-color: #2ECC71; color: #2ECC71; }
+        .audio-status-btn.reviewed.active  { background: rgba(52,152,219,0.15); border-color: #3498DB; color: #3498DB; }
 
         /* ===== Dashboard ===== */
         .dash-hero { position: relative; border-radius: 26px; padding: 2.1rem 2.3rem; margin-bottom: 1.6rem; border: 1px solid var(--border-gold); background: linear-gradient(135deg, rgba(28,25,23,0.94), rgba(14,13,12,0.96)); overflow: hidden; box-shadow: 0 20px 55px rgba(0,0,0,0.5); }
@@ -414,7 +442,6 @@
         .pdf-frame-wrap { flex: 1; background: #222; border-radius: 12px; overflow: auto; margin-top: 0.8rem; position: relative; }
         .pdf-frame { width: 100%; height: 100%; border: none; background: #fff; transition: transform 0.2s; transform-origin: top center; }
 
-        /* ===== Responsive ===== */
         @media (max-width:1024px) {
             #coreSection .grid-container { grid-template-columns: repeat(4,1fr); }
             #subjectDetailSection .grid-container { grid-template-columns: repeat(2, 1fr); }
@@ -545,21 +572,21 @@
             <div class="dash-stats">
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-book-medical"></i></div>
-                    <div class="dash-stat-value">B1</div>
+                    <div class="dash-stat-value">B3</div>
                     <div class="dash-stat-label">البلوك الحالي</div>
                     <div class="dash-stat-desc">Current Block</div>
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <div class="dash-stat-value">72%</div>
+                    <div class="dash-stat-value" id="dashStatProgress">0%</div>
                     <div class="dash-stat-label">التقدم الأكاديمي</div>
                     <div class="dash-stat-desc">Academic Progress</div>
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="dash-stat-value">18/25</div>
-                    <div class="dash-stat-label">المهام المكتملة</div>
-                    <div class="dash-stat-desc">Completed Tasks</div>
+                    <div class="dash-stat-value" id="dashStatMemorized">0/0</div>
+                    <div class="dash-stat-label">ملفات ذاكرتها</div>
+                    <div class="dash-stat-desc">Memorized Files</div>
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-file-pen"></i></div>
@@ -793,6 +820,10 @@
                     <button class="audio-speed-btn" data-speed="1.5" onclick="audioSetSpeed(1.5, this)">1.5x</button>
                     <button class="audio-speed-btn" data-speed="2" onclick="audioSetSpeed(2, this)">2x</button>
                 </div>
+                <div class="audio-status-wrap">
+                    <button class="audio-status-btn" id="audioMemBtn" onclick="audioToggleStatus('memorized')"><i class="fa-regular fa-square-check"></i> <span>ذاكرة</span></button>
+                    <button class="audio-status-btn" id="audioRevBtn" onclick="audioToggleStatus('reviewed')"><i class="fa-regular fa-square-check"></i> <span>مراجعة</span></button>
+                </div>
                 <audio id="novaAudioPlayer" preload="metadata"></audio>
             </div>
         </div>
@@ -811,6 +842,8 @@
                     <button class="pdf-tool-btn" onclick="pdfZoom(-0.1)" title="تصغير"><i class="fa-solid fa-magnifying-glass-minus"></i></button>
                     <span id="pdfZoomLevel" style="font-family:var(--font-ui);font-size:0.75rem;color:var(--beige-light);min-width:42px;text-align:center;">100%</span>
                     <button class="pdf-tool-btn" onclick="pdfZoom(0.1)" title="تكبير"><i class="fa-solid fa-magnifying-glass-plus"></i></button>
+                    <button class="pdf-tool-btn status-memorized" id="pdfMemBtn" onclick="pdfToggleStatus('memorized')" title="ذاكرته"><i class="fa-regular fa-square-check"></i> ذاكرة</button>
+                    <button class="pdf-tool-btn status-reviewed"  id="pdfRevBtn" onclick="pdfToggleStatus('reviewed')"  title="راجعته"><i class="fa-regular fa-square-check"></i> مراجعة</button>
                     <button class="pdf-tool-btn" id="pdfBookmarkBtn" onclick="pdfToggleBookmark()" title="حفظ"><i class="fa-regular fa-star"></i></button>
                     <button class="pdf-tool-btn" id="pdfCompleteBtn" onclick="pdfToggleComplete()" title="إكمال"><i class="fa-regular fa-circle-check"></i></button>
                     <button class="pdf-tool-btn" onclick="closePDFViewer()" title="إغلاق"><i class="fa-solid fa-xmark"></i></button>
@@ -961,14 +994,6 @@
             'B6': { 'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' }, 'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' }, 'formative_unsolved': [{ name: 'F6 Unsolved', url: 'f6-u.pdf' }], 'formative_solved': [{ name: 'F6 Solved', url: 'f6-s.pdf' }], 'incision': [{ name: 'Incision B6', url: 'ia-b6.pdf' }] }
         };
 
-        const blockStats = {
-            1: { lectures: 12, prelabs: 5, records: 8, pastExams: 4, doctor: 6, progress: 100, status: 'completed' },
-            2: { lectures: 14, prelabs: 6, records: 10, pastExams: 5, doctor: 7, progress: 92, status: 'completed' },
-            3: { lectures: 16, prelabs: 7, records: 12, pastExams: 6, doctor: 8, progress: 65, status: 'in-progress' },
-            4: { lectures: 13, prelabs: 5, records: 9, pastExams: 4, doctor: 6, progress: 22, status: 'in-progress' },
-            5: { lectures: 11, prelabs: 4, records: 7, pastExams: 3, doctor: 5, progress: 0, status: 'not-started' },
-            6: { lectures: 10, prelabs: 4, records: 6, pastExams: 3, doctor: 4, progress: 0, status: 'not-started' }
-        };
         const blockStatusLabels = {
             'completed': { icon: 'fa-check', text: 'مكتمل' },
             'in-progress': { icon: 'fa-hourglass-half', text: 'قيد التقدم' },
@@ -994,6 +1019,177 @@
         let currentSubject = "";
         let currentSubjectModal = { subject: '', b: '', type: '', subType: '' };
         let currentPortfolioBlock = null;
+
+        // ================================================================
+        // ===== File Status (Memorized / Reviewed) =====
+        // ================================================================
+        function getUserKey() {
+            try {
+                const u = JSON.parse(localStorage.getItem('nova_active_user') || 'null');
+                if (u && (u.studentId || u.name)) return String(u.studentId || u.name);
+            } catch (e) {}
+            return 'guest';
+        }
+        function getFileStatusMap() {
+            try {
+                const all = JSON.parse(localStorage.getItem('nova_file_status') || '{}');
+                return all[getUserKey()] || {};
+            } catch (e) { return {}; }
+        }
+        function saveFileStatusMap(map) {
+            let all = {};
+            try { all = JSON.parse(localStorage.getItem('nova_file_status') || '{}'); } catch (e) {}
+            all[getUserKey()] = map;
+            localStorage.setItem('nova_file_status', JSON.stringify(all));
+        }
+        function getFileStatus(url) {
+            const m = getFileStatusMap();
+            const s = m[url];
+            return { memorized: !!(s && s.memorized), reviewed: !!(s && s.reviewed) };
+        }
+        function toggleFileStatus(url, field, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            const map = getFileStatusMap();
+            const cur = map[url] || { memorized: false, reviewed: false };
+            cur[field] = !cur[field];
+            map[url] = cur;
+            saveFileStatusMap(map);
+
+            if (currentSubjectModal.subject && document.getElementById('dynamicSubjectModal')) refreshSubjectModal();
+            updatePdfStatusButtons();
+            updateAudioStatusButtons();
+            refreshBlockCards();
+            updateDashboardStats();
+        }
+
+        function collectBlockFiles(subjectName, blockKey) {
+            const data = subjectFiles[subjectName] && subjectFiles[subjectName][blockKey];
+            if (!data) return [];
+            const out = [];
+            const d = data['Data'] || {};
+            ['Lectures', 'Prelabs', 'Records'].forEach(k => (d[k] || []).forEach(f => out.push(f)));
+            (data['From Doctor'] || []).forEach(f => out.push(f));
+            (data['Past Exams'] || []).forEach(f => out.push(f));
+            return out;
+        }
+        function computeBlockStats(subjectName, blockNum) {
+            const blockKey = 'B' + blockNum;
+            const data = subjectFiles[subjectName] && subjectFiles[subjectName][blockKey];
+            const d = (data && data['Data']) || {};
+            const base = {
+                lectures: (d['Lectures'] || []).length,
+                prelabs: (d['Prelabs'] || []).length,
+                records: (d['Records'] || []).length,
+                pastExams: (data && data['Past Exams'] || []).length,
+                doctor: (data && data['From Doctor'] || []).length,
+                memorized: 0, reviewed: 0, total: 0, progress: 0, status: 'not-started'
+            };
+            const files = collectBlockFiles(subjectName, blockKey);
+            const map = getFileStatusMap();
+            files.forEach(f => {
+                const s = map[f.url];
+                if (s && s.memorized) base.memorized++;
+                if (s && s.reviewed) base.reviewed++;
+            });
+            base.total = files.length;
+            base.progress = files.length ? Math.round(((base.memorized + base.reviewed) / (files.length * 2)) * 100) : 0;
+            if (base.progress >= 100) base.status = 'completed';
+            else if (base.progress > 0) base.status = 'in-progress';
+            return base;
+        }
+
+        function computeOverallStats() {
+            let totalFiles = 0, memorized = 0, reviewed = 0;
+            const map = getFileStatusMap();
+            Object.keys(subjectFiles).forEach(sub => {
+                ['B1', 'B2', 'B3', 'B4', 'B5', 'B6'].forEach(b => {
+                    collectBlockFiles(sub, b).forEach(f => {
+                        totalFiles++;
+                        const s = map[f.url];
+                        if (s && s.memorized) memorized++;
+                        if (s && s.reviewed) reviewed++;
+                    });
+                });
+            });
+            const progress = totalFiles ? Math.round(((memorized + reviewed) / (totalFiles * 2)) * 100) : 0;
+            return { totalFiles, memorized, reviewed, progress };
+        }
+        function updateDashboardStats() {
+            const s = computeOverallStats();
+            const p = document.getElementById('dashStatProgress');
+            if (p) p.innerText = s.progress + '%';
+            const m = document.getElementById('dashStatMemorized');
+            if (m) m.innerText = s.memorized + '/' + s.totalFiles;
+        }
+        function refreshBlockCards() {
+            const container = document.getElementById('subjectBlocksContainer');
+            if (!container || !currentSubject) return;
+            const cards = container.querySelectorAll('.block-dash-card');
+            if (!cards.length) return;
+            cards.forEach((card, idx) => {
+                const st = computeBlockStats(currentSubject, idx + 1);
+                const fill = card.querySelector('.bd-progress-fill');
+                if (fill) {
+                    fill.dataset.target = st.progress;
+                    fill.style.width = st.progress + '%';
+                    fill.className = 'bd-progress-fill ' + (st.status === 'completed' ? 'completed' : (st.status === 'not-started' ? 'not-started' : ''));
+                }
+                const meta = card.querySelector('.bd-progress-meta');
+                if (meta) meta.innerHTML = `<span>ذاكرة ${st.memorized}/${st.total} · مراجعة ${st.reviewed}/${st.total}</span><strong>${st.progress}%</strong>`;
+                const badge = card.querySelector('.bd-status');
+                if (badge) {
+                    const info = blockStatusLabels[st.status];
+                    badge.className = 'bd-status ' + st.status;
+                    badge.innerHTML = `<i class="fa-solid ${info.icon}"></i> ${info.text}`;
+                }
+                const vals = card.querySelectorAll('.bd-stat-value');
+                if (vals.length >= 5) {
+                    vals[0].innerText = st.lectures;
+                    vals[1].innerText = st.prelabs;
+                    vals[2].innerText = st.records;
+                    vals[3].innerText = st.pastExams;
+                    vals[4].innerText = st.doctor;
+                }
+            });
+        }
+
+        function updatePdfStatusButtons() {
+            if (!pdfCurrentFile) return;
+            const st = getFileStatus(pdfCurrentFile.url);
+            const mb = document.getElementById('pdfMemBtn');
+            const rb = document.getElementById('pdfRevBtn');
+            if (mb) {
+                mb.classList.toggle('active', st.memorized);
+                mb.querySelector('i').className = (st.memorized ? 'fa-solid' : 'fa-regular') + ' fa-square-check';
+            }
+            if (rb) {
+                rb.classList.toggle('active', st.reviewed);
+                rb.querySelector('i').className = (st.reviewed ? 'fa-solid' : 'fa-regular') + ' fa-square-check';
+            }
+        }
+        function pdfToggleStatus(field) {
+            if (!pdfCurrentFile) return;
+            toggleFileStatus(pdfCurrentFile.url, field);
+        }
+
+        function updateAudioStatusButtons() {
+            if (!audioEl || !audioEl.src) return;
+            const st = getFileStatus(audioEl.src);
+            const mb = document.getElementById('audioMemBtn');
+            const rb = document.getElementById('audioRevBtn');
+            if (mb) {
+                mb.classList.toggle('active', st.memorized);
+                mb.querySelector('i').className = (st.memorized ? 'fa-solid' : 'fa-regular') + ' fa-square-check';
+            }
+            if (rb) {
+                rb.classList.toggle('active', st.reviewed);
+                rb.querySelector('i').className = (st.reviewed ? 'fa-solid' : 'fa-regular') + ' fa-square-check';
+            }
+        }
+        function audioToggleStatus(field) {
+            if (!audioEl || !audioEl.src) return;
+            toggleFileStatus(audioEl.src, field);
+        }
 
         // ================================================================
         // ===== Last Opened Tracking =====
@@ -1045,20 +1241,20 @@
                         <div class="continue-thumb"><i class="fa-solid fa-bone"></i></div>
                         <div class="continue-info">
                             <h3>Anatomy — التشريح</h3>
-                            <span class="continue-block">B3</span>
-                            <p class="continue-meta">Last opened: <strong>Lecture 4</strong></p>
+                            <span class="continue-block">B1</span>
+                            <p class="continue-meta">لم تبدأ بعد، ابدأ الآن!</p>
                             <div class="progress-track"><div class="progress-fill" id="dashProgressFill"></div></div>
-                            <div class="progress-meta"><span>Block B3 Progress</span><span id="dashProgressLabel">72%</span></div>
+                            <div class="progress-meta"><span>Block B1 Progress</span><span id="dashProgressLabel">0%</span></div>
                         </div>
                     </div>
                     <div class="continue-actions">
-                        <button class="btn-continue" onclick="continueAnatomy()"><i class="fa-solid fa-play"></i> استكمال التعلم</button>
-                        <span class="continue-hint">آخر تحديث: اليوم</span>
+                        <button class="btn-continue" onclick="continueAnatomy()"><i class="fa-solid fa-play"></i> ابدأ التعلم</button>
+                        <span class="continue-hint">استكشف المواد</span>
                     </div>
                 `;
                 setTimeout(() => {
                     const fill = document.getElementById('dashProgressFill');
-                    if (fill) fill.style.width = '72%';
+                    if (fill) fill.style.width = '0%';
                 }, 140);
             }
         }
@@ -1087,7 +1283,7 @@
             if (idx >= 0) list.splice(idx, 1);
             else list.unshift({ url, name, subject, block, type, subType: subType || '', fileType: isAudioUrl(url) ? 'audio' : 'pdf', savedAt: Date.now() });
             saveResourcesList(list);
-            if (currentSubjectModal.subject) refreshSubjectModal();
+            if (currentSubjectModal.subject && document.getElementById('dynamicSubjectModal')) refreshSubjectModal();
             renderSavedSection();
             updatePdfBookmarkButton();
         }
@@ -1132,7 +1328,7 @@
                             : `<button onclick="openPDFViewerFromSaved('${enc(item.url)}','${enc(item.name)}','${enc(item.subject||'')}','${enc(item.block||'')}','${enc(item.type||'')}','${enc(item.subType||'')}')"><i class="fa-solid fa-book-open"></i> فتح</button>`
                         }
                         <a href="${item.url}" download="${item.name}"><i class="fa-solid fa-download"></i> تنزيل</a>
-                        <button class="remove-btn" onclick="removeSaved('${enc(item.url)}').then?0:0; removeSaved(decodeURIComponent('${enc(item.url)}'))"><i class="fa-solid fa-trash"></i> حذف</button>
+                        <button class="remove-btn" onclick="removeSaved(decodeURIComponent('${enc(item.url)}'))"><i class="fa-solid fa-trash"></i> حذف</button>
                     </div>
                 `;
                 grid.appendChild(div);
@@ -1170,6 +1366,7 @@
             audioEl.play().catch(() => { document.getElementById('audioPlayBtn').innerHTML = '<i class="fa-solid fa-play"></i>'; });
             document.querySelectorAll('.audio-speed-btn').forEach((b, i) => b.classList.toggle('active', i === 0));
             setLastOpened({ url, name, subject, block, type, subType, fileType: 'audio' });
+            updateAudioStatusButtons();
         }
         function closeAudioPlayer() {
             if (audioEl) { audioEl.pause(); audioEl.src = ''; }
@@ -1257,6 +1454,7 @@
             updatePdfNavButtons();
             updatePdfBookmarkButton();
             updatePdfCompleteButton();
+            updatePdfStatusButtons();
             setLastOpened({ url, name, subject, block, type, subType, fileType: 'pdf' });
         }
         function updatePdfNavButtons() {
@@ -1277,6 +1475,7 @@
             updatePdfNavButtons();
             updatePdfBookmarkButton();
             updatePdfCompleteButton();
+            updatePdfStatusButtons();
             setLastOpened({ ...pdfCurrentFile, fileType: 'pdf' });
         }
         function pdfZoom(delta) {
@@ -1516,6 +1715,7 @@
             renderDashTasks();
             renderDashActivity();
             renderContinueCard();
+            updateDashboardStats();
             updateDashExamCard();
         }
         function continueAnatomy() {
@@ -1563,7 +1763,7 @@
             const container = document.getElementById('subjectBlocksContainer');
             container.innerHTML = '';
             for (let i = 1; i <= 6; i++) {
-                const stats = blockStats[i];
+                const stats = computeBlockStats(subjectName, i);
                 const statusInfo = blockStatusLabels[stats.status];
                 const card = document.createElement('div');
                 card.className = 'block-dash-card';
@@ -1577,7 +1777,7 @@
                         <span class="bd-status ${stats.status}"><i class="fa-solid ${statusInfo.icon}"></i> ${statusInfo.text}</span>
                     </div>
                     <div class="bd-progress-wrap">
-                        <div class="bd-progress-meta"><span>التقدم</span><strong>${stats.progress}%</strong></div>
+                        <div class="bd-progress-meta"><span>ذاكرة ${stats.memorized}/${stats.total} · مراجعة ${stats.reviewed}/${stats.total}</span><strong>${stats.progress}%</strong></div>
                         <div class="bd-progress-track"><div class="bd-progress-fill ${pClass}" style="width:0%" data-target="${stats.progress}"></div></div>
                     </div>
                     <div class="bd-stats-row">
@@ -1616,11 +1816,18 @@
                     const isAudio = isAudioUrl(file.url);
                     const fileIcon = isAudio ? 'fa-music' : 'fa-file-pdf';
                     const saved = isSaved(file.url);
+                    const st = getFileStatus(file.url);
                     itemsHTML += `
                         <div class="file-item">
                             <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${file.name}</span>
                             <span class="file-actions">
-                                <button class="save-btn ${saved ? 'saved' : ''}" onclick="toggleSave('${enc(file.url)}' && decodeURIComponent('${enc(file.url)}'), decodeURIComponent('${enc(file.name)}'), decodeURIComponent('${enc(subject)}'), decodeURIComponent('${enc(bBlock)}'), decodeURIComponent('${enc(type)}'), decodeURIComponent('${enc(subType || '')}'), event)" title="${saved ? 'إزالة من المحفوظات' : 'حفظ'}">
+                                <button class="status-btn memorized ${st.memorized ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'memorized',event)" title="ذاكرته؟">
+                                    <i class="fa-${st.memorized ? 'solid' : 'regular'} fa-square-check"></i><span>ذاكرة</span>
+                                </button>
+                                <button class="status-btn reviewed ${st.reviewed ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'reviewed',event)" title="راجعته؟">
+                                    <i class="fa-${st.reviewed ? 'solid' : 'regular'} fa-square-check"></i><span>مراجعة</span>
+                                </button>
+                                <button class="save-btn ${saved ? 'saved' : ''}" onclick="toggleSave(decodeURIComponent('${enc(file.url)}'), decodeURIComponent('${enc(file.name)}'), decodeURIComponent('${enc(subject)}'), decodeURIComponent('${enc(bBlock)}'), decodeURIComponent('${enc(type)}'), decodeURIComponent('${enc(subType || '')}'), event)" title="${saved ? 'إزالة من المحفوظات' : 'حفظ'}">
                                     <i class="fa-${saved ? 'solid' : 'regular'} fa-star"></i>
                                 </button>
                                 ${isAudio
@@ -1671,6 +1878,8 @@
         function refreshSubjectModal() {
             const modal = document.getElementById('dynamicSubjectModal');
             if (!modal) return;
+            const scroller = modal.querySelector('.modal-content');
+            const _scrollTop = scroller ? scroller.scrollTop : 0;
             const { subject, b, type } = currentSubjectModal;
             if (!subject || !b || !type) return;
             let contentHTML = '';
@@ -1687,6 +1896,7 @@
             }
             const contentDiv = modal.querySelector('.modal-content > div:last-child');
             if (contentDiv) contentDiv.innerHTML = contentHTML;
+            if (scroller) scroller.scrollTop = _scrollTop;
         }
 
         function backToCore() {
@@ -1860,7 +2070,7 @@
             const btn = document.getElementById("loginSubmitBtn");
             const showErr = (msg) => { alertBox.innerText = msg; alertBox.className = "alert-msg"; alertBox.style.display = "block"; };
             if (loginId === DEVELOPER_ID && password === DEVELOPER_PASSWORD) {
-                localStorage.setItem("nova_active_user", JSON.stringify({ name: "Amin (Developer)", isDeveloper: true }));
+                localStorage.setItem("nova_active_user", JSON.stringify({ name: "Amin (Developer)", studentId: "admin", isDeveloper: true }));
                 alertBox.style.display = "none";
                 showMainApp("Amin (Developer)");
                 return;
