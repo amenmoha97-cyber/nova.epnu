@@ -63,17 +63,17 @@
         [data-theme="light"] .btn-gold { background: #B58A2A; color: #FFFCF7; box-shadow: 0 6px 20px rgba(184,138,42,0.25); }
         .btn-gold:hover { background: var(--gold-secondary); color: #FFF; transform: translateY(-2px); box-shadow: 0 10px 30px rgba(212,175,55,0.4); }
         [data-theme="light"] .btn-gold:hover { background: #8C691F; color: #FFFCF7; box-shadow: 0 10px 30px rgba(140,105,31,0.4); }
+        .btn-gold:disabled { opacity: 0.6; cursor: not-allowed; }
         .alert-msg { color: var(--error-red); font-size: 0.9rem; margin-top: 0.8rem; display: none; padding: 0.5rem; border-radius: 8px; background: rgba(231,76,60,0.1); border: 1px solid var(--error-red); }
         .alert-msg.success { color: var(--success-green); border-color: var(--success-green); background: rgba(46,204,113,0.1); }
 
-        /* Password toggle */
         .password-wrapper { position: relative; display: block; }
         .password-wrapper input { padding-left: 2.6rem !important; }
         .toggle-pwd { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--gold-primary); cursor: pointer; font-size: 1rem; padding: 6px; border-radius: 6px; transition: 0.2s; line-height: 1; }
         .toggle-pwd:hover { background: rgba(212,175,55,0.15); }
         [data-theme="light"] .toggle-pwd { color: #B58A2A; }
         .forgot-link { text-align: left; margin-top: 0.6rem; }
-        .forgot-link a { color: var(--gold-primary); font-size: 0.85rem; text-decoration: none; transition: 0.2s; }
+        .forgot-link a { color: var(--gold-primary); font-size: 0.85rem; text-decoration: none; transition: 0.2s; cursor: pointer; }
         .forgot-link a:hover { text-decoration: underline; }
         [data-theme="light"] .forgot-link a { color: #B58A2A; }
 
@@ -262,6 +262,9 @@
         .modal-content h2 { color: var(--gold-primary); margin-bottom: 1.2rem; font-size: 1.8rem; }
         [data-theme="light"] .modal-content h2 { color: #29251F; }
 
+        /* ✅ التعديل: رفع مودال استعادة كلمة السر فوق شاشة الدخول */
+        #forgotModal { z-index: 2000; }
+
         .block-card { background: var(--beige-card); border: 1px solid var(--border-gold); padding: 1.2rem 1.5rem; border-radius: 14px; text-align: right; transition: 0.3s; margin-bottom: 1.5rem; }
         [data-theme="light"] .block-card { background: #F7F4EE; border-color: #E4DCCF; }
         .block-card:hover { border-color: var(--gold-primary); background: rgba(36,32,28,0.95); transform: translateX(-4px); }
@@ -390,7 +393,6 @@
                 <button class="auth-tab-btn" id="signupTabBtn" type="button" onclick="switchAuthMode('signup')">Sign Up (حساب جديد)</button>
             </div>
 
-            <!-- Login Form -->
             <form id="loginForm">
                 <div class="input-group">
                     <label>الـ ID الجامعي أو الرقم القومي</label>
@@ -404,11 +406,10 @@
                     </div>
                 </div>
                 <button type="submit" class="btn-gold" id="loginSubmitBtn">تسجيل الدخول</button>
-                <div class="forgot-link"><a href="#" onclick="openForgot(); return false;">هل نسيت كلمة السر؟</a></div>
+                <div class="forgot-link"><a onclick="openForgot(); return false;">هل نسيت كلمة السر؟</a></div>
                 <div class="alert-msg" id="loginAlert"></div>
             </form>
 
-            <!-- Signup Form -->
             <form id="signupForm" style="display:none;">
                 <div class="input-group">
                     <label>الاسم الكامل (الرباعي)</label>
@@ -594,7 +595,6 @@
         <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
     </footer>
 
-    <!-- مودال البورتفوليو -->
     <div id="portfolioModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
@@ -606,7 +606,6 @@
         </div>
     </div>
 
-    <!-- مودال المواد الإضافية -->
     <div id="extraModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('extraModal').style.display='none';">إغلاق</button>
@@ -665,18 +664,7 @@
         // ================================================================
         const subjectFiles = {
             'Anatomy': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [
-                            { name: 'محاضرة 1 - تشريح عام', url: 'files/anatomy/B1/Lectures/lecture1.pdf' },
-                            { name: 'محاضرة 2 - العظام', url: 'files/anatomy/B1/Lectures/lecture2.pdf' }
-                        ],
-                        'Prelabs': [{ name: 'Prelab 1 - عظام', url: 'files/anatomy/B1/Prelabs/prelab1.pdf' }],
-                        'Records': [{ name: 'تسجيل صوتي 1', url: 'files/anatomy/B1/Records/record1.mp3' }]
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B1', url: 'files/anatomy/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }]
-                },
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - تشريح عام', url: 'files/anatomy/B1/Lectures/lecture1.pdf' }, { name: 'محاضرة 2 - العظام', url: 'files/anatomy/B1/Lectures/lecture2.pdf' }], 'Prelabs': [{ name: 'Prelab 1 - عظام', url: 'files/anatomy/B1/Prelabs/prelab1.pdf' }], 'Records': [{ name: 'تسجيل صوتي 1', url: 'files/anatomy/B1/Records/record1.mp3' }] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B1', url: 'files/anatomy/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }] },
                 'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }] },
                 'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }] },
                 'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/anatomy/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/anatomy/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/anatomy/B4/PastExams/exam2024.pdf' }] },
@@ -774,7 +762,6 @@
             const indicators = document.getElementById('carouselIndicators');
             const totalSlides = slides.length;
             let currentIndex = 0, interval;
-
             indicators.innerHTML = '';
             slides.forEach((_, i) => {
                 const dot = document.createElement('span');
@@ -783,17 +770,14 @@
                 dot.addEventListener('click', () => goToSlide(i));
                 indicators.appendChild(dot);
             });
-
             function goToSlide(index) {
                 slides.forEach((slide, i) => slide.classList.toggle('active', i === index));
                 document.querySelectorAll('.dot').forEach((dot, i) => dot.classList.toggle('active', i === index));
                 currentIndex = index;
             }
-
             function nextSlide() { goToSlide((currentIndex + 1) % totalSlides); }
             function startAutoPlay() { if (interval) clearInterval(interval); interval = setInterval(nextSlide, 4000); }
             function stopAutoPlay() { clearInterval(interval); }
-
             const container = document.getElementById('mainCarousel');
             container.addEventListener('mouseenter', stopAutoPlay);
             container.addEventListener('mouseleave', startAutoPlay);
@@ -812,18 +796,15 @@
             const b4 = parseFloat(document.getElementById('gpaB4').value) || 0;
             const b5 = parseFloat(document.getElementById('gpaB5').value) || 0;
             const b6 = parseFloat(document.getElementById('gpaB6').value) || 0;
-
             const totalMax = 30+15+15+113+180+113+135+135+113;
             const total = research+skill1+skill2+b1+b2+b3+b4+b5+b6;
             const percent = (total/totalMax)*100;
-
             let grade='', gradeClass='';
             if (percent>=85) { grade='امتياز (Excellent)'; gradeClass='excellent'; }
             else if (percent>=75) { grade='جيد جداً (Very Good)'; gradeClass='very-good'; }
             else if (percent>=65) { grade='جيد (Good)'; gradeClass='good'; }
             else if (percent>=57) { grade='مقبول (Pass)'; gradeClass='pass'; }
             else { grade='راسب (Fail)'; gradeClass='fail'; }
-
             document.getElementById('gpaTotal').innerText = `${total} / ${totalMax}`;
             document.getElementById('gpaPercent').innerText = `${percent.toFixed(2)}%`;
             const gradeEl = document.getElementById('gpaGrade');
@@ -849,14 +830,12 @@
                 document.getElementById('cdSeconds').innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
             }, 1000);
         }
-
         function setExamDate() {
             const val = document.getElementById('examDateInput').value;
             if (!val) return;
             localStorage.setItem('nova_exam_date', val);
             startCountdown(new Date(val+'T00:00:00').getTime());
         }
-
         function loadExamDate() {
             const saved = localStorage.getItem('nova_exam_date');
             if (saved) {
@@ -886,7 +865,6 @@
                 list.appendChild(li);
             });
         }
-
         function addTodo() {
             const input = document.getElementById('todoInput');
             const text = input.value.trim();
@@ -897,14 +875,12 @@
             input.value = '';
             loadTodos();
         }
-
         function toggleTodo(index) {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
             todos[index].completed = !todos[index].completed;
             localStorage.setItem('nova_todos', JSON.stringify(todos));
             loadTodos();
         }
-
         function deleteTodo(index) {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
             todos.splice(index,1);
@@ -919,7 +895,6 @@
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('active');
         }
-
         function openExtraContent(title) {
             const modal = document.getElementById('extraModal');
             document.getElementById('extraTitle').innerText = title;
@@ -952,7 +927,6 @@
             document.getElementById('totalSubjects').innerText = filtered.length;
             document.getElementById('totalFiles').innerText = filtered.length * 6;
         }
-
         function filterCoreSubjects(value) { renderCoreSubjects(value); }
 
         function openSubject(subjectName) {
@@ -960,7 +934,6 @@
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
             document.getElementById('subjectDetailSection').classList.add('active');
             document.getElementById('subjectDetailTitle').innerText = subjectName;
-
             const container = document.getElementById('subjectBlocksContainer');
             container.innerHTML = '';
             for (let i=1; i<=6; i++) {
@@ -985,13 +958,9 @@
         function renderSubjectFileSection(subject, bBlock, type, subType, label, icon) {
             let files = [];
             try {
-                if (type === 'Data') {
-                    files = subjectFiles[subject]?.[bBlock]?.['Data']?.[subType] || [];
-                } else {
-                    files = subjectFiles[subject]?.[bBlock]?.[type] || [];
-                }
+                if (type === 'Data') files = subjectFiles[subject]?.[bBlock]?.['Data']?.[subType] || [];
+                else files = subjectFiles[subject]?.[bBlock]?.[type] || [];
             } catch (e) { files = []; }
-
             let itemsHTML = '';
             if (files.length === 0) {
                 itemsHTML = `<div class="no-files-msg">لا توجد ملفات</div>`;
@@ -1012,56 +981,37 @@
                     `;
                 });
             }
-
-            return `
-                <div class="block-card" style="margin-bottom:1rem;">
-                    <div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>
-                    ${itemsHTML}
-                </div>
-            `;
+            return `<div class="block-card" style="margin-bottom:1rem;"><div class="file-section-title"><i class="fa-solid ${icon}"></i> ${label}</div>${itemsHTML}</div>`;
         }
 
         function handleIconClick(subject, b, type) {
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
             currentSubjectModal = { subject, b, type };
-
             const modal = document.createElement('div');
             modal.className = 'modal';
             modal.style.display = 'flex';
             modal.id = 'dynamicSubjectModal';
-
             const title = `${subject} - ${b} - ${type}`;
             const refreshBtn = `<button class="refresh-btn" onclick="refreshSubjectModal()"><i class="fa-solid fa-rotate"></i> تحديث</button>`;
-
             let contentHTML = '';
             if (type === 'Data') {
-                contentHTML = `
-                    <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
-                    </div>
-                `;
+                contentHTML = `<div style="margin-bottom:1rem;">
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
+                </div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
-                contentHTML = `
-                    <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, type, null, label, icon)}
-                    </div>
-                `;
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon)}</div>`;
             }
-
-            modal.innerHTML = `
-                <div class="modal-content">
-                    <button class="close-btn" onclick="this.closest('.modal').remove()">إغلاق</button>
-                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:0.5rem;">
-                        <h2 style="color:var(--gold-primary); margin:0;">${title}</h2>
-                        ${refreshBtn}
-                    </div>
-                    <div style="margin-top:1rem;">${contentHTML}</div>
+            modal.innerHTML = `<div class="modal-content">
+                <button class="close-btn" onclick="this.closest('.modal').remove()">إغلاق</button>
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:0.5rem;">
+                    <h2 style="color:var(--gold-primary); margin:0;">${title}</h2>${refreshBtn}
                 </div>
-            `;
+                <div style="margin-top:1rem;">${contentHTML}</div>
+            </div>`;
             document.body.appendChild(modal);
             modal.addEventListener('click', function(e) { if (e.target === this) this.remove(); });
             return false;
@@ -1072,22 +1022,18 @@
             if (!modal) return;
             const { subject, b, type } = currentSubjectModal;
             if (!subject || !b || !type) return;
-
             let contentHTML = '';
             if (type === 'Data') {
-                contentHTML = `
-                    <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
-                        ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
-                    </div>
-                `;
+                contentHTML = `<div style="margin-bottom:1rem;">
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Lectures', '📘 Lectures', 'fa-chalkboard-user')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask')}
+                    ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone')}
+                </div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
                 contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon)}</div>`;
             }
-
             const contentDiv = modal.querySelector('.modal-content > div:last-child');
             if (contentDiv) contentDiv.innerHTML = contentHTML;
         }
@@ -1131,30 +1077,23 @@
             const unsolvedFiles = data['formative_unsolved'] || [];
             const solvedFiles = data['formative_solved'] || [];
             const incisionFiles = data['incision'] || [];
-
             function renderSingleFile(file) {
-                if (file) {
-                    return `<div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
-                        <a href="${file.url}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
-                        <a href="${file.url}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                    </div>`;
-                }
+                if (file) return `<div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
+                    <a href="${file.url}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
+                    <a href="${file.url}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
+                </div>`;
                 return `<span class="no-files-msg">لا يوجد ملف مرفوع</span>`;
             }
-
             function renderFileList(files) {
                 if (files.length === 0) return '<li class="no-files-msg">لا توجد ملفات</li>';
-                return files.map((f) => `
-                    <li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold); flex-wrap:wrap; gap:5px;">
-                        <a href="${f.url}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
-                        <span>
-                            <a href="${f.url}" target="_blank" class="file-link" title="فتح" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
-                            <a href="${f.url}" download="${f.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                        </span>
-                    </li>
-                `).join('');
+                return files.map((f) => `<li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold); flex-wrap:wrap; gap:5px;">
+                    <a href="${f.url}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
+                    <span>
+                        <a href="${f.url}" target="_blank" class="file-link" title="فتح" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
+                        <a href="${f.url}" download="${f.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
+                    </span>
+                </li>`).join('');
             }
-
             let html = '';
             html += `<div class="block-card" style="margin-bottom:1.5rem;">
                 <h4><i class="fa-regular fa-file-pdf"></i> شكل البورتفوليو</h4>
@@ -1163,12 +1102,10 @@
                     <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>📄 مليان</h5>${renderSingleFile(filledFile)}</div>
                 </div>
             </div>`;
-
             html += `<div class="block-card" style="margin-bottom:1.5rem;">
                 <h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
                 <div style="margin-top:0.8rem;"><ul class="portfolio-file-list" style="list-style:none; padding:0;">${renderFileList(incisionFiles)}</ul></div>
             </div>`;
-
             html += `<div class="block-card" style="margin-bottom:0;">
                 <h4><i class="fa-regular fa-file-lines"></i> اسئلة Formative</h4>
                 <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
@@ -1176,12 +1113,9 @@
                     <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>✅ محلول</h5><ul class="portfolio-file-list" style="list-style:none; padding:0;">${renderFileList(solvedFiles)}</ul></div>
                 </div>
             </div>`;
-
             content.innerHTML = html;
         }
-
         let currentPortfolioBlock = null;
-
         function openPortfolioBlock(blockName) {
             currentPortfolioBlock = blockName;
             const modal = document.getElementById('portfolioModal');
@@ -1189,20 +1123,17 @@
             renderPortfolioContent(blockName, document.getElementById('portfolioContent'));
             modal.style.display = 'flex';
         }
-
         function refreshPortfolio() {
             if (!currentPortfolioBlock) return;
             renderPortfolioContent(currentPortfolioBlock, document.getElementById('portfolioContent'));
         }
 
         // ================================================================
-        // ===== نظام التسجيل الجديد (JSONBin) =====
+        // ===== نظام التسجيل (JSONBin) =====
         // ================================================================
         async function loadUsers() {
             try {
-                const res = await fetch(JSONBIN_URL + "/latest", {
-                    headers: { "X-Master-Key": JSONBIN_API_KEY }
-                });
+                const res = await fetch(JSONBIN_URL + "/latest", { headers: { "X-Master-Key": JSONBIN_API_KEY } });
                 if (!res.ok) throw new Error("HTTP " + res.status);
                 const json = await res.json();
                 return json.record || { users: {} };
@@ -1211,15 +1142,11 @@
                 return { users: {} };
             }
         }
-
         async function saveUsers(data) {
             try {
                 const res = await fetch(JSONBIN_URL, {
                     method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-Master-Key": JSONBIN_API_KEY
-                    },
+                    headers: { "Content-Type": "application/json", "X-Master-Key": JSONBIN_API_KEY },
                     body: JSON.stringify(data)
                 });
                 return res.ok;
@@ -1228,27 +1155,19 @@
                 return false;
             }
         }
-
         async function hashPassword(password) {
             const data = new TextEncoder().encode(password + "::nova-salt-2025");
             const buf = await crypto.subtle.digest("SHA-256", data);
             return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
         }
-
         function normalizePhone(p) {
             return String(p).replace(/[^\d]/g, "").replace(/^20/, "0").replace(/^0+/, "0");
         }
-
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
             const icon = btn.querySelector("i");
-            if (input.type === "password") {
-                input.type = "text";
-                icon.className = "fa-regular fa-eye-slash";
-            } else {
-                input.type = "password";
-                icon.className = "fa-regular fa-eye";
-            }
+            if (input.type === "password") { input.type = "text"; icon.className = "fa-regular fa-eye-slash"; }
+            else { input.type = "password"; icon.className = "fa-regular fa-eye"; }
         }
 
         const DEVELOPER_ID = "admin";
@@ -1260,21 +1179,16 @@
             const loginBtn = document.getElementById("loginTabBtn");
             const signupBtn = document.getElementById("signupTabBtn");
             if (mode === "login") {
-                loginForm.style.display = "block";
-                signupForm.style.display = "none";
-                loginBtn.classList.add("active");
-                signupBtn.classList.remove("active");
+                loginForm.style.display = "block"; signupForm.style.display = "none";
+                loginBtn.classList.add("active"); signupBtn.classList.remove("active");
             } else {
-                loginForm.style.display = "none";
-                signupForm.style.display = "block";
-                signupBtn.classList.add("active");
-                loginBtn.classList.remove("active");
+                loginForm.style.display = "none"; signupForm.style.display = "block";
+                signupBtn.classList.add("active"); loginBtn.classList.remove("active");
             }
             document.getElementById("loginAlert").style.display = "none";
             document.getElementById("signupAlert").style.display = "none";
         }
 
-        // ===== Sign Up =====
         document.getElementById("signupForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signupName").value.trim();
@@ -1284,41 +1198,33 @@
             const password = document.getElementById("signupPassword").value;
             const alertBox = document.getElementById("signupAlert");
             const btn = document.getElementById("signupSubmitBtn");
-
             const showErr = (msg, ok = false) => {
                 alertBox.innerText = msg;
                 alertBox.className = "alert-msg" + (ok ? " success" : "");
                 alertBox.style.display = "block";
             };
-
             if (name.split(/\s+/).filter(Boolean).length < 4) return showErr("الاسم يجب أن يكون رباعياً (4 كلمات على الأقل).");
             if (!/^\d{14}$/.test(nationalId)) return showErr("الرقم القومي يجب أن يتكون من 14 رقماً.");
             if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) return showErr("رقم الهاتف غير صحيح.");
             if (password.length < 6) return showErr("كلمة السر يجب أن تكون 6 أحرف على الأقل.");
             if (studentId === DEVELOPER_ID) return showErr("هذا الـ ID محجوز.");
-
             showErr("⏳ جارٍ إنشاء الحساب...");
             alertBox.className = "alert-msg";
             btn.disabled = true;
-
             try {
                 const data = await loadUsers();
                 data.users = data.users || {};
-
                 for (const key in data.users) {
                     const u = data.users[key];
                     if (u.studentId === studentId) { btn.disabled = false; return showErr("هذا الـ ID مسجل بالفعل."); }
                     if (u.nationalId === nationalId) { btn.disabled = false; return showErr("هذا الرقم القومي مسجل بالفعل."); }
                     if (normalizePhone(u.phone) === normalizePhone(phone)) { btn.disabled = false; return showErr("رقم الهاتف مسجل بالفعل."); }
                 }
-
                 const passwordHash = await hashPassword(password);
                 data.users[studentId] = { name, studentId, nationalId, phone, passwordHash };
-
                 const ok = await saveUsers(data);
                 btn.disabled = false;
                 if (!ok) return showErr("فشل الحفظ، حاول مرة أخرى.");
-
                 showErr("✅ تم إنشاء الحساب! جارٍ الدخول...", true);
                 localStorage.setItem("nova_active_user", JSON.stringify({ name, studentId, isDeveloper: false }));
                 setTimeout(() => showMainApp(name), 800);
@@ -1329,47 +1235,38 @@
             }
         });
 
-        // ===== Login =====
         document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const loginId = document.getElementById("loginId").value.trim();
             const password = document.getElementById("loginPassword").value;
             const alertBox = document.getElementById("loginAlert");
             const btn = document.getElementById("loginSubmitBtn");
-
             const showErr = (msg) => {
                 alertBox.innerText = msg;
                 alertBox.className = "alert-msg";
                 alertBox.style.display = "block";
             };
-
             if (loginId === DEVELOPER_ID && password === DEVELOPER_PASSWORD) {
                 localStorage.setItem("nova_active_user", JSON.stringify({ name: "Amin (Developer)", isDeveloper: true }));
                 alertBox.style.display = "none";
                 showMainApp("Amin (Developer)");
                 return;
             }
-
             showErr("⏳ جارٍ التحقق...");
             alertBox.className = "alert-msg";
             btn.disabled = true;
-
             try {
                 const data = await loadUsers();
                 const users = data.users || {};
                 let found = null;
-
                 for (const key in users) {
                     const u = users[key];
                     if (u.studentId === loginId || u.nationalId === loginId) { found = u; break; }
                 }
-
                 btn.disabled = false;
                 if (!found) return showErr("الحساب غير موجود.");
-
                 const hash = await hashPassword(password);
                 if (hash !== found.passwordHash) return showErr("كلمة السر غير صحيحة.");
-
                 localStorage.setItem("nova_active_user", JSON.stringify({ name: found.name, studentId: found.studentId, isDeveloper: false }));
                 showMainApp(found.name);
             } catch (err) {
@@ -1381,7 +1278,6 @@
 
         // ===== Forgot Password =====
         let forgotStudentId = "";
-
         function openForgot() {
             document.getElementById("forgotModal").style.display = "flex";
             document.getElementById("forgotStep1").style.display = "block";
@@ -1392,33 +1288,25 @@
             document.getElementById("newPassword").value = "";
             forgotStudentId = "";
         }
-
         function closeForgot() {
             document.getElementById("forgotModal").style.display = "none";
         }
-
         function forgotShow(msg, ok = false) {
             const a = document.getElementById("forgotAlert");
             a.innerText = msg;
             a.className = "alert-msg" + (ok ? " success" : "");
             a.style.display = "block";
         }
-
         async function verifyForgotIdentity() {
             const sid = document.getElementById("forgotStudentId").value.trim();
             const phone = document.getElementById("forgotPhone").value.trim();
-
             if (!sid || !phone) return forgotShow("املأ الحقلين.");
             forgotShow("⏳ جارٍ التحقق...");
-
             try {
                 const data = await loadUsers();
                 const user = (data.users || {})[sid];
                 if (!user) return forgotShow("الـ ID غير مسجل.");
-                if (normalizePhone(user.phone) !== normalizePhone(phone)) {
-                    return forgotShow("رقم الهاتف غير مطابق للمسجل.");
-                }
-
+                if (normalizePhone(user.phone) !== normalizePhone(phone)) return forgotShow("رقم الهاتف غير مطابق للمسجل.");
                 forgotStudentId = sid;
                 document.getElementById("forgotStep1").style.display = "none";
                 document.getElementById("forgotStep2").style.display = "block";
@@ -1428,23 +1316,18 @@
                 forgotShow("خطأ في الاتصال.");
             }
         }
-
         async function resetPassword() {
             const newPass = document.getElementById("newPassword").value;
             if (!forgotStudentId) return forgotShow("أعد التحقق.");
             if (newPass.length < 6) return forgotShow("كلمة السر 6 أحرف على الأقل.");
-
             forgotShow("⏳ جارٍ الحفظ...");
-
             try {
                 const data = await loadUsers();
                 const user = (data.users || {})[forgotStudentId];
                 if (!user) return forgotShow("الحساب غير موجود.");
-
                 user.passwordHash = await hashPassword(newPass);
                 const ok = await saveUsers(data);
                 if (!ok) return forgotShow("فشل الحفظ.");
-
                 forgotShow("✅ تم تحديث كلمة السر. يمكنك الدخول الآن.", true);
                 setTimeout(() => { closeForgot(); switchAuthMode("login"); }, 1500);
             } catch (err) {
@@ -1461,7 +1344,6 @@
             startSessionTimer();
             updateStats();
         }
-
         function logout() {
             localStorage.removeItem("nova_active_user");
             document.getElementById("authOverlay").style.display = "flex";
@@ -1474,9 +1356,7 @@
             showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             clearInterval(window.sessionInterval);
         }
-
         let sessionSeconds = 0;
-
         function startSessionTimer() {
             clearInterval(window.sessionInterval);
             sessionSeconds = 0;
@@ -1487,32 +1367,22 @@
                 document.getElementById("sessionTime").innerText = `${mins}:${secs}`;
             }, 1000);
         }
-
         function updateStats() {
             document.getElementById("totalSubjects").innerText = coreSubjects.length;
             document.getElementById("totalFiles").innerText = coreSubjects.length * 6;
         }
-
         function toggleTheme() {
             const html = document.documentElement;
             const current = html.getAttribute("data-theme");
             const btn = document.querySelector(".theme-toggle i");
-            if (current === "light") {
-                html.removeAttribute("data-theme");
-                btn.className = "fa-solid fa-moon";
-            } else {
-                html.setAttribute("data-theme", "light");
-                btn.className = "fa-solid fa-sun";
-            }
+            if (current === "light") { html.removeAttribute("data-theme"); btn.className = "fa-solid fa-moon"; }
+            else { html.setAttribute("data-theme", "light"); btn.className = "fa-solid fa-sun"; }
         }
-
         document.addEventListener("click", function(e) {
             if (e.target.classList.contains("modal")) e.target.style.display = "none";
         });
 
-        // ================================================================
         // ===== المتغيرات العامة =====
-        // ================================================================
         let currentSubject = "";
         const coreSubjects = [
             { id: "anatomy", name: "Anatomy", cover: "anatomy-cover.jpg", fallbackIcon: "fa-bone" },
@@ -1526,7 +1396,6 @@
             { id: "community", name: "Community", cover: "community-cover.jpg", fallbackIcon: "fa-users" },
             { id: "family", name: "Family", cover: "family-cover.jpg", fallbackIcon: "fa-people-group" }
         ];
-
         const bSubtitles = {
             1: "Introduction To Medicine",
             2: "Man & Environment",
@@ -1539,9 +1408,7 @@
         window.onload = function() {
             try {
                 const activeUser = JSON.parse(localStorage.getItem("nova_active_user"));
-                if (activeUser && activeUser.name) {
-                    showMainApp(activeUser.name);
-                }
+                if (activeUser && activeUser.name) showMainApp(activeUser.name);
             } catch (e) { console.error(e); }
             renderCoreSubjects();
             updateStats();
