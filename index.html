@@ -175,19 +175,40 @@
         .appt-item-remove { background: transparent; border: 1px solid var(--border-gold); color: var(--error-red); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: 0.2s; }
         .appt-item-remove:hover { background: var(--error-red); color: #fff; }
 
-        .todo-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; }
-        .todo-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
-        .todo-input-group { display: flex; gap: 10px; margin-bottom: 1.2rem; flex-wrap: wrap; }
-        .todo-input-group input { flex: 1; padding: 0.7rem 1rem; border-radius: 12px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; min-width: 150px; }
-        [data-theme="light"] .todo-input-group input { background: #F7F4EE; color: #29251F; }
-        .todo-input-group button { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.7rem 2rem; border-radius: 30px; font-weight: 700; cursor: pointer; }
-        .todo-list { list-style: none; padding: 0; }
-        .todo-list li { display: flex; align-items: center; gap: 12px; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border-gold); color: var(--beige-main); }
-        [data-theme="light"] .todo-list li { color: #29251F; }
-        .todo-list li .todo-checkbox { width: 22px; height: 22px; accent-color: var(--gold-primary); cursor: pointer; }
-        .todo-list li .todo-text { flex: 1; }
-        .todo-list li .todo-text.completed { text-decoration: line-through; opacity: 0.6; }
-        .todo-list li .todo-delete { background: var(--error-red); color: #fff; border: none; padding: 0.2rem 0.8rem; border-radius: 20px; cursor: pointer; font-size: 0.8rem; font-weight: 700; }
+        /* ===== Pomodoro Study Timer ===== */
+        .study-timer-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.8rem 2rem 1.5rem; }
+        .study-timer-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; margin-bottom: 0.4rem; justify-content: center; }
+        .timer-cycle-info { text-align: center; font-family: var(--font-ui); font-size: 0.78rem; color: var(--beige-light); opacity: 0.85; margin-bottom: 1.3rem; }
+        .timer-cycle-info b { color: var(--gold-primary); }
+        .timer-modes { display: flex; gap: 8px; justify-content: center; margin-bottom: 1.6rem; flex-wrap: wrap; }
+        .timer-mode-btn { background: transparent; border: 1.5px solid var(--border-gold); color: var(--beige-light); padding: 0.55rem 1.35rem; border-radius: 30px; cursor: pointer; font-weight: 700; font-size: 0.85rem; font-family: var(--font-ui); transition: 0.3s; }
+        .timer-mode-btn:hover { border-color: var(--gold-primary); color: var(--gold-primary); }
+        .timer-mode-btn.active { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); box-shadow: 0 4px 18px rgba(212,175,55,0.3); }
+        .timer-mode-btn.break-mode.active { background: #2ECC71; border-color: #2ECC71; color: #0A0A0A; box-shadow: 0 4px 18px rgba(46,204,113,0.3); }
+        .timer-mode-btn.long-mode.active { background: #3498DB; border-color: #3498DB; color: #FFF; box-shadow: 0 4px 18px rgba(52,152,219,0.3); }
+
+        .timer-display-wrap { position: relative; width: 240px; height: 240px; margin: 0 auto 1.5rem; }
+        .timer-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+        .timer-ring-bg { fill: none; stroke: var(--border-gold); stroke-width: 10; }
+        .timer-ring-fill { fill: none; stroke: var(--gold-primary); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 552.92; stroke-dashoffset: 0; transition: stroke-dashoffset 0.6s linear, stroke 0.4s ease; }
+        .timer-ring-fill.break-ring { stroke: #2ECC71; }
+        .timer-ring-fill.long-ring { stroke: #3498DB; }
+        .timer-display { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+        .timer-display #timerTime { display: block; font-family: var(--font-ui); font-size: 2.7rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 2px; line-height: 1; }
+        .timer-display #timerTime.break-txt { color: #2ECC71; }
+        .timer-display #timerTime.long-txt { color: #3498DB; }
+        .timer-display small { display: block; font-family: var(--font-ui); font-size: 0.72rem; color: var(--beige-light); opacity: 0.85; margin-top: 8px; }
+
+        .timer-controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+        .timer-btn { display: inline-flex; align-items: center; gap: 8px; padding: 0.75rem 2rem; border-radius: 40px; font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: var(--font-ui); transition: 0.3s; border: 1.5px solid var(--border-gold); background: transparent; color: var(--gold-primary); }
+        .timer-btn:hover { border-color: var(--gold-primary); transform: translateY(-2px); }
+        .timer-btn.primary { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); box-shadow: 0 6px 20px rgba(212,175,55,0.3); }
+        .timer-btn.primary:hover { background: var(--gold-secondary); color: #FFF; }
+
+        .timer-stats { display: flex; justify-content: center; gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--border-gold); }
+        .timer-stat { flex: 1; text-align: center; max-width: 170px; }
+        .timer-stat strong { display: block; font-family: var(--font-ui); font-size: 1.5rem; font-weight: 800; color: var(--gold-primary); line-height: 1; margin-bottom: 6px; }
+        .timer-stat span { font-family: var(--font-ui); font-size: 0.72rem; color: var(--beige-light); opacity: 0.85; }
 
         .contact-btn-wrapper { text-align: center; margin-top: 2rem; }
         .contact-btn { display: inline-flex; align-items: center; gap: 14px; background: var(--gold-primary); color: #0A0A0A; padding: 0.9rem 3rem; border-radius: 60px; font-weight: 700; font-size: 1.2rem; text-decoration: none; box-shadow: 0 6px 30px rgba(212,175,55,0.4); }
@@ -465,261 +486,79 @@
         .pdf-frame { width: 100%; height: 100%; border: none; background: #fff; transition: transform 0.2s; transform-origin: top center; }
 
         /* ===== Portfolio Enhanced ===== */
-        #portfolioModal .modal-content {
-            max-width: 1000px;
-            padding: 0;
-            position: relative;
-            max-height: 85vh;
-            height: 85vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            border-radius: 24px;
-        }
-        #portfolioContent {
-            flex: 1;
-            min-height: 0;
-            overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: var(--gold-primary) transparent;
-        }
+        #portfolioModal .modal-content { max-width: 1000px; padding: 0; position: relative; max-height: 85vh; height: 85vh; display: flex; flex-direction: column; overflow: hidden; border-radius: 24px; }
+        #portfolioContent { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--gold-primary) transparent; }
         #portfolioContent::-webkit-scrollbar { width: 8px; }
         #portfolioContent::-webkit-scrollbar-track { background: transparent; }
-        #portfolioContent::-webkit-scrollbar-thumb {
-            background: var(--gold-primary);
-            border-radius: 10px;
-            border: 2px solid var(--card-black);
-        }
+        #portfolioContent::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 10px; border: 2px solid var(--card-black); }
         #portfolioContent::-webkit-scrollbar-thumb:hover { background: var(--gold-secondary); }
 
-        #portfolioModal .close-btn {
-            position: absolute;
-            top: 14px;
-            left: 14px;
-            z-index: 30;
-            margin: 0;
-            float: none;
-            padding: 0.42rem 1.1rem;
-            font-size: 0.8rem;
-            box-shadow: 0 6px 20px rgba(231,76,60,0.35);
-        }
+        #portfolioModal .close-btn { position: absolute; top: 14px; left: 14px; z-index: 30; margin: 0; float: none; padding: 0.42rem 1.1rem; font-size: 0.8rem; box-shadow: 0 6px 20px rgba(231,76,60,0.35); }
 
-        .pf-hero {
-            position: relative;
-            padding: 2rem 2.2rem 1.7rem;
-            background: linear-gradient(135deg, rgba(28,25,23,0.96), rgba(14,13,12,0.98));
-            border-bottom: 1px solid var(--border-gold);
-            overflow: hidden;
-            border-radius: 24px 24px 0 0;
-        }
+        .pf-hero { position: relative; padding: 2rem 2.2rem 1.7rem; background: linear-gradient(135deg, rgba(28,25,23,0.96), rgba(14,13,12,0.98)); border-bottom: 1px solid var(--border-gold); overflow: hidden; border-radius: 24px 24px 0 0; }
         [data-theme="light"] .pf-hero { background: linear-gradient(135deg, #FFFCF7, #F0E9DC); }
-        .pf-hero::before {
-            content: ""; position: absolute; inset: 0; pointer-events: none;
-            background: radial-gradient(circle at 85% 20%, rgba(212,175,55,0.20), transparent 55%),
-                        radial-gradient(circle at 10% 100%, rgba(212,175,55,0.08), transparent 45%);
-        }
-        .pf-hero-inner {
-            position: relative; z-index: 2;
-            display: flex; justify-content: space-between; align-items: flex-start;
-            gap: 1rem; flex-wrap: wrap;
-        }
+        .pf-hero::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at 85% 20%, rgba(212,175,55,0.20), transparent 55%), radial-gradient(circle at 10% 100%, rgba(212,175,55,0.08), transparent 45%); }
+        .pf-hero-inner { position: relative; z-index: 2; display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
         .pf-hero-left { display: flex; align-items: center; gap: 16px; }
-        .pf-hero-badge {
-            width: 72px; height: 72px; border-radius: 22px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-ui); font-weight: 800; font-size: 1.55rem;
-            color: #0A0A0A;
-            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
-            box-shadow: 0 12px 30px rgba(212,175,55,0.4);
-            border: 2px solid rgba(255,255,255,0.12);
-        }
-        .pf-hero-text h2 {
-            font-family: var(--font-ui); font-size: 1.55rem; font-weight: 800;
-            color: var(--beige-main); margin: 0;
-        }
+        .pf-hero-badge { width: 72px; height: 72px; border-radius: 22px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-ui); font-weight: 800; font-size: 1.55rem; color: #0A0A0A; background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary)); box-shadow: 0 12px 30px rgba(212,175,55,0.4); border: 2px solid rgba(255,255,255,0.12); }
+        .pf-hero-text h2 { font-family: var(--font-ui); font-size: 1.55rem; font-weight: 800; color: var(--beige-main); margin: 0; }
         [data-theme="light"] .pf-hero-text h2 { color: #29251F; }
-        .pf-hero-text p {
-            font-family: var(--font-ui); font-size: 0.82rem;
-            color: var(--beige-light); margin-top: 5px; opacity: 0.85;
-        }
+        .pf-hero-text p { font-family: var(--font-ui); font-size: 0.82rem; color: var(--beige-light); margin-top: 5px; opacity: 0.85; }
         .pf-hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
-        .pf-stat-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 0.44rem 0.9rem; border-radius: 30px;
-            background: rgba(212,175,55,0.10);
-            border: 1px solid var(--border-gold);
-            font-family: var(--font-ui); font-size: 0.72rem; font-weight: 700;
-            color: var(--gold-primary);
-        }
+        .pf-stat-chip { display: inline-flex; align-items: center; gap: 6px; padding: 0.44rem 0.9rem; border-radius: 30px; background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold); font-family: var(--font-ui); font-size: 0.72rem; font-weight: 700; color: var(--gold-primary); }
         .pf-stat-chip i { font-size: 0.75rem; }
 
         .pf-body { padding: 1.6rem 2rem 2rem; }
 
-        .pf-section {
-            background: var(--beige-card);
-            border: 1px solid var(--border-gold);
-            border-radius: 22px;
-            padding: 1.3rem 1.5rem;
-            margin-bottom: 1.2rem;
-            transition: 0.3s;
-        }
+        .pf-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 22px; padding: 1.3rem 1.5rem; margin-bottom: 1.2rem; transition: 0.3s; }
         [data-theme="light"] .pf-section { background: #FFFCF7; }
         .pf-section:hover { border-color: rgba(212,175,55,0.55); }
         .pf-section:last-child { margin-bottom: 0; }
 
-        .pf-section-head {
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 1.1rem; padding-bottom: 0.85rem;
-            border-bottom: 1px dashed var(--border-gold);
-        }
-        .pf-section-icon {
-            width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(212,175,55,0.05));
-            border: 1px solid var(--border-gold);
-            color: var(--gold-primary); font-size: 1.05rem;
-        }
+        .pf-section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 1.1rem; padding-bottom: 0.85rem; border-bottom: 1px dashed var(--border-gold); }
+        .pf-section-icon { width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(212,175,55,0.05)); border: 1px solid var(--border-gold); color: var(--gold-primary); font-size: 1.05rem; }
         .pf-section-title-wrap { flex: 1; min-width: 0; }
-        .pf-section-title {
-            font-family: var(--font-ui); font-weight: 800; font-size: 1.05rem;
-            color: var(--beige-main);
-        }
+        .pf-section-title { font-family: var(--font-ui); font-weight: 800; font-size: 1.05rem; color: var(--beige-main); }
         [data-theme="light"] .pf-section-title { color: #29251F; }
-        .pf-section-sub {
-            font-family: var(--font-ui); font-size: 0.7rem;
-            color: var(--beige-light); opacity: 0.75; margin-top: 2px;
-        }
-        .pf-section-count {
-            font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700;
-            color: var(--gold-primary); white-space: nowrap;
-            padding: 0.3rem 0.78rem; border-radius: 20px;
-            background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold);
-        }
+        .pf-section-sub { font-family: var(--font-ui); font-size: 0.7rem; color: var(--beige-light); opacity: 0.75; margin-top: 2px; }
+        .pf-section-count { font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700; color: var(--gold-primary); white-space: nowrap; padding: 0.3rem 0.78rem; border-radius: 20px; background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold); }
 
         .pf-templates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .pf-template-card {
-            position: relative;
-            border: 1px solid var(--border-gold);
-            border-radius: 16px;
-            padding: 1.1rem 1.2rem;
-            display: flex; align-items: center; gap: 14px;
-            transition: 0.3s; overflow: hidden;
-            background: rgba(255,255,255,0.015);
-        }
+        .pf-template-card { position: relative; border: 1px solid var(--border-gold); border-radius: 16px; padding: 1.1rem 1.2rem; display: flex; align-items: center; gap: 14px; transition: 0.3s; overflow: hidden; background: rgba(255,255,255,0.015); }
         [data-theme="light"] .pf-template-card { background: #F7F4EE; }
-        .pf-template-card::before {
-            content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
-            background: linear-gradient(180deg, var(--gold-primary), var(--gold-secondary));
-            opacity: 0.65;
-        }
-        .pf-template-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--gold-primary);
-            box-shadow: 0 14px 30px rgba(212,175,55,0.18);
-        }
-        .pf-template-icon {
-            width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem; color: var(--gold-primary);
-            background: rgba(212,175,55,0.10);
-            border: 1px solid var(--border-gold);
-        }
+        .pf-template-card::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--gold-primary), var(--gold-secondary)); opacity: 0.65; }
+        .pf-template-card:hover { transform: translateY(-3px); border-color: var(--gold-primary); box-shadow: 0 14px 30px rgba(212,175,55,0.18); }
+        .pf-template-icon { width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--gold-primary); background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold); }
         .pf-template-info { flex: 1; min-width: 0; }
-        .pf-template-label {
-            font-family: var(--font-ui); font-size: 0.68rem; font-weight: 800;
-            color: var(--gold-primary); letter-spacing: 1px;
-        }
-        .pf-template-name {
-            font-size: 0.95rem; font-weight: 700; color: var(--beige-main);
-            margin: 4px 0 9px; word-break: break-word;
-        }
+        .pf-template-label { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; }
+        .pf-template-name { font-size: 0.95rem; font-weight: 700; color: var(--beige-main); margin: 4px 0 9px; word-break: break-word; }
         [data-theme="light"] .pf-template-name { color: #29251F; }
         .pf-template-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-        .pf-action-btn {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 0.4rem 0.78rem; border-radius: 9px;
-            border: 1px solid var(--border-gold);
-            background: transparent; color: var(--gold-primary);
-            font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700;
-            text-decoration: none; cursor: pointer; transition: 0.25s;
-            white-space: nowrap;
-        }
-        .pf-action-btn:hover {
-            background: var(--gold-primary); color: #0A0A0A;
-            border-color: var(--gold-primary);
-        }
+        .pf-action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0.4rem 0.78rem; border-radius: 9px; border: 1px solid var(--border-gold); background: transparent; color: var(--gold-primary); font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700; text-decoration: none; cursor: pointer; transition: 0.25s; white-space: nowrap; }
+        .pf-action-btn:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); }
         .pf-action-btn i { font-size: 0.72rem; }
 
-        .pf-file-list {
-            list-style: none; padding: 0; margin: 0;
-            display: flex; flex-direction: column; gap: 6px;
-        }
-        .pf-file-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 0.72rem 0.9rem;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid var(--border-gold);
-            border-radius: 12px;
-            transition: 0.25s;
-        }
+        .pf-file-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+        .pf-file-item { display: flex; align-items: center; gap: 10px; padding: 0.72rem 0.9rem; background: rgba(255,255,255,0.02); border: 1px solid var(--border-gold); border-radius: 12px; transition: 0.25s; }
         [data-theme="light"] .pf-file-item { background: #F7F4EE; }
-        .pf-file-item:hover {
-            border-color: var(--gold-primary);
-            background: rgba(212,175,55,0.06);
-            transform: translateX(-3px);
-        }
-        .pf-file-icon {
-            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            background: rgba(212,175,55,0.10); color: var(--gold-primary);
-            font-size: 0.85rem;
-        }
-        .pf-file-name {
-            flex: 1; min-width: 0; font-size: 0.86rem;
-            color: var(--beige-main); font-weight: 600;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-        }
+        .pf-file-item:hover { border-color: var(--gold-primary); background: rgba(212,175,55,0.06); transform: translateX(-3px); }
+        .pf-file-icon { width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: rgba(212,175,55,0.10); color: var(--gold-primary); font-size: 0.85rem; }
+        .pf-file-name { flex: 1; min-width: 0; font-size: 0.86rem; color: var(--beige-main); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         [data-theme="light"] .pf-file-name { color: #29251F; }
         .pf-file-actions { display: flex; gap: 5px; flex-shrink: 0; }
 
         .pf-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-        .pf-split-col {
-            border: 1px solid var(--border-gold);
-            border-radius: 14px;
-            padding: 0.95rem 1rem;
-            background: rgba(255,255,255,0.02);
-        }
+        .pf-split-col { border: 1px solid var(--border-gold); border-radius: 14px; padding: 0.95rem 1rem; background: rgba(255,255,255,0.02); }
         [data-theme="light"] .pf-split-col { background: #F7F4EE; }
-        .pf-split-head {
-            display: flex; align-items: center; gap: 8px;
-            margin-bottom: 0.75rem; padding-bottom: 0.65rem;
-            border-bottom: 1px dashed var(--border-gold);
-            font-family: var(--font-ui); font-weight: 800; font-size: 0.84rem;
-        }
+        .pf-split-head { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; padding-bottom: 0.65rem; border-bottom: 1px dashed var(--border-gold); font-family: var(--font-ui); font-weight: 800; font-size: 0.84rem; }
         .pf-split-head.unsolved { color: #E67E22; }
         .pf-split-head.solved { color: #2ECC71; }
         .pf-split-head i { font-size: 0.92rem; }
-        .pf-split-head .pf-split-count {
-            margin-right: auto;
-            font-size: 0.68rem; padding: 0.18rem 0.6rem;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid var(--border-gold);
-            color: var(--beige-light);
-        }
+        .pf-split-head .pf-split-count { margin-right: auto; font-size: 0.68rem; padding: 0.18rem 0.6rem; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-gold); color: var(--beige-light); }
 
-        .pf-empty {
-            text-align: center; padding: 1.3rem 0.5rem;
-            color: var(--beige-light); opacity: 0.6;
-            font-size: 0.8rem; font-family: var(--font-ui);
-        }
-        .pf-empty i {
-            display: block; font-size: 1.6rem; color: var(--gold-primary);
-            opacity: 0.5; margin-bottom: 0.5rem;
-        }
+        .pf-empty { text-align: center; padding: 1.3rem 0.5rem; color: var(--beige-light); opacity: 0.6; font-size: 0.8rem; font-family: var(--font-ui); }
+        .pf-empty i { display: block; font-size: 1.6rem; color: var(--gold-primary); opacity: 0.5; margin-bottom: 0.5rem; }
 
         @media (max-width: 700px) {
             .pf-templates-grid, .pf-split-grid { grid-template-columns: 1fr; }
@@ -765,6 +604,10 @@
             .file-item { flex-wrap: wrap; }
             .file-item .file-actions { width: 100%; justify-content: flex-start; }
             .appt-input-group { grid-template-columns: 1fr; }
+            .timer-display-wrap { width: 200px; height: 200px; }
+            .timer-display #timerTime { font-size: 2.2rem; }
+            .timer-modes { gap: 6px; }
+            .timer-mode-btn { padding: 0.5rem 0.95rem; font-size: 0.78rem; }
         }
     </style>
 </head>
@@ -1056,13 +899,35 @@
                     <ul class="appt-list" id="apptList"></ul>
                 </div>
 
-                <div class="todo-section">
-                    <h3><i class="fa-solid fa-list-check"></i> قائمة المهام (To-Do List)</h3>
-                    <div class="todo-input-group">
-                        <input type="text" id="todoInput" placeholder="أضف مهمة جديدة..." onkeypress="if(event.key==='Enter') addTodo();">
-                        <button onclick="addTodo()">➕ إضافة</button>
+                <!-- ===== Pomodoro Study Timer ===== -->
+                <div class="study-timer-section">
+                    <h3><i class="fa-solid fa-stopwatch"></i> مؤقت المذاكرة (Pomodoro)</h3>
+                    <p class="timer-cycle-info">🎯 <b>50 دقيقة تركيز</b> + ☕ <b>10 دقايق راحة</b> · 🛋️ راحة طويلة <b>30 دقيقة</b> بعد كل <b>4 جلسات</b></p>
+                    <div class="timer-modes">
+                        <button class="timer-mode-btn active" data-mode="focus" onclick="setTimerMode('focus', this)">🎯 تركيز 50د</button>
+                        <button class="timer-mode-btn break-mode" data-mode="short" onclick="setTimerMode('short', this)">☕ راحة 10د</button>
+                        <button class="timer-mode-btn long-mode" data-mode="long" onclick="setTimerMode('long', this)">🛋️ راحة طويلة 30د</button>
                     </div>
-                    <ul class="todo-list" id="todoList"></ul>
+                    <div class="timer-display-wrap">
+                        <svg class="timer-ring" viewBox="0 0 200 200" aria-hidden="true">
+                            <circle class="timer-ring-bg" cx="100" cy="100" r="88"></circle>
+                            <circle class="timer-ring-fill" id="timerRingFill" cx="100" cy="100" r="88"></circle>
+                        </svg>
+                        <div class="timer-display">
+                            <span id="timerTime">50:00</span>
+                            <small id="timerLabel">Focus Time · وقت التركيز</small>
+                        </div>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn primary" id="timerStartBtn" onclick="toggleTimer()"><i class="fa-solid fa-play"></i> <span>بدء</span></button>
+                        <button class="timer-btn" onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i> إعادة</button>
+                        <button class="timer-btn" onclick="skipTimer()"><i class="fa-solid fa-forward"></i> تخطي</button>
+                    </div>
+                    <div class="timer-stats">
+                        <div class="timer-stat"><strong id="timerSessions">0</strong><span>جلسات مكتملة</span></div>
+                        <div class="timer-stat"><strong id="timerTotalMin">0</strong><span>دقيقة مذاكرة</span></div>
+                        <div class="timer-stat"><strong id="timerCycle">1/4</strong><span>الجلسة في الدورة</span></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1330,7 +1195,7 @@
         }
 
         // ================================================================
-        // ===== File Status (Memorized / Reviewed) =====
+        // ===== File Status =====
         // ================================================================
         function getFileStatusMap() {
             try {
@@ -1356,7 +1221,6 @@
             cur[field] = !cur[field];
             map[url] = cur;
             saveFileStatusMap(map);
-
             if (currentSubjectModal.subject && document.getElementById('dynamicSubjectModal')) refreshSubjectModal();
             updatePdfStatusButtons();
             updateAudioStatusButtons();
@@ -1399,7 +1263,6 @@
             else if (base.progress > 0) base.status = 'in-progress';
             return base;
         }
-
         function computeOverallStats() {
             let totalFiles = 0, memorized = 0, reviewed = 0;
             const map = getFileStatusMap();
@@ -1437,7 +1300,7 @@
                     fill.className = 'bd-progress-fill ' + (st.status === 'completed' ? 'completed' : (st.status === 'not-started' ? 'not-started' : ''));
                 }
                 const meta = card.querySelector('.bd-progress-meta');
-                if (meta) meta.innerHTML = `<span>ذاكرته${st.memorized}/${st.total} · مراجعة ${st.reviewed}/${st.total}</span><strong>${st.progress}%</strong>`;
+                if (meta) meta.innerHTML = `<span>ذاكرته ${st.memorized}/${st.total} · مراجعة ${st.reviewed}/${st.total}</span><strong>${st.progress}%</strong>`;
                 const badge = card.querySelector('.bd-status');
                 if (badge) {
                     const info = blockStatusLabels[st.status];
@@ -1454,7 +1317,6 @@
                 }
             });
         }
-
         function updatePdfStatusButtons() {
             if (!pdfCurrentFile) return;
             const st = getFileStatus(pdfCurrentFile.url);
@@ -1473,7 +1335,6 @@
             if (!pdfCurrentFile) return;
             toggleFileStatus(pdfCurrentFile.url, field);
         }
-
         function updateAudioStatusButtons() {
             if (!audioEl || !audioEl.src) return;
             const st = getFileStatus(audioEl.src);
@@ -1494,7 +1355,7 @@
         }
 
         // ================================================================
-        // ===== Appointments / Multi-Countdown =====
+        // ===== Appointments =====
         // ================================================================
         function getAppointments() {
             try {
@@ -1609,7 +1470,7 @@
         }
 
         // ================================================================
-        // ===== Dashboard Tasks (User-driven) =====
+        // ===== Dashboard Tasks =====
         // ================================================================
         function loadDashTasks() {
             try {
@@ -1665,7 +1526,7 @@
         }
 
         // ================================================================
-        // ===== Last Opened Tracking =====
+        // ===== Last Opened =====
         // ================================================================
         function setLastOpened(file) {
             const data = { ...file, timestamp: Date.now() };
@@ -1742,7 +1603,7 @@
         }
 
         // ================================================================
-        // ===== Bookmarks =====
+        // ===== Bookmarks / Saved =====
         // ================================================================
         function getSavedResources() {
             try { const r = localStorage.getItem('nova_saved_resources'); return r ? JSON.parse(r) : []; } catch (e) { return []; }
@@ -1891,7 +1752,6 @@
             try { const r = localStorage.getItem('nova_completed_resources'); if (r) pdfCompleted = new Set(JSON.parse(r)); } catch (e) {}
         }
         function savePdfCompleted() { localStorage.setItem('nova_completed_resources', JSON.stringify([...pdfCompleted])); }
-
         function getFilesForContext(subject, block, type, subType) {
             let files = [];
             try {
@@ -1907,7 +1767,6 @@
             } catch (e) {}
             return files.filter(f => !isAudioUrl(f.url));
         }
-
         function openPDFViewer(url, name, subject, block, type, subType, event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
             const list = getFilesForContext(subject, block, type, subType);
@@ -2016,7 +1875,9 @@
             startAutoPlay();
         }
 
+        // ================================================================
         // ===== GPA =====
+        // ================================================================
         function calculateGPA() {
             const ids = ['gpaResearch','gpaSkill1','gpaSkill2','gpaB1','gpaB2','gpaB3','gpaB4','gpaB5','gpaB6'];
             const vals = ids.map(id => parseFloat(document.getElementById(id).value) || 0);
@@ -2037,84 +1898,177 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
-        // ===== To-Do =====
-        function loadTodos() {
-            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            const list = document.getElementById('todoList');
-            if (!list) return;
-            list.innerHTML = '';
-            todos.forEach((todo, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `<input type="checkbox" class="todo-checkbox" ${todo.completed?'checked':''} onchange="toggleTodo(${index})">
-                    <span class="todo-text ${todo.completed?'completed':''}">${todo.text}</span>
-                    <button class="todo-delete" onclick="deleteTodo(${index})">✖ حذف</button>`;
-                list.appendChild(li);
+        // ================================================================
+        // ===== Pomodoro Study Timer =====
+        // النظام: 50 دقيقة تركيز + 10 دقايق راحة قصيرة،
+        // وبعد كل 4 جلسات تركيز → راحة طويلة 30 دقيقة
+        // ================================================================
+        const TIMER_DURATIONS = { focus: 50 * 60, short: 10 * 60, long: 30 * 60 };
+        const TIMER_LABELS = {
+            focus: 'Focus Time · وقت التركيز',
+            short: 'Short Break · راحة قصيرة',
+            long:  'Long Break · راحة طويلة'
+        };
+        const LONG_BREAK_EVERY = 4;
+        const TIMER_CIRC = 552.92;
+
+        let timerMode = 'focus';
+        let timerRemaining = TIMER_DURATIONS.focus;
+        let timerTotal = TIMER_DURATIONS.focus;
+        let timerInterval = null;
+        let timerRunning = false;
+        let timerAudioCtx = null;
+
+        function loadTimerStats() {
+            try {
+                const all = JSON.parse(localStorage.getItem('nova_pomodoro_stats') || '{}');
+                return all[getUserKey()] || { sessions: 0, minutes: 0 };
+            } catch (e) { return { sessions: 0, minutes: 0 }; }
+        }
+        function saveTimerStats(s) {
+            let all = {};
+            try { all = JSON.parse(localStorage.getItem('nova_pomodoro_stats') || '{}'); } catch (e) {}
+            all[getUserKey()] = s;
+            localStorage.setItem('nova_pomodoro_stats', JSON.stringify(all));
+        }
+        function ensureAudioCtx() {
+            if (!timerAudioCtx) {
+                try { timerAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+            }
+            if (timerAudioCtx && timerAudioCtx.state === 'suspended') timerAudioCtx.resume();
+        }
+        function playTimerBeep(isLong) {
+            if (!timerAudioCtx) return;
+            const now = timerAudioCtx.currentTime;
+            const freq = isLong ? 660 : 880;
+            const beeps = isLong ? [0, 0.3, 0.6, 0.9] : [0, 0.28, 0.56];
+            beeps.forEach(offset => {
+                const osc = timerAudioCtx.createOscillator();
+                const gain = timerAudioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(timerAudioCtx.destination);
+                osc.frequency.value = freq;
+                osc.type = 'sine';
+                gain.gain.setValueAtTime(0.0001, now + offset);
+                gain.gain.exponentialRampToValueAtTime(0.28, now + offset + 0.02);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.22);
+                osc.start(now + offset);
+                osc.stop(now + offset + 0.24);
             });
         }
-        function addTodo() {
-            const input = document.getElementById('todoInput');
-            const text = input.value.trim();
-            if (!text) return;
-            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            todos.push({ text, completed: false });
-            localStorage.setItem('nova_todos', JSON.stringify(todos));
-            input.value = '';
-            loadTodos();
+        function timerRingClass() {
+            if (timerMode === 'focus') return '';
+            if (timerMode === 'short') return 'break-ring';
+            return 'long-ring';
         }
-        function toggleTodo(index) {
-            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            todos[index].completed = !todos[index].completed;
-            localStorage.setItem('nova_todos', JSON.stringify(todos));
-            loadTodos();
+        function timerTextClass() {
+            if (timerMode === 'focus') return '';
+            if (timerMode === 'short') return 'break-txt';
+            return 'long-txt';
         }
-        function deleteTodo(index) {
-            const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
-            todos.splice(index,1);
-            localStorage.setItem('nova_todos', JSON.stringify(todos));
-            loadTodos();
-        }
-
-        // ===== Dashboard Activity =====
-        const DASH_ACTIVITY = [
-            { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
-            { icon: 'fa-book-open', text: 'تصفح المواد الأساسية', sub: 'Core Subjects', time: '' },
-            { icon: 'fa-file-pdf', text: 'افتح أي ملف لتعليمه كـ ذاكرته أو مراجعة', sub: 'Data · Doctor · Past Exams', time: '' },
-            { icon: 'fa-bell', text: 'أضف مواعيدك لمتابعة العد التنازلي', sub: 'المواعيد', time: '' }
-        ];
-        function renderDashActivity() {
-            const wrap = document.getElementById('dashActivityList');
-            if (!wrap) return;
-            wrap.innerHTML = DASH_ACTIVITY.map(a => `
-                <div class="activity-item">
-                    <div class="activity-icon"><i class="fa-solid ${a.icon}"></i></div>
-                    <div class="activity-text">${a.text}<small>${a.sub}</small></div>
-                    <div class="activity-time">${a.time}</div>
-                </div>`).join('');
-        }
-        function firstNameOf(name) { return String(name||'').trim().split(/\s+/)[0] || ''; }
-        function renderDashboard() {
-            const u = (() => { try { return JSON.parse(localStorage.getItem('nova_active_user') || 'null'); } catch (e) { return null; } })();
-            let nameEn = 'Student', nameAr = 'طالب';
-            if (u && u.name) {
-                nameEn = firstNameOf(u.name); nameAr = nameEn;
-                if (u.isDeveloper) { nameEn = 'Amin'; nameAr = 'أمين'; }
+        function renderTimer() {
+            const m = Math.floor(timerRemaining / 60);
+            const s = timerRemaining % 60;
+            const el = document.getElementById('timerTime');
+            if (el) {
+                el.innerText = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+                el.className = timerTextClass();
             }
-            const elEn = document.getElementById('dashUserName'); if (elEn) elEn.innerText = nameEn;
-            const elAr = document.getElementById('dashUserNameAr'); if (elAr) elAr.innerText = nameAr;
-            renderDashTasks();
-            renderDashActivity();
-            renderContinueCard();
-            renderAppointments();
-            startAppointmentsCountdown();
-            updateDashboardStats();
-            updateDashExamCard();
+            const lbl = document.getElementById('timerLabel');
+            if (lbl) lbl.innerText = TIMER_LABELS[timerMode];
+            const fill = document.getElementById('timerRingFill');
+            if (fill) {
+                const elapsed = timerTotal - timerRemaining;
+                const offset = TIMER_CIRC * (elapsed / timerTotal);
+                fill.style.strokeDashoffset = offset;
+                fill.className = 'timer-ring-fill ' + timerRingClass();
+            }
+            const stats = loadTimerStats();
+            const se = document.getElementById('timerSessions'); if (se) se.innerText = stats.sessions;
+            const tm = document.getElementById('timerTotalMin'); if (tm) tm.innerText = stats.minutes;
+            const cyc = document.getElementById('timerCycle');
+            if (cyc) {
+                let pos = stats.sessions % LONG_BREAK_EVERY;
+                if (timerMode === 'focus') pos += 1;
+                if (pos === 0) pos = LONG_BREAK_EVERY;
+                cyc.innerText = pos + '/' + LONG_BREAK_EVERY;
+            }
         }
-        function continueAnatomy() {
-            showSection('core', document.querySelector('.tab-btn[onclick*="core"]'));
-            setTimeout(() => openSubject('Anatomy'), 420);
+        function setTimerMode(mode, btn) {
+            if (timerRunning && !confirm('المؤقت شغّال، هل تريد إيقافه وتغيير الوضع؟')) return;
+            stopTimer();
+            timerMode = mode;
+            timerTotal = TIMER_DURATIONS[mode];
+            timerRemaining = timerTotal;
+            document.querySelectorAll('.timer-mode-btn').forEach(b => b.classList.toggle('active', b === btn));
+            renderTimer();
+        }
+        function toggleTimer() {
+            if (timerRunning) stopTimer();
+            else startTimer();
+        }
+        function startTimer() {
+            if (timerRunning) return;
+            ensureAudioCtx();
+            timerRunning = true;
+            const btn = document.getElementById('timerStartBtn');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-pause"></i> <span>إيقاف مؤقت</span>';
+            timerInterval = setInterval(() => {
+                timerRemaining--;
+                if (timerRemaining <= 0) {
+                    timerRemaining = 0;
+                    renderTimer();
+                    completeTimer();
+                    return;
+                }
+                renderTimer();
+            }, 1000);
+            renderTimer();
+        }
+        function stopTimer() {
+            timerRunning = false;
+            clearInterval(timerInterval);
+            const btn = document.getElementById('timerStartBtn');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-play"></i> <span>بدء</span>';
+        }
+        function resetTimer() {
+            stopTimer();
+            timerRemaining = timerTotal;
+            renderTimer();
+        }
+        function skipTimer() {
+            stopTimer();
+            completeTimer();
+        }
+        function completeTimer() {
+            stopTimer();
+            const wasFocus = (timerMode === 'focus');
+            const wasLong = (timerMode === 'long');
+            playTimerBeep(wasLong);
+            let nextMode = 'focus';
+            if (wasFocus) {
+                const stats = loadTimerStats();
+                stats.sessions++;
+                stats.minutes += Math.round(TIMER_DURATIONS.focus / 60);
+                saveTimerStats(stats);
+                if (stats.sessions % LONG_BREAK_EVERY === 0) nextMode = 'long';
+                else nextMode = 'short';
+            } else {
+                nextMode = 'focus';
+            }
+            timerMode = nextMode;
+            timerTotal = TIMER_DURATIONS[nextMode];
+            timerRemaining = timerTotal;
+            document.querySelectorAll('.timer-mode-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.mode === nextMode);
+            });
+            renderTimer();
+            setTimeout(() => { startTimer(); }, 1000);
         }
 
+        // ================================================================
         // ===== Extra Tabs =====
+        // ================================================================
         function switchExtraTab(tabId, btn) {
             document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.extra-tab-btn').forEach(el => el.classList.remove('active'));
@@ -2128,7 +2082,9 @@
             modal.style.display = 'flex';
         }
 
+        // ================================================================
         // ===== Core Subjects =====
+        // ================================================================
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             if (!grid) return;
@@ -2213,7 +2169,7 @@
                             <span class="file-name"><i class="fa-solid ${fileIcon}"></i> ${file.name}</span>
                             <span class="file-actions">
                                 <button class="status-btn memorized ${st.memorized ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'memorized',event)" title="ذاكرته؟">
-                                    <i class="fa-${st.memorized ? 'solid' : 'regular'} fa-square-check"></i><span>ذاكرته<span>
+                                    <i class="fa-${st.memorized ? 'solid' : 'regular'} fa-square-check"></i><span>ذاكرته</span>
                                 </button>
                                 <button class="status-btn reviewed ${st.reviewed ? 'active' : ''}" onclick="toggleFileStatus(decodeURIComponent('${enc(file.url)}'),'reviewed',event)" title="راجعته؟">
                                     <i class="fa-${st.reviewed ? 'solid' : 'regular'} fa-square-check"></i><span>راجعته</span>
@@ -2316,6 +2272,7 @@
                 }
                 if (section === 'dashboard') renderDashboard();
                 if (section === 'saved') renderSavedSection();
+                if (section === 'other') renderTimer();
                 document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
                 if (btnElement) btnElement.classList.add('active');
                 else {
@@ -2327,7 +2284,9 @@
             }, 300);
         }
 
-        // ===== Portfolio (Enhanced) =====
+        // ================================================================
+        // ===== Portfolio =====
+        // ================================================================
         function renderPortfolioContent(blockName, content) {
             const data = portfolioFiles[blockName] || {};
             const emptyFile = data['general_empty'] || null;
@@ -2491,7 +2450,7 @@
         }
 
         // ================================================================
-        // ===== Auth (JSONBin) =====
+        // ===== Auth =====
         // ================================================================
         async function loadUsers() {
             try {
@@ -2649,7 +2608,57 @@
             } catch (err) { console.error(err); forgotShow("خطأ في الاتصال."); }
         }
 
-        // ===== App =====
+        // ================================================================
+        // ===== Dashboard Render (Main) =====
+        // ================================================================
+        const DASH_ACTIVITY = [
+            { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
+            { icon: 'fa-book-open', text: 'تصفح المواد الأساسية', sub: 'Core Subjects', time: '' },
+            { icon: 'fa-file-pdf', text: 'افتح أي ملف لتعليمه كـ ذاكرته أو مراجعة', sub: 'Data · Doctor · Past Exams', time: '' },
+            { icon: 'fa-bell', text: 'أضف مواعيدك لمتابعة العد التنازلي', sub: 'المواعيد', time: '' }
+        ];
+        function renderDashActivity() {
+            const wrap = document.getElementById('dashActivityList');
+            if (!wrap) return;
+            wrap.innerHTML = DASH_ACTIVITY.map(a => `
+                <div class="activity-item">
+                    <div class="activity-icon"><i class="fa-solid ${a.icon}"></i></div>
+                    <div class="activity-text">${a.text}<small>${a.sub}</small></div>
+                    <div class="activity-time">${a.time}</div>
+                </div>`).join('');
+        }
+        function firstNameOf(name) {
+            return String(name || '').trim().split(/\s+/)[0] || '';
+        }
+        function renderDashboard() {
+            const u = (() => {
+                try { return JSON.parse(localStorage.getItem('nova_active_user') || 'null'); }
+                catch (e) { return null; }
+            })();
+            let nameEn = 'Student', nameAr = 'طالب';
+            if (u && u.name) {
+                nameEn = firstNameOf(u.name);
+                nameAr = nameEn;
+                if (u.isDeveloper) { nameEn = 'Amin'; nameAr = 'أمين'; }
+            }
+            const elEn = document.getElementById('dashUserName'); if (elEn) elEn.innerText = nameEn;
+            const elAr = document.getElementById('dashUserNameAr'); if (elAr) elAr.innerText = nameAr;
+            renderDashTasks();
+            renderDashActivity();
+            renderContinueCard();
+            renderAppointments();
+            startAppointmentsCountdown();
+            updateDashboardStats();
+            updateDashExamCard();
+        }
+        function continueAnatomy() {
+            showSection('core', document.querySelector('.tab-btn[onclick*="core"]'));
+            setTimeout(() => openSubject('Anatomy'), 420);
+        }
+
+        // ================================================================
+        // ===== App (Main) =====
+        // ================================================================
         function showMainApp(userName) {
             document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
             document.getElementById("authOverlay").style.display = "none";
@@ -2657,6 +2666,7 @@
             renderDashboard();
             startSessionTimer();
             updateStats();
+            renderTimer();
         }
         function logout() {
             localStorage.removeItem("nova_active_user");
@@ -2709,7 +2719,9 @@
             if (pdf && pdf.style.display === "flex") { closePDFViewer(); return; }
         });
 
+        // ================================================================
         // ===== Init =====
+        // ================================================================
         window.onload = function() {
             loadPdfCompleted();
             try {
@@ -2719,10 +2731,10 @@
             renderCoreSubjects();
             updateStats();
             initCarousel();
-            loadTodos();
             renderDashboard();
             renderSavedSection();
             startAppointmentsCountdown();
+            renderTimer();
         };
 
         console.log("NOVA Portal loaded. Developer: admin/admin123");
