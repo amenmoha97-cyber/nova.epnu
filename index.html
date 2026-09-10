@@ -588,6 +588,41 @@
         .pf-split-head i { font-size: 0.92rem; }
         .pf-split-head .pf-split-count { margin-right: auto; font-size: 0.68rem; padding: 0.18rem 0.6rem; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-gold); color: var(--beige-light); }
 
+        /* ===== Split Column Colored Borders (NEW) ===== */
+        .pf-split-col.unsolved-col {
+            border: 1.5px solid rgba(230,126,34,0.65);
+            background: rgba(230,126,34,0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .pf-split-col.unsolved-col:hover {
+            border-color: #E67E22;
+            box-shadow: 0 6px 20px rgba(230,126,34,0.18);
+        }
+        [data-theme="light"] .pf-split-col.unsolved-col {
+            background: rgba(230,126,34,0.07);
+            border-color: rgba(230,126,34,0.7);
+        }
+        .pf-split-col.unsolved-col .pf-split-head {
+            border-bottom-color: rgba(230,126,34,0.4);
+        }
+
+        .pf-split-col.solved-col {
+            border: 1.5px solid rgba(46,204,113,0.65);
+            background: rgba(46,204,113,0.05);
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .pf-split-col.solved-col:hover {
+            border-color: #2ECC71;
+            box-shadow: 0 6px 20px rgba(46,204,113,0.18);
+        }
+        [data-theme="light"] .pf-split-col.solved-col {
+            background: rgba(46,204,113,0.07);
+            border-color: rgba(46,204,113,0.7);
+        }
+        .pf-split-col.solved-col .pf-split-head {
+            border-bottom-color: rgba(46,204,113,0.4);
+        }
+
         .pf-empty { text-align: center; padding: 1.3rem 0.5rem; color: var(--beige-light); opacity: 0.6; font-size: 0.8rem; font-family: var(--font-ui); }
         .pf-empty i { display: block; font-size: 1.6rem; color: var(--gold-primary); opacity: 0.5; margin-bottom: 0.5rem; }
 
@@ -2375,7 +2410,7 @@
                         <div class="pf-template-label">${labelText}</div>
                         <div class="pf-template-name">${escapeHtml(file.name)}</div>
                         <div class="pf-template-actions">
-                            <a href="${file.url}" target="_blank" class="pf-action-btn"><i class="fa-regular fa-eye"></i> فتح</a>
+                            <a href="#" onclick="openPortfolioFile('${esc(blockName)}', decodeURIComponent('${enc(file.url)}'), event); return false;" class="pf-action-btn"><i class="fa-regular fa-eye"></i> فتح</a>
                             <a href="${file.url}" download="${file.name}" class="pf-action-btn"><i class="fa-solid fa-download"></i> تنزيل</a>
                         </div>
                     </div>
@@ -2391,8 +2426,8 @@
                         <span class="pf-file-icon"><i class="fa-solid fa-file-pdf"></i></span>
                         <span class="pf-file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</span>
                         <span class="pf-file-actions">
-                            <a href="${f.url}" target="_blank" class="pf-action-btn"><i class="fa-regular fa-eye"></i></a>
-                            <a href="${f.url}" download="${f.name}" class="pf-action-btn"><i class="fa-solid fa-download"></i></a>
+                            <a href="#" onclick="openPortfolioFile('${esc(blockName)}', decodeURIComponent('${enc(f.url)}'), event); return false;" class="pf-action-btn" title="فتح في NOVA"><i class="fa-regular fa-eye"></i></a>
+                            <a href="${f.url}" download="${f.name}" class="pf-action-btn" title="تنزيل"><i class="fa-solid fa-download"></i></a>
                         </span>
                     </li>
                 `).join('')}</ul>`;
@@ -2473,7 +2508,7 @@
                         <span class="pf-section-count">${unsolvedFiles.length + solvedFiles.length} ملف</span>
                     </div>
                     <div class="pf-split-grid">
-                        <div class="pf-split-col">
+                        <div class="pf-split-col unsolved-col">
                             <div class="pf-split-head unsolved">
                                 <i class="fa-regular fa-circle-question"></i>
                                 <span>بدون حل</span>
@@ -2481,7 +2516,7 @@
                             </div>
                             ${renderFileList(unsolvedFiles)}
                         </div>
-                        <div class="pf-split-col">
+                        <div class="pf-split-col solved-col">
                             <div class="pf-split-head solved">
                                 <i class="fa-regular fa-circle-check"></i>
                                 <span>محلول</span>
@@ -2508,6 +2543,31 @@
         function refreshPortfolio() {
             if (!currentPortfolioBlock) return;
             renderPortfolioContent(currentPortfolioBlock, document.getElementById('portfolioContent'));
+        }
+
+        // ================================================================
+        // ===== Portfolio → Open inside NOVA Viewer =====
+        // ================================================================
+        function collectPortfolioFiles(blockName) {
+            const data = portfolioFiles[blockName] || {};
+            const out = [];
+            if (data['general_empty'])  out.push(data['general_empty']);
+            if (data['general_filled']) out.push(data['general_filled']);
+            (data['formative_unsolved'] || []).forEach(f => out.push(f));
+            (data['formative_solved']   || []).forEach(f => out.push(f));
+            (data['incision']           || []).forEach(f => out.push(f));
+            return out;
+        }
+
+        function openPortfolioFile(blockName, url, event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            const list = collectPortfolioFiles(blockName);
+            const file = list.find(f => f.url === url) || { name: String(url).split('/').pop(), url };
+            if (isAudioUrl(url)) {
+                openAudioPlayer(url, file.name, 'Portfolio', blockName, 'Portfolio', '');
+            } else {
+                openPDFViewerWithList(url, file.name, 'Portfolio', blockName, 'Portfolio', '', list);
+            }
         }
 
         // ================================================================
@@ -2778,6 +2838,35 @@
             const pdf = document.getElementById("pdfViewerModal");
             if (audio && audio.style.display === "flex") { closeAudioPlayer(); return; }
             if (pdf && pdf.style.display === "flex") { closePDFViewer(); return; }
+        });
+
+        // ================================================================
+        // ===== Global Interceptor: open ALL local files inside NOVA =====
+        // ================================================================
+        document.addEventListener('click', function(e) {
+            if (e.defaultPrevented) return;
+            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            const a = e.target.closest('a');
+            if (!a) return;
+            if (a.hasAttribute('download')) return;
+            let href = a.getAttribute('href') || '';
+            if (!href || href === '#' || /^(javascript:|mailto:|tel:)/i.test(href)) return;
+            if (/^(https?:)?\/\//i.test(href)) return;
+            const clean = href.split('#')[0].split('?')[0];
+            const name = a.dataset.novaName || decodeURIComponent(clean.split('/').pop());
+            const ctx = {
+                subject: a.dataset.novaSubject || '',
+                block:   a.dataset.novaBlock   || '',
+                type:    a.dataset.novaType    || '',
+                subType: a.dataset.novaSub     || ''
+            };
+            if (isAudioUrl(clean)) {
+                e.preventDefault();
+                openAudioPlayer(href, name, ctx.subject, ctx.block, ctx.type, ctx.subType);
+            } else if (/\.pdf$/i.test(clean)) {
+                e.preventDefault();
+                openPDFViewer(href, name, ctx.subject, ctx.block, ctx.type, ctx.subType);
+            }
         });
 
         // ================================================================
