@@ -19,6 +19,7 @@
             --border-gold: rgba(212, 175, 55, 0.35);
             --error-red: #E74C3C;
             --success-green: #2ECC71;
+            --orange-accent: #E67E22;
             --shadow-gold: rgba(212, 175, 55, 0.2);
             --transition-speed: 0.4s;
             --font-arabic: 'Cairo', sans-serif;
@@ -130,14 +131,19 @@
         [data-theme="light"] .carousel-indicators .dot.active { background: #B58A2A; }
 
         .other-tools { display: flex; flex-direction: column; gap: 2rem; }
+
+        /* ===== GPA Calculator (Percentage-based) ===== */
         .gpa-calculator { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.8rem 2rem; }
         .gpa-calculator h3 { color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
         .gpa-input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
         .gpa-input-group { display: flex; flex-direction: column; gap: 2px; }
-        .gpa-input-group label { font-size: 0.75rem; color: var(--beige-light); font-weight: 600; }
+        .gpa-input-group label { font-size: 0.78rem; color: var(--beige-light); font-weight: 600; }
         .gpa-input-group .max-score { font-size: 0.65rem; opacity: 0.7; color: var(--beige-light); }
-        .gpa-input-group input { padding: 0.5rem 0.6rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.95rem; outline: none; width: 100%; }
+        .gpa-input-group .input-with-percent { position: relative; }
+        .gpa-input-group input { padding: 0.55rem 2rem 0.55rem 0.6rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.95rem; outline: none; width: 100%; }
         [data-theme="light"] .gpa-input-group input { background: #F7F4EE; border-color: #E4DCCF; color: #29251F; }
+        .gpa-input-group input:focus { border-color: var(--gold-primary); }
+        .gpa-input-group .percent-sign { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--gold-primary); font-weight: 700; font-size: 0.9rem; pointer-events: none; }
         .gpa-result { background: rgba(36,32,28,0.5); border-radius: 16px; padding: 1.2rem; margin-top: 1rem; display: none; border: 1px solid var(--border-gold); }
         [data-theme="light"] .gpa-result { background: #F7F4EE; border-color: #E4DCCF; }
         .gpa-result .result-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; padding: 0.4rem 0; border-bottom: 1px solid var(--border-gold); }
@@ -149,6 +155,12 @@
         .gpa-result .result-value.good { color: #F1C40F; }
         .gpa-result .result-value.pass { color: #E67E22; }
         .gpa-result .result-value.fail { color: var(--error-red); }
+        .gpa-blocks-breakdown { margin-top: 1rem; padding-top: 1rem; border-top: 1px dashed var(--border-gold); }
+        .gpa-blocks-breakdown h4 { color: var(--gold-primary); font-size: 0.9rem; margin-bottom: 0.7rem; font-family: var(--font-ui); }
+        .gpa-block-row { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; font-family: var(--font-ui); font-size: 0.82rem; border-bottom: 1px solid rgba(212,175,55,0.1); }
+        .gpa-block-row:last-child { border-bottom: none; }
+        .gpa-block-name { color: var(--beige-light); font-weight: 600; }
+        .gpa-block-pct { color: var(--gold-primary); font-weight: 700; }
 
         .countdown-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1.1rem; }
         .countdown-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
@@ -527,10 +539,29 @@
         .pf-template-card { position: relative; border: 1px solid var(--border-gold); border-radius: 16px; padding: 1.1rem 1.2rem; display: flex; align-items: center; gap: 14px; transition: 0.3s; overflow: hidden; background: rgba(255,255,255,0.015); }
         [data-theme="light"] .pf-template-card { background: #F7F4EE; }
         .pf-template-card::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--gold-primary), var(--gold-secondary)); opacity: 0.65; }
-        .pf-template-card:hover { transform: translateY(-3px); border-color: var(--gold-primary); box-shadow: 0 14px 30px rgba(212,175,55,0.18); }
+        .pf-template-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(212,175,55,0.18); }
+
+        /* Empty Template - Orange */
+        .pf-template-card.empty-template { border-color: rgba(230,126,34,0.55); background: rgba(230,126,34,0.06); }
+        [data-theme="light"] .pf-template-card.empty-template { background: rgba(230,126,34,0.08); }
+        .pf-template-card.empty-template::before { background: linear-gradient(180deg, #E67E22, #D35400); opacity: 0.9; }
+        .pf-template-card.empty-template:hover { border-color: #E67E22; box-shadow: 0 14px 30px rgba(230,126,34,0.25); }
+        .pf-template-card.empty-template .pf-template-icon { color: #E67E22; background: rgba(230,126,34,0.12); border-color: rgba(230,126,34,0.4); }
+        .pf-template-card.empty-template .pf-template-label { color: #E67E22; }
+        .pf-template-card.empty-template .pf-template-name { color: #E67E22; }
+
+        /* Filled Template - Green */
+        .pf-template-card.filled-template { border-color: rgba(46,204,113,0.55); background: rgba(46,204,113,0.06); }
+        [data-theme="light"] .pf-template-card.filled-template { background: rgba(46,204,113,0.08); }
+        .pf-template-card.filled-template::before { background: linear-gradient(180deg, #2ECC71, #27AE60); opacity: 0.9; }
+        .pf-template-card.filled-template:hover { border-color: #2ECC71; box-shadow: 0 14px 30px rgba(46,204,113,0.25); }
+        .pf-template-card.filled-template .pf-template-icon { color: #2ECC71; background: rgba(46,204,113,0.12); border-color: rgba(46,204,113,0.4); }
+        .pf-template-card.filled-template .pf-template-label { color: #2ECC71; }
+        .pf-template-card.filled-template .pf-template-name { color: #2ECC71; }
+
         .pf-template-icon { width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; color: var(--gold-primary); background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold); }
         .pf-template-info { flex: 1; min-width: 0; }
-        .pf-template-label { font-family: var(--font-ui); font-size: 0.68rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; }
+        .pf-template-label { font-family: var(--font-ui); font-size: 0.72rem; font-weight: 800; color: var(--gold-primary); letter-spacing: 1px; }
         .pf-template-name { font-size: 0.95rem; font-weight: 700; color: var(--beige-main); margin: 4px 0 9px; word-break: break-word; }
         [data-theme="light"] .pf-template-name { color: #29251F; }
         .pf-template-actions { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -859,28 +890,8 @@
         <div class="section-content" id="otherSection">
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
             <div class="other-tools">
-                <div class="gpa-calculator">
-                    <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي (المجموع الكلي 849 درجة)</h3>
-                    <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">أدخل درجاتك الفعلية في كل مادة، وسنحسب النسبة المئوية والتقدير العام.</p>
-                    <div class="gpa-input-grid">
-                        <div class="gpa-input-group"><label>Research <span class="max-score">(من 30)</span></label><input type="number" id="gpaResearch" min="0" max="30" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>Skill Lab 1 <span class="max-score">(من 15)</span></label><input type="number" id="gpaSkill1" min="0" max="15" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>Skill Lab 2 <span class="max-score">(من 15)</span></label><input type="number" id="gpaSkill2" min="0" max="15" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B1 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB1" min="0" max="113" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B2 <span class="max-score">(من 180)</span></label><input type="number" id="gpaB2" min="0" max="180" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B3 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB3" min="0" max="113" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B4 <span class="max-score">(من 135)</span></label><input type="number" id="gpaB4" min="0" max="135" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B5 <span class="max-score">(من 135)</span></label><input type="number" id="gpaB5" min="0" max="135" placeholder="0" value="0"></div>
-                        <div class="gpa-input-group"><label>B6 <span class="max-score">(من 113)</span></label><input type="number" id="gpaB6" min="0" max="113" placeholder="0" value="0"></div>
-                    </div>
-                    <button class="btn-gold" onclick="calculateGPA()" style="width: auto; padding: 0.7rem 3rem; margin: 0 auto; display: block;">احسب النسبة</button>
-                    <div class="gpa-result" id="gpaResult">
-                        <div class="result-row"><span class="result-label">المجموع الكلي</span><span class="result-value" id="gpaTotal">0 / 849</span></div>
-                        <div class="result-row"><span class="result-label">النسبة المئوية</span><span class="result-value" id="gpaPercent">0%</span></div>
-                        <div class="result-row"><span class="result-label">التقدير العام</span><span class="result-value" id="gpaGrade">-</span></div>
-                    </div>
-                </div>
 
+                <!-- 1) المواعيد والعد التنازلي -->
                 <div class="countdown-section">
                     <h3><i class="fa-solid fa-hourglass-half"></i> المواعيد والعد التنازلي</h3>
                     <div class="countdown-timer">
@@ -899,7 +910,7 @@
                     <ul class="appt-list" id="apptList"></ul>
                 </div>
 
-                <!-- ===== Pomodoro Study Timer ===== -->
+                <!-- 2) مؤقت المذاكرة Pomodoro -->
                 <div class="study-timer-section">
                     <h3><i class="fa-solid fa-stopwatch"></i> مؤقت المذاكرة (Pomodoro)</h3>
                     <p class="timer-cycle-info">🎯 <b>50 دقيقة تركيز</b> + ☕ <b>10 دقايق راحة</b> · 🛋️ راحة طويلة <b>30 دقيقة</b> بعد كل <b>4 جلسات</b></p>
@@ -929,6 +940,30 @@
                         <div class="timer-stat"><strong id="timerCycle">1/4</strong><span>الجلسة في الدورة</span></div>
                     </div>
                 </div>
+
+                <!-- 3) حاسبة التقدير التراكمي (نسبة مئوية) -->
+                <div class="gpa-calculator">
+                    <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي</h3>
+                    <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">اكتب <b style="color:var(--gold-primary)">النسبة المئوية</b> اللي جبتها في كل مادة (من 0% لـ 100%)، والموقع هيحسبلك النسبة الكلية والتقدير بناءً على أوزان الدرجات.</p>
+                    <div class="gpa-input-grid">
+                        <div class="gpa-input-group"><label>Research <span class="max-score">(من 30)</span></label><div class="input-with-percent"><input type="number" id="gpaResearch" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>Skill Lab 1 <span class="max-score">(من 15)</span></label><div class="input-with-percent"><input type="number" id="gpaSkill1" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>Skill Lab 2 <span class="max-score">(من 15)</span></label><div class="input-with-percent"><input type="number" id="gpaSkill2" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B1 <span class="max-score">(من 113)</span></label><div class="input-with-percent"><input type="number" id="gpaB1" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B2 <span class="max-score">(من 180)</span></label><div class="input-with-percent"><input type="number" id="gpaB2" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B3 <span class="max-score">(من 113)</span></label><div class="input-with-percent"><input type="number" id="gpaB3" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B4 <span class="max-score">(من 135)</span></label><div class="input-with-percent"><input type="number" id="gpaB4" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B5 <span class="max-score">(من 135)</span></label><div class="input-with-percent"><input type="number" id="gpaB5" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                        <div class="gpa-input-group"><label>B6 <span class="max-score">(من 113)</span></label><div class="input-with-percent"><input type="number" id="gpaB6" min="0" max="100" step="0.1" placeholder="0" value="0"><span class="percent-sign">%</span></div></div>
+                    </div>
+                    <button class="btn-gold" onclick="calculateGPA()" style="width: auto; padding: 0.7rem 3rem; margin: 0 auto; display: block;">احسب النسبة</button>
+                    <div class="gpa-result" id="gpaResult">
+                        <div class="result-row"><span class="result-label">النسبة المئوية الكلية</span><span class="result-value" id="gpaPercent">0%</span></div>
+                        <div class="result-row"><span class="result-label">التقدير العام</span><span class="result-value" id="gpaGrade">-</span></div>
+                        <div class="gpa-blocks-breakdown" id="gpaBreakdown"></div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -1876,32 +1911,58 @@
         }
 
         // ================================================================
-        // ===== GPA =====
+        // ===== GPA Calculator (Percentage-based, Weighted) =====
         // ================================================================
+        const GPA_ENTRIES = [
+            { id: 'gpaResearch', name: 'Research', max: 30 },
+            { id: 'gpaSkill1', name: 'Skill Lab 1', max: 15 },
+            { id: 'gpaSkill2', name: 'Skill Lab 2', max: 15 },
+            { id: 'gpaB1', name: 'B1', max: 113 },
+            { id: 'gpaB2', name: 'B2', max: 180 },
+            { id: 'gpaB3', name: 'B3', max: 113 },
+            { id: 'gpaB4', name: 'B4', max: 135 },
+            { id: 'gpaB5', name: 'B5', max: 135 },
+            { id: 'gpaB6', name: 'B6', max: 113 }
+        ];
         function calculateGPA() {
-            const ids = ['gpaResearch','gpaSkill1','gpaSkill2','gpaB1','gpaB2','gpaB3','gpaB4','gpaB5','gpaB6'];
-            const vals = ids.map(id => parseFloat(document.getElementById(id).value) || 0);
-            const totalMax = 30+15+15+113+180+113+135+135+113;
-            const total = vals.reduce((a,b)=>a+b,0);
-            const percent = (total/totalMax)*100;
+            const totalMax = GPA_ENTRIES.reduce((sum, e) => sum + e.max, 0);
+            let earnedPoints = 0;
+            let filled = 0;
+            let rows = '';
+            GPA_ENTRIES.forEach(e => {
+                let pct = parseFloat(document.getElementById(e.id).value);
+                if (isNaN(pct)) pct = 0;
+                pct = Math.max(0, Math.min(100, pct));
+                const earned = (pct / 100) * e.max;
+                earnedPoints += earned;
+                if (pct > 0) filled++;
+                rows += `<div class="gpa-block-row">
+                    <span class="gpa-block-name">${e.name} <span style="opacity:0.6;font-size:0.75rem;">(وزن ${e.max})</span></span>
+                    <span class="gpa-block-pct">${pct.toFixed(1)}% → ${earned.toFixed(1)} نقطة</span>
+                </div>`;
+            });
+            const percent = (earnedPoints / totalMax) * 100;
+
             let grade='', gradeClass='';
             if (percent>=85) { grade='امتياز (Excellent)'; gradeClass='excellent'; }
             else if (percent>=75) { grade='جيد جداً (Very Good)'; gradeClass='very-good'; }
             else if (percent>=65) { grade='جيد (Good)'; gradeClass='good'; }
             else if (percent>=57) { grade='مقبول (Pass)'; gradeClass='pass'; }
             else { grade='راسب (Fail)'; gradeClass='fail'; }
-            document.getElementById('gpaTotal').innerText = `${total} / ${totalMax}`;
+
             document.getElementById('gpaPercent').innerText = `${percent.toFixed(2)}%`;
             const g = document.getElementById('gpaGrade');
             g.innerText = grade;
             g.className = `result-value ${gradeClass}`;
+            document.getElementById('gpaBreakdown').innerHTML = `
+                <h4><i class="fa-solid fa-list-check"></i> تفصيل المواد (${filled}/${GPA_ENTRIES.length} مادة مدخلة)</h4>
+                ${rows}
+            `;
             document.getElementById('gpaResult').style.display = 'block';
         }
 
         // ================================================================
         // ===== Pomodoro Study Timer =====
-        // النظام: 50 دقيقة تركيز + 10 دقايق راحة قصيرة،
-        // وبعد كل 4 جلسات تركيز → راحة طويلة 30 دقيقة
         // ================================================================
         const TIMER_DURATIONS = { focus: 50 * 60, short: 10 * 60, long: 30 * 60 };
         const TIMER_LABELS = {
@@ -2298,20 +2359,20 @@
             const totalFiles = (emptyFile ? 1 : 0) + (filledFile ? 1 : 0)
                               + unsolvedFiles.length + solvedFiles.length + incisionFiles.length;
 
-            function renderTemplateCard(file, label, icon) {
+            function renderTemplateCard(file, labelText, icon, typeClass) {
                 if (!file) {
-                    return `<div class="pf-template-card" style="opacity:0.65;">
+                    return `<div class="pf-template-card ${typeClass}" style="opacity:0.65;">
                         <div class="pf-template-icon"><i class="fa-solid ${icon}"></i></div>
                         <div class="pf-template-info">
-                            <div class="pf-template-label">${label}</div>
+                            <div class="pf-template-label">${labelText}</div>
                             <div class="pf-template-name" style="opacity:0.55;">غير متوفر</div>
                         </div>
                     </div>`;
                 }
-                return `<div class="pf-template-card">
+                return `<div class="pf-template-card ${typeClass}">
                     <div class="pf-template-icon"><i class="fa-solid ${icon}"></i></div>
                     <div class="pf-template-info">
-                        <div class="pf-template-label">${label}</div>
+                        <div class="pf-template-label">${labelText}</div>
                         <div class="pf-template-name">${escapeHtml(file.name)}</div>
                         <div class="pf-template-actions">
                             <a href="${file.url}" target="_blank" class="pf-action-btn"><i class="fa-regular fa-eye"></i> فتح</a>
@@ -2381,8 +2442,8 @@
                         <span class="pf-section-count">${(emptyFile ? 1 : 0) + (filledFile ? 1 : 0)} ملف</span>
                     </div>
                     <div class="pf-templates-grid">
-                        ${renderTemplateCard(emptyFile, 'EMPTY TEMPLATE', 'fa-file')}
-                        ${renderTemplateCard(filledFile, 'FILLED TEMPLATE', 'fa-file-circle-check')}
+                        ${renderTemplateCard(emptyFile, 'فاضي', 'fa-file', 'empty-template')}
+                        ${renderTemplateCard(filledFile, 'مليان', 'fa-file-circle-check', 'filled-template')}
                     </div>
                 </div>
             `;
@@ -2609,7 +2670,7 @@
         }
 
         // ================================================================
-        // ===== Dashboard Render (Main) =====
+        // ===== Dashboard Render =====
         // ================================================================
         const DASH_ACTIVITY = [
             { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
