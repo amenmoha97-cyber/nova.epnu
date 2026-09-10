@@ -8,7 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* جميع الأنماط كما هي - لم أغيرها */
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -66,6 +65,17 @@
         [data-theme="light"] .btn-gold:hover { background: #8C691F; color: #FFFCF7; box-shadow: 0 10px 30px rgba(140,105,31,0.4); }
         .alert-msg { color: var(--error-red); font-size: 0.9rem; margin-top: 0.8rem; display: none; padding: 0.5rem; border-radius: 8px; background: rgba(231,76,60,0.1); border: 1px solid var(--error-red); }
         .alert-msg.success { color: var(--success-green); border-color: var(--success-green); background: rgba(46,204,113,0.1); }
+
+        /* Password toggle */
+        .password-wrapper { position: relative; display: block; }
+        .password-wrapper input { padding-left: 2.6rem !important; }
+        .toggle-pwd { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--gold-primary); cursor: pointer; font-size: 1rem; padding: 6px; border-radius: 6px; transition: 0.2s; line-height: 1; }
+        .toggle-pwd:hover { background: rgba(212,175,55,0.15); }
+        [data-theme="light"] .toggle-pwd { color: #B58A2A; }
+        .forgot-link { text-align: left; margin-top: 0.6rem; }
+        .forgot-link a { color: var(--gold-primary); font-size: 0.85rem; text-decoration: none; transition: 0.2s; }
+        .forgot-link a:hover { text-decoration: underline; }
+        [data-theme="light"] .forgot-link a { color: #B58A2A; }
 
         header { background: var(--card-black); border-bottom: 1px solid var(--border-gold); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(6px); transition: background var(--transition-speed); }
         [data-theme="light"] header { border-bottom-color: #E4DCCF; }
@@ -300,18 +310,7 @@
         .file-item .file-actions a i { margin-left: 4px; }
         .no-files-msg { color: var(--beige-light); font-size: 0.85rem; opacity: 0.7; font-style: italic; padding: 0.3rem 0; }
 
-        .refresh-btn {
-            background: var(--gold-primary);
-            color: #0A0A0A;
-            border: none;
-            padding: 0.3rem 1rem;
-            border-radius: 20px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-size: 0.85rem;
-            margin-right: 10px;
-        }
+        .refresh-btn { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.3rem 1rem; border-radius: 20px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.85rem; margin-right: 10px; }
         [data-theme="light"] .refresh-btn { background: #B58A2A; color: #FFFCF7; }
         .refresh-btn:hover { transform: scale(1.05); background: var(--gold-secondary); color: #FFF; }
         [data-theme="light"] .refresh-btn:hover { background: #8C691F; }
@@ -385,22 +384,56 @@
             <img src="logo.jpg" alt="NOVA Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/110/D4AF37/080808?text=NOVA';">
             <h2>NOVA</h2>
             <p class="credits-text">This website was created by <b>Amin</b><br>for Medical Students at East Port Said National University</p>
+
             <div class="auth-tabs">
                 <button class="auth-tab-btn active" id="loginTabBtn" type="button" onclick="switchAuthMode('login')">Log In (دخول)</button>
                 <button class="auth-tab-btn" id="signupTabBtn" type="button" onclick="switchAuthMode('signup')">Sign Up (حساب جديد)</button>
             </div>
+
+            <!-- Login Form -->
             <form id="loginForm">
-                <div class="input-group"><label>الـ ID الجامعي أو الرقم القومي</label><input type="text" id="loginId" required placeholder="أدخل ID الطالب أو الرقم القومي"></div>
-                <div class="input-group"><label>كلمة السر</label><input type="password" id="loginPassword" required placeholder="أدخل كلمة السر"></div>
-                <button type="submit" class="btn-gold">تسجيل الدخول</button>
+                <div class="input-group">
+                    <label>الـ ID الجامعي أو الرقم القومي</label>
+                    <input type="text" id="loginId" required placeholder="أدخل ID الطالب أو الرقم القومي">
+                </div>
+                <div class="input-group">
+                    <label>كلمة السر</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" required placeholder="أدخل كلمة السر">
+                        <button type="button" class="toggle-pwd" onclick="togglePassword('loginPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-gold" id="loginSubmitBtn">تسجيل الدخول</button>
+                <div class="forgot-link"><a href="#" onclick="openForgot(); return false;">هل نسيت كلمة السر؟</a></div>
                 <div class="alert-msg" id="loginAlert"></div>
             </form>
+
+            <!-- Signup Form -->
             <form id="signupForm" style="display:none;">
-                <div class="input-group"><label>الاسم الكامل (الرباعي)</label><input type="text" id="signupName" required placeholder="أدخل اسمك كما في الكارنيه"></div>
-                <div class="input-group"><label>الـ ID الجامعي</label><input type="text" id="signupStudentId" required placeholder="مثال: 202400123"></div>
-                <div class="input-group"><label>الرقم القومي (14 رقم)</label><input type="text" id="signupNationalId" maxlength="14" required placeholder="أدخل الـ 14 رقم" pattern="\d{14}"></div>
-                <div class="input-group"><label>كلمة السر</label><input type="password" id="signupPassword" required placeholder="إنشاء كلمة سر حسابك"></div>
-                <button type="submit" class="btn-gold">إنشاء الحساب</button>
+                <div class="input-group">
+                    <label>الاسم الكامل (الرباعي)</label>
+                    <input type="text" id="signupName" required placeholder="أدخل اسمك رباعياً كما في الكارنيه">
+                </div>
+                <div class="input-group">
+                    <label>الـ ID الجامعي</label>
+                    <input type="text" id="signupStudentId" required placeholder="مثال: 202400123">
+                </div>
+                <div class="input-group">
+                    <label>الرقم القومي (14 رقم)</label>
+                    <input type="text" id="signupNationalId" maxlength="14" required placeholder="أدخل الـ 14 رقم" pattern="\d{14}">
+                </div>
+                <div class="input-group">
+                    <label>رقم الهاتف المحمول</label>
+                    <input type="tel" id="signupPhone" required placeholder="مثال: 01098919599">
+                </div>
+                <div class="input-group">
+                    <label>كلمة السر</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="signupPassword" required minlength="6" placeholder="6 أحرف على الأقل">
+                        <button type="button" class="toggle-pwd" onclick="togglePassword('signupPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-gold" id="signupSubmitBtn">إنشاء الحساب</button>
                 <div class="alert-msg" id="signupAlert"></div>
             </form>
         </div>
@@ -422,7 +455,6 @@
     <!-- ===== المحتوى الرئيسي ===== -->
     <div class="container">
 
-        <!-- تبويبات التنقل -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
             <button class="tab-btn" onclick="showSection('core', this)"><i class="fa-solid fa-book-open"></i> المواد الأساسية</button>
@@ -433,7 +465,6 @@
 
         <div class="loader" id="globalLoader"></div>
 
-        <!-- ===== الصفحة الرئيسية ===== -->
         <div class="section-content active" id="homeSection">
             <div class="carousel-container" id="mainCarousel">
                 <div class="carousel-slides" id="carouselSlides">
@@ -455,7 +486,6 @@
             </div>
         </div>
 
-        <!-- 2. المواد الأساسية -->
         <div class="section-content" id="coreSection">
             <h2 class="section-title">
                 <span>المواد الأساسية (Core Subjects)</span>
@@ -464,7 +494,6 @@
             <div class="grid-container" id="coreGrid"></div>
         </div>
 
-        <!-- 3. تفاصيل المادة -->
         <div class="section-content" id="subjectDetailSection">
             <h2 class="section-title">
                 <span id="subjectDetailTitle">المادة</span>
@@ -473,7 +502,6 @@
             <div class="grid-container" id="subjectBlocksContainer"></div>
         </div>
 
-        <!-- 4. المواد الإضافية -->
         <div class="section-content" id="extraSection">
             <div class="extra-tabs">
                 <button class="extra-tab-btn active" data-tab="tab1" onclick="switchExtraTab('tab1', this)"><i class="fa-solid fa-star"></i> مواد تضاف للمجموع</button>
@@ -498,7 +526,6 @@
             </div>
         </div>
 
-        <!-- 5. البورتفوليو -->
         <div class="section-content" id="portfolioSection">
             <h2 class="section-title">قسم البورتفوليو (Portfolio)</h2>
             <div class="grid-container">
@@ -511,11 +538,9 @@
             </div>
         </div>
 
-        <!-- 6. تبويب "أخرى" -->
         <div class="section-content" id="otherSection">
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
             <div class="other-tools">
-                <!-- حاسبة التقدير -->
                 <div class="gpa-calculator" id="gpaCalculator">
                     <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي (المجموع الكلي 849 درجة)</h3>
                     <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">أدخل درجاتك الفعلية في كل مادة، وسنحسب النسبة المئوية والتقدير العام.</p>
@@ -539,7 +564,6 @@
                     </div>
                 </div>
 
-                <!-- عداد تنازلي -->
                 <div class="countdown-section">
                     <h3><i class="fa-solid fa-hourglass-half"></i> العد التنازلي للامتحان القادم</h3>
                     <div class="countdown-timer" id="countdownDisplay">
@@ -554,7 +578,6 @@
                     </div>
                 </div>
 
-                <!-- To-Do List -->
                 <div class="todo-section">
                     <h3><i class="fa-solid fa-list-check"></i> قائمة المهام (To-Do List)</h3>
                     <div class="todo-input-group">
@@ -592,14 +615,55 @@
         </div>
     </div>
 
+    <!-- مودال استعادة كلمة السر -->
+    <div id="forgotModal" class="modal" style="display:none;">
+        <div class="modal-content" style="max-width:520px;">
+            <button class="close-btn" onclick="closeForgot()">إغلاق</button>
+            <h2><i class="fa-solid fa-key"></i> استعادة كلمة السر</h2>
+
+            <div id="forgotStep1">
+                <p style="color:var(--beige-light); font-size:0.9rem; margin-bottom:1rem;">
+                    أدخل الـ ID الجامعي ورقم هاتفك المسجل. لو البيانات صح، هتقدر تحدد كلمة سر جديدة.
+                </p>
+                <div class="input-group">
+                    <label>الـ ID الجامعي</label>
+                    <input type="text" id="forgotStudentId" placeholder="أدخل ID الطالب">
+                </div>
+                <div class="input-group">
+                    <label>رقم الهاتف المسجل</label>
+                    <input type="tel" id="forgotPhone" placeholder="مثال: 01098919599">
+                </div>
+                <button class="btn-gold" onclick="verifyForgotIdentity()">تحقق</button>
+            </div>
+
+            <div id="forgotStep2" style="display:none;">
+                <p style="color:var(--success-green); font-size:0.9rem; margin-bottom:1rem;">✅ تم التحقق من هويتك. أدخل كلمة السر الجديدة.</p>
+                <div class="input-group">
+                    <label>كلمة السر الجديدة</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="newPassword" placeholder="6 أحرف على الأقل">
+                        <button type="button" class="toggle-pwd" onclick="togglePassword('newPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                    </div>
+                </div>
+                <button class="btn-gold" onclick="resetPassword()">حفظ كلمة السر</button>
+            </div>
+
+            <div class="alert-msg" id="forgotAlert"></div>
+        </div>
+    </div>
+
     <script>
         // ================================================================
-        // ===== البيانات الكاملة للملفات (تم إضافتها بالكامل) =====
+        // ===== إعدادات JSONBin =====
         // ================================================================
+        const JSONBIN_BIN_ID = "6aa2a174ffd5d16053f62171";
+        const JSONBIN_API_KEY = "$2a$10$jpxQck8gDyiH2r55BYVM.et8Nb6vtwxbZhWQKKCAoqVh2kucFEuKq";
+        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
 
-        // ---- المواد الأساسية ----
+        // ================================================================
+        // ===== البيانات الكاملة للملفات =====
+        // ================================================================
         const subjectFiles = {
-            // Anatomy
             'Anatomy': {
                 'B1': {
                     'Data': {
@@ -613,656 +677,98 @@
                     'From Doctor': [{ name: 'ملاحظات الدكتور - B1', url: 'files/anatomy/B1/FromDoctor/notes.pdf' }],
                     'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }]
                 },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/anatomy/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/anatomy/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/anatomy/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/anatomy/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/anatomy/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/anatomy/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/anatomy/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/anatomy/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/anatomy/B6/PastExams/exam2024.pdf' }]
-                }
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/anatomy/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/anatomy/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/anatomy/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/anatomy/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/anatomy/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/anatomy/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/anatomy/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/anatomy/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/anatomy/B6/PastExams/exam2024.pdf' }] }
             },
-            // Biochemistry
             'Biochemistry': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'كيمياء حيوية - محاضرة 1', url: 'files/biochemistry/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/biochemistry/B1/Prelabs/prelab1.pdf' }],
-                        'Records': [{ name: 'تسجيل 1', url: 'files/biochemistry/B1/Records/rec1.mp3' }]
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/biochemistry/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/biochemistry/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/biochemistry/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/biochemistry/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/biochemistry/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/biochemistry/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/biochemistry/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/biochemistry/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/biochemistry/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/biochemistry/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/biochemistry/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/biochemistry/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/biochemistry/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/biochemistry/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/biochemistry/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/biochemistry/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/biochemistry/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'كيمياء حيوية - محاضرة 1', url: 'files/biochemistry/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/biochemistry/B1/Prelabs/prelab1.pdf' }], 'Records': [{ name: 'تسجيل 1', url: 'files/biochemistry/B1/Records/rec1.mp3' }] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/biochemistry/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/biochemistry/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/biochemistry/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/biochemistry/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/biochemistry/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/biochemistry/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/biochemistry/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/biochemistry/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/biochemistry/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/biochemistry/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/biochemistry/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/biochemistry/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/biochemistry/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/biochemistry/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/biochemistry/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/biochemistry/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/biochemistry/B6/PastExams/exam2024.pdf' }] }
             },
-            // Parasitology
             'Parasitology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - طفيليات', url: 'files/parasitology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/parasitology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/parasitology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/parasitology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/parasitology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/parasitology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/parasitology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/parasitology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/parasitology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/parasitology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/parasitology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/parasitology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/parasitology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/parasitology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/parasitology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/parasitology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/parasitology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/parasitology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/parasitology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - طفيليات', url: 'files/parasitology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/parasitology/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/parasitology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/parasitology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/parasitology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/parasitology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/parasitology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/parasitology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/parasitology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/parasitology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/parasitology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/parasitology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/parasitology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/parasitology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/parasitology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/parasitology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/parasitology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/parasitology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/parasitology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Pathology
             'Pathology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - مرضية', url: 'files/pathology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/pathology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pathology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/pathology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pathology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pathology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pathology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pathology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pathology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pathology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pathology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pathology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pathology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pathology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pathology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pathology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pathology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pathology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pathology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - مرضية', url: 'files/pathology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/pathology/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pathology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/pathology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pathology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pathology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pathology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pathology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pathology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pathology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pathology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pathology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pathology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pathology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pathology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pathology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pathology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pathology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pathology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Physiology
             'Physiology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - فسيولوجيا', url: 'files/physiology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/physiology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': [{ name: 'تسجيل 1', url: 'files/physiology/B1/Records/rec1.mp3' }]
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/physiology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/physiology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/physiology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/physiology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/physiology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/physiology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/physiology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/physiology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/physiology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/physiology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/physiology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/physiology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/physiology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/physiology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/physiology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/physiology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/physiology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - فسيولوجيا', url: 'files/physiology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/physiology/B1/Prelabs/prelab1.pdf' }], 'Records': [{ name: 'تسجيل 1', url: 'files/physiology/B1/Records/rec1.mp3' }] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/physiology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/physiology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/physiology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/physiology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/physiology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/physiology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/physiology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/physiology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/physiology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/physiology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/physiology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/physiology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/physiology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/physiology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/physiology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/physiology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/physiology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Pharmacology
             'Pharmacology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - فارما', url: 'files/pharmacology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/pharmacology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pharmacology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/pharmacology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pharmacology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pharmacology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pharmacology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pharmacology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pharmacology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pharmacology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pharmacology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pharmacology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pharmacology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pharmacology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pharmacology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pharmacology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pharmacology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pharmacology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pharmacology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - فارما', url: 'files/pharmacology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/pharmacology/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/pharmacology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/pharmacology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/pharmacology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/pharmacology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/pharmacology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/pharmacology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/pharmacology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/pharmacology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/pharmacology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/pharmacology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/pharmacology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/pharmacology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/pharmacology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/pharmacology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/pharmacology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/pharmacology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/pharmacology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Microbiology
             'Microbiology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - ميكروبيولوجي', url: 'files/microbiology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/microbiology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/microbiology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/microbiology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/microbiology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/microbiology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/microbiology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/microbiology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/microbiology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/microbiology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/microbiology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/microbiology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/microbiology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/microbiology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/microbiology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/microbiology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/microbiology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/microbiology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/microbiology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - ميكروبيولوجي', url: 'files/microbiology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/microbiology/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/microbiology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/microbiology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/microbiology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/microbiology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/microbiology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/microbiology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/microbiology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/microbiology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/microbiology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/microbiology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/microbiology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/microbiology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/microbiology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/microbiology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/microbiology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/microbiology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/microbiology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Histology
             'Histology': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - هستولوجي', url: 'files/histology/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/histology/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/histology/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/histology/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/histology/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/histology/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/histology/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/histology/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/histology/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/histology/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/histology/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/histology/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/histology/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/histology/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/histology/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/histology/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/histology/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/histology/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/histology/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - هستولوجي', url: 'files/histology/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/histology/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/histology/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/histology/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/histology/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/histology/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/histology/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/histology/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/histology/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/histology/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/histology/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/histology/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/histology/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/histology/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/histology/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/histology/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/histology/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/histology/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/histology/B6/PastExams/exam2024.pdf' }] }
             },
-            // Community
             'Community': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - مجتمع', url: 'files/community/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/community/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/community/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/community/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/community/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/community/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/community/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/community/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/community/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/community/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/community/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/community/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/community/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/community/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/community/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/community/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/community/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/community/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/community/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - مجتمع', url: 'files/community/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/community/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/community/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/community/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/community/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/community/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/community/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/community/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/community/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/community/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/community/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/community/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/community/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/community/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/community/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/community/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/community/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/community/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/community/B6/PastExams/exam2024.pdf' }] }
             },
-            // Family
             'Family': {
-                'B1': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة 1 - عائلة', url: 'files/family/B1/Lectures/lec1.pdf' }],
-                        'Prelabs': [{ name: 'Prelab 1', url: 'files/family/B1/Prelabs/prelab1.pdf' }],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/family/B1/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان 2024', url: 'files/family/B1/PastExams/exam2024.pdf' }]
-                },
-                'B2': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B2-1', url: 'files/family/B2/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/family/B2/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/family/B2/PastExams/exam2024.pdf' }]
-                },
-                'B3': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B3-1', url: 'files/family/B3/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/family/B3/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/family/B3/PastExams/exam2024.pdf' }]
-                },
-                'B4': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B4-1', url: 'files/family/B4/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/family/B4/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/family/B4/PastExams/exam2024.pdf' }]
-                },
-                'B5': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B5-1', url: 'files/family/B5/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/family/B5/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/family/B5/PastExams/exam2024.pdf' }]
-                },
-                'B6': {
-                    'Data': {
-                        'Lectures': [{ name: 'محاضرة B6-1', url: 'files/family/B6/Lectures/lec1.pdf' }],
-                        'Prelabs': [],
-                        'Records': []
-                    },
-                    'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/family/B6/FromDoctor/notes.pdf' }],
-                    'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/family/B6/PastExams/exam2024.pdf' }]
-                }
+                'B1': { 'Data': { 'Lectures': [{ name: 'محاضرة 1 - عائلة', url: 'files/family/B1/Lectures/lec1.pdf' }], 'Prelabs': [{ name: 'Prelab 1', url: 'files/family/B1/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور', url: 'files/family/B1/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان 2024', url: 'files/family/B1/PastExams/exam2024.pdf' }] },
+                'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/family/B2/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/family/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/family/B2/PastExams/exam2024.pdf' }] },
+                'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/family/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/family/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/family/B3/PastExams/exam2024.pdf' }] },
+                'B4': { 'Data': { 'Lectures': [{ name: 'محاضرة B4-1', url: 'files/family/B4/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B4', url: 'files/family/B4/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B4 2024', url: 'files/family/B4/PastExams/exam2024.pdf' }] },
+                'B5': { 'Data': { 'Lectures': [{ name: 'محاضرة B5-1', url: 'files/family/B5/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B5', url: 'files/family/B5/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B5 2024', url: 'files/family/B5/PastExams/exam2024.pdf' }] },
+                'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/family/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/family/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/family/B6/PastExams/exam2024.pdf' }] }
             }
         };
 
-        // ---- البورتفوليو (جميع B1..B6) ----
         const portfolioFiles = {
-            'B1': {
-                'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' },
-                'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F1 Unsolved', url: 'f1-u.pdf' },
-                ],
-                'formative_solved': [
-                    { name: 'F1 Solved', url: 'f1-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B1', url: 'ia-b1.pdf' },
-                ]
-            },
-            'B2': {
-                'general_empty': { name: 'P2 Empty', url: '2th-e.pdf' },
-                'general_filled': { name: 'P2 Filled', url: '2th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F2 Unsolved', url: 'f2-u.pdf' }
-                ],
-                'formative_solved': [
-                    { name: 'F2 Solved', url: 'f2-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B2', url: 'ia-b2.pdf' }
-                ]
-            },
-            'B3': {
-                'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' },
-                'general_filled': { name: 'P3 filled', url: '3th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F3 Unsolved', url: 'f3-u.pdf' }
-                ],
-                'formative_solved': [
-                    { name: 'F3 Solved', url: 'f3-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B3', url: 'ia-b3.pdf' }
-                ]
-            },
-            'B4': {
-                'general_empty': { name: 'P4 Empty', url: '4th-e.pdf' },
-                'general_filled': { name: 'P4 Filled', url: '4th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F4 Unsolved', url: 'f4-u.pdf' }
-                ],
-                'formative_solved': [
-                    { name: 'F4 Solved', url: 'f4-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B4', url: 'ia-b4.pdf' }
-                ]
-            },
-            'B5': {
-                'general_empty': { name: 'P5 Empty', url: '5th-e.pdf' },
-                'general_filled': { name: 'P5 Filled', url: '5th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F5 Unsolved', url: 'f5-u.pdf' }
-                ],
-                'formative_solved': [
-                    { name: 'F5 Solved', url: 'f5-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B5', url: 'ia-b5.pdf' }
-                ]
-            },
-            'B6': {
-                'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' },
-                'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' },
-                'formative_unsolved': [
-                    { name: 'F6 Unsolved', url: 'f6-u.pdf' }
-                ],
-                'formative_solved': [
-                    { name: 'F6 Solved', url: 'f6-s.pdf' }
-                ],
-                'incision': [
-                    { name: 'Incision B6', url: 'ia-b6.pdf' }
-                ]
-            }
+            'B1': { 'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' }, 'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' }, 'formative_unsolved': [{ name: 'F1 Unsolved', url: 'f1-u.pdf' }], 'formative_solved': [{ name: 'F1 Solved', url: 'f1-s.pdf' }], 'incision': [{ name: 'Incision B1', url: 'ia-b1.pdf' }] },
+            'B2': { 'general_empty': { name: 'P2 Empty', url: '2th-e.pdf' }, 'general_filled': { name: 'P2 Filled', url: '2th-f.pdf' }, 'formative_unsolved': [{ name: 'F2 Unsolved', url: 'f2-u.pdf' }], 'formative_solved': [{ name: 'F2 Solved', url: 'f2-s.pdf' }], 'incision': [{ name: 'Incision B2', url: 'ia-b2.pdf' }] },
+            'B3': { 'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' }, 'general_filled': { name: 'P3 filled', url: '3th-f.pdf' }, 'formative_unsolved': [{ name: 'F3 Unsolved', url: 'f3-u.pdf' }], 'formative_solved': [{ name: 'F3 Solved', url: 'f3-s.pdf' }], 'incision': [{ name: 'Incision B3', url: 'ia-b3.pdf' }] },
+            'B4': { 'general_empty': { name: 'P4 Empty', url: '4th-e.pdf' }, 'general_filled': { name: 'P4 Filled', url: '4th-f.pdf' }, 'formative_unsolved': [{ name: 'F4 Unsolved', url: 'f4-u.pdf' }], 'formative_solved': [{ name: 'F4 Solved', url: 'f4-s.pdf' }], 'incision': [{ name: 'Incision B4', url: 'ia-b4.pdf' }] },
+            'B5': { 'general_empty': { name: 'P5 Empty', url: '5th-e.pdf' }, 'general_filled': { name: 'P5 Filled', url: '5th-f.pdf' }, 'formative_unsolved': [{ name: 'F5 Unsolved', url: 'f5-u.pdf' }], 'formative_solved': [{ name: 'F5 Solved', url: 'f5-s.pdf' }], 'incision': [{ name: 'Incision B5', url: 'ia-b5.pdf' }] },
+            'B6': { 'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' }, 'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' }, 'formative_unsolved': [{ name: 'F6 Unsolved', url: 'f6-u.pdf' }], 'formative_solved': [{ name: 'F6 Solved', url: 'f6-s.pdf' }], 'incision': [{ name: 'Incision B6', url: 'ia-b6.pdf' }] }
         };
 
         // ================================================================
-        // ===== باقي الدوال (GPA، العداد، To-Do، التبويبات، إلخ) =====
-        // ================================================================
-
-        // ... (جميع الدوال السابقة كما هي، مع تعديل الدوال التي تستخدم IndexedDB لاستخدام الملفات الثابتة)
-
         // ===== CAROUSEL =====
+        // ================================================================
         function initCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.getElementById('carouselIndicators');
@@ -1285,7 +791,6 @@
             }
 
             function nextSlide() { goToSlide((currentIndex + 1) % totalSlides); }
-
             function startAutoPlay() { if (interval) clearInterval(interval); interval = setInterval(nextSlide, 4000); }
             function stopAutoPlay() { clearInterval(interval); }
 
@@ -1308,9 +813,7 @@
             const b5 = parseFloat(document.getElementById('gpaB5').value) || 0;
             const b6 = parseFloat(document.getElementById('gpaB6').value) || 0;
 
-            const maxResearch=30, maxSkill1=15, maxSkill2=15;
-            const maxB1=113, maxB2=180, maxB3=113, maxB4=135, maxB5=135, maxB6=113;
-            const totalMax = maxResearch+maxSkill1+maxSkill2+maxB1+maxB2+maxB3+maxB4+maxB5+maxB6;
+            const totalMax = 30+15+15+113+180+113+135+135+113;
             const total = research+skill1+skill2+b1+b2+b3+b4+b5+b6;
             const percent = (total/totalMax)*100;
 
@@ -1331,12 +834,10 @@
 
         // ===== COUNTDOWN =====
         let countdownInterval;
-
         function startCountdown(targetDate) {
             if (countdownInterval) clearInterval(countdownInterval);
             countdownInterval = setInterval(() => {
-                const now = Date.now();
-                const distance = targetDate - now;
+                const distance = targetDate - Date.now();
                 if (distance < 0) {
                     ['cdDays','cdHours','cdMinutes','cdSeconds'].forEach(id => document.getElementById(id).innerText='00');
                     clearInterval(countdownInterval);
@@ -1370,7 +871,7 @@
             }
         }
 
-        // ===== TO-DO LIST =====
+        // ===== TO-DO =====
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
             const list = document.getElementById('todoList');
@@ -1432,7 +933,7 @@
             modal.style.display = 'flex';
         }
 
-        // ===== عرض المواد الأساسية =====
+        // ===== Core Subjects =====
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             grid.innerHTML = '';
@@ -1454,7 +955,6 @@
 
         function filterCoreSubjects(value) { renderCoreSubjects(value); }
 
-        // ===== فتح تفاصيل المادة =====
         function openSubject(subjectName) {
             currentSubject = subjectName;
             document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
@@ -1470,9 +970,9 @@
                     <h4>B${i}</h4>
                     <div class="b-subtitle">${bSubtitles[i]}</div>
                     <div class="b-icons">
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Data')"><i class="fa-solid fa-database"></i><span>Data</span></a>
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','From Doctor')"><i class="fa-solid fa-user-md"></i><span>From Doctor</span></a>
-                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Past Exams')"><i class="fa-solid fa-file-pen"></i><span>Past Exams</span></a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Data'); return false;"><i class="fa-solid fa-database"></i><span>Data</span></a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','From Doctor'); return false;"><i class="fa-solid fa-user-md"></i><span>From Doctor</span></a>
+                        <a href="#" class="icon-item" onclick="handleIconClick('${subjectName}','B${i}','Past Exams'); return false;"><i class="fa-solid fa-file-pen"></i><span>Past Exams</span></a>
                     </div>
                 `;
                 container.appendChild(b);
@@ -1480,7 +980,6 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // ===== أيقونات B (المودال) =====
         let currentSubjectModal = { subject: '', b: '', type: '' };
 
         function renderSubjectFileSection(subject, bBlock, type, subType, label, icon) {
@@ -1522,7 +1021,7 @@
             `;
         }
 
-        async function handleIconClick(subject, b, type) {
+        function handleIconClick(subject, b, type) {
             document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
             currentSubjectModal = { subject, b, type };
 
@@ -1568,7 +1067,7 @@
             return false;
         }
 
-        async function refreshSubjectModal() {
+        function refreshSubjectModal() {
             const modal = document.getElementById('dynamicSubjectModal');
             if (!modal) return;
             const { subject, b, type } = currentSubjectModal;
@@ -1586,17 +1085,11 @@
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
-                contentHTML = `
-                    <div style="margin-bottom:1rem;">
-                        ${renderSubjectFileSection(subject, b, type, null, label, icon)}
-                    </div>
-                `;
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, type, null, label, icon)}</div>`;
             }
 
             const contentDiv = modal.querySelector('.modal-content > div:last-child');
-            if (contentDiv) {
-                contentDiv.innerHTML = contentHTML;
-            }
+            if (contentDiv) contentDiv.innerHTML = contentHTML;
         }
 
         function backToCore() {
@@ -1607,19 +1100,12 @@
             if (coreTab) coreTab.classList.add('active');
         }
 
-        // ===== عرض الأقسام =====
         function showSection(section, btnElement) {
             const loader = document.getElementById('globalLoader');
             loader.style.display = 'block';
             setTimeout(() => {
                 document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active'));
-                const sectionMap = {
-                    'home': 'homeSection',
-                    'core': 'coreSection',
-                    'extra': 'extraSection',
-                    'portfolio': 'portfolioSection',
-                    'other': 'otherSection'
-                };
+                const sectionMap = { 'home': 'homeSection', 'core': 'coreSection', 'extra': 'extraSection', 'portfolio': 'portfolioSection', 'other': 'otherSection' };
                 const targetId = sectionMap[section] || 'homeSection';
                 document.getElementById(targetId).classList.add('active');
                 if (section === 'core') {
@@ -1637,7 +1123,7 @@
             }, 300);
         }
 
-        // ===== دوال البورتفوليو =====
+        // ===== Portfolio =====
         function renderPortfolioContent(blockName, content) {
             const data = portfolioFiles[blockName] || {};
             const emptyFile = data['general_empty'] || null;
@@ -1648,12 +1134,10 @@
 
             function renderSingleFile(file) {
                 if (file) {
-                    return `
-                        <div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
-                            <a href="${file.url}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
-                            <a href="${file.url}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
-                        </div>
-                    `;
+                    return `<div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
+                        <a href="${file.url}" target="_blank" class="file-link" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
+                        <a href="${file.url}" download="${file.name}" class="download-btn" title="تنزيل" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
+                    </div>`;
                 }
                 return `<span class="no-files-msg">لا يوجد ملف مرفوع</span>`;
             }
@@ -1672,192 +1156,322 @@
             }
 
             let html = '';
-
-            // شكل البورتفوليو
-            html += `
-                <div class="block-card" style="margin-bottom:1.5rem;">
-                    <h4><i class="fa-regular fa-file-pdf"></i> شكل البورتفوليو</h4>
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>📄 فاضي</h5>
-                            ${renderSingleFile(emptyFile)}
-                        </div>
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>📄 مليان</h5>
-                            ${renderSingleFile(filledFile)}
-                        </div>
-                    </div>
+            html += `<div class="block-card" style="margin-bottom:1.5rem;">
+                <h4><i class="fa-regular fa-file-pdf"></i> شكل البورتفوليو</h4>
+                <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
+                    <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>📄 فاضي</h5>${renderSingleFile(emptyFile)}</div>
+                    <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>📄 مليان</h5>${renderSingleFile(filledFile)}</div>
                 </div>
-            `;
+            </div>`;
 
-            // اسئلة Incision
-            html += `
-                <div class="block-card" style="margin-bottom:1.5rem;">
-                    <h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
-                    <div style="margin-top:0.8rem;">
-                        <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                            ${renderFileList(incisionFiles)}
-                        </ul>
-                    </div>
-                </div>
-            `;
+            html += `<div class="block-card" style="margin-bottom:1.5rem;">
+                <h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
+                <div style="margin-top:0.8rem;"><ul class="portfolio-file-list" style="list-style:none; padding:0;">${renderFileList(incisionFiles)}</ul></div>
+            </div>`;
 
-            // اسئلة Formative
-            html += `
-                <div class="block-card" style="margin-bottom:0;">
-                    <h4><i class="fa-regular fa-file-lines"></i> اسئلة Formative</h4>
-                    <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>📄 بدون حل</h5>
-                            <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${renderFileList(unsolvedFiles)}
-                            </ul>
-                        </div>
-                        <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);">
-                            <h5>✅ محلول</h5>
-                            <ul class="portfolio-file-list" style="list-style:none; padding:0;">
-                                ${renderFileList(solvedFiles)}
-                            </ul>
-                        </div>
-                    </div>
+            html += `<div class="block-card" style="margin-bottom:0;">
+                <h4><i class="fa-regular fa-file-lines"></i> اسئلة Formative</h4>
+                <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
+                    <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>📄 بدون حل</h5><ul class="portfolio-file-list" style="list-style:none; padding:0;">${renderFileList(unsolvedFiles)}</ul></div>
+                    <div class="portfolio-sub-section" style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem; background:var(--beige-card);"><h5>✅ محلول</h5><ul class="portfolio-file-list" style="list-style:none; padding:0;">${renderFileList(solvedFiles)}</ul></div>
                 </div>
-            `;
+            </div>`;
 
             content.innerHTML = html;
         }
 
         let currentPortfolioBlock = null;
 
-        async function openPortfolioBlock(blockName) {
+        function openPortfolioBlock(blockName) {
             currentPortfolioBlock = blockName;
             const modal = document.getElementById('portfolioModal');
-            const title = document.getElementById('portfolioTitle');
-            const content = document.getElementById('portfolioContent');
-
-            title.innerText = `تفاصيل Portfolio - ${blockName}`;
-            renderPortfolioContent(blockName, content);
+            document.getElementById('portfolioTitle').innerText = `تفاصيل Portfolio - ${blockName}`;
+            renderPortfolioContent(blockName, document.getElementById('portfolioContent'));
             modal.style.display = 'flex';
         }
 
-        async function refreshPortfolio() {
+        function refreshPortfolio() {
             if (!currentPortfolioBlock) return;
-            const content = document.getElementById('portfolioContent');
-            renderPortfolioContent(currentPortfolioBlock, content);
+            renderPortfolioContent(currentPortfolioBlock, document.getElementById('portfolioContent'));
         }
 
-        // ===== نظام تسجيل الدخول =====
-        function switchAuthMode(mode) {
-            const loginForm = document.getElementById('loginForm');
-            const signupForm = document.getElementById('signupForm');
-            const loginBtn = document.getElementById('loginTabBtn');
-            const signupBtn = document.getElementById('signupTabBtn');
-            if (mode === 'login') {
-                loginForm.style.display = 'block';
-                signupForm.style.display = 'none';
-                loginBtn.classList.add('active');
-                signupBtn.classList.remove('active');
+        // ================================================================
+        // ===== نظام التسجيل الجديد (JSONBin) =====
+        // ================================================================
+        async function loadUsers() {
+            try {
+                const res = await fetch(JSONBIN_URL + "/latest", {
+                    headers: { "X-Master-Key": JSONBIN_API_KEY }
+                });
+                if (!res.ok) throw new Error("HTTP " + res.status);
+                const json = await res.json();
+                return json.record || { users: {} };
+            } catch (err) {
+                console.error("Load users error:", err);
+                return { users: {} };
+            }
+        }
+
+        async function saveUsers(data) {
+            try {
+                const res = await fetch(JSONBIN_URL, {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-Master-Key": JSONBIN_API_KEY
+                    },
+                    body: JSON.stringify(data)
+                });
+                return res.ok;
+            } catch (err) {
+                console.error("Save users error:", err);
+                return false;
+            }
+        }
+
+        async function hashPassword(password) {
+            const data = new TextEncoder().encode(password + "::nova-salt-2025");
+            const buf = await crypto.subtle.digest("SHA-256", data);
+            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+        }
+
+        function normalizePhone(p) {
+            return String(p).replace(/[^\d]/g, "").replace(/^20/, "0").replace(/^0+/, "0");
+        }
+
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector("i");
+            if (input.type === "password") {
+                input.type = "text";
+                icon.className = "fa-regular fa-eye-slash";
             } else {
-                loginForm.style.display = 'none';
-                signupForm.style.display = 'block';
-                signupBtn.classList.add('active');
-                loginBtn.classList.remove('active');
+                input.type = "password";
+                icon.className = "fa-regular fa-eye";
             }
-            document.getElementById('loginAlert').style.display = 'none';
-            document.getElementById('signupAlert').style.display = 'none';
         }
 
-        function encryptPassword(pwd) { return btoa(pwd); }
-        function decryptPassword(encrypted) { try { return atob(encrypted); } catch { return ''; } }
+        const DEVELOPER_ID = "admin";
+        const DEVELOPER_PASSWORD = "admin123";
 
-        const DEVELOPER_ID = 'admin';
-        const DEVELOPER_PASSWORD = 'admin123';
+        function switchAuthMode(mode) {
+            const loginForm = document.getElementById("loginForm");
+            const signupForm = document.getElementById("signupForm");
+            const loginBtn = document.getElementById("loginTabBtn");
+            const signupBtn = document.getElementById("signupTabBtn");
+            if (mode === "login") {
+                loginForm.style.display = "block";
+                signupForm.style.display = "none";
+                loginBtn.classList.add("active");
+                signupBtn.classList.remove("active");
+            } else {
+                loginForm.style.display = "none";
+                signupForm.style.display = "block";
+                signupBtn.classList.add("active");
+                loginBtn.classList.remove("active");
+            }
+            document.getElementById("loginAlert").style.display = "none";
+            document.getElementById("signupAlert").style.display = "none";
+        }
 
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        // ===== Sign Up =====
+        document.getElementById("signupForm").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const name = document.getElementById('signupName').value.trim();
-            const studentId = document.getElementById('signupStudentId').value.trim();
-            const nationalId = document.getElementById('signupNationalId').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            const alertBox = document.getElementById('signupAlert');
+            const name = document.getElementById("signupName").value.trim();
+            const studentId = document.getElementById("signupStudentId").value.trim();
+            const nationalId = document.getElementById("signupNationalId").value.trim();
+            const phone = document.getElementById("signupPhone").value.trim();
+            const password = document.getElementById("signupPassword").value;
+            const alertBox = document.getElementById("signupAlert");
+            const btn = document.getElementById("signupSubmitBtn");
 
-            if (!/^\d{14}$/.test(nationalId)) {
-                alertBox.innerText = 'الرقم القومي يجب أن يتكون من 14 رقمًا فقط.';
-                alertBox.style.display = 'block';
-                alertBox.className = 'alert-msg';
-                return;
+            const showErr = (msg, ok = false) => {
+                alertBox.innerText = msg;
+                alertBox.className = "alert-msg" + (ok ? " success" : "");
+                alertBox.style.display = "block";
+            };
+
+            if (name.split(/\s+/).filter(Boolean).length < 4) return showErr("الاسم يجب أن يكون رباعياً (4 كلمات على الأقل).");
+            if (!/^\d{14}$/.test(nationalId)) return showErr("الرقم القومي يجب أن يتكون من 14 رقماً.");
+            if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) return showErr("رقم الهاتف غير صحيح.");
+            if (password.length < 6) return showErr("كلمة السر يجب أن تكون 6 أحرف على الأقل.");
+            if (studentId === DEVELOPER_ID) return showErr("هذا الـ ID محجوز.");
+
+            showErr("⏳ جارٍ إنشاء الحساب...");
+            alertBox.className = "alert-msg";
+            btn.disabled = true;
+
+            try {
+                const data = await loadUsers();
+                data.users = data.users || {};
+
+                for (const key in data.users) {
+                    const u = data.users[key];
+                    if (u.studentId === studentId) { btn.disabled = false; return showErr("هذا الـ ID مسجل بالفعل."); }
+                    if (u.nationalId === nationalId) { btn.disabled = false; return showErr("هذا الرقم القومي مسجل بالفعل."); }
+                    if (normalizePhone(u.phone) === normalizePhone(phone)) { btn.disabled = false; return showErr("رقم الهاتف مسجل بالفعل."); }
+                }
+
+                const passwordHash = await hashPassword(password);
+                data.users[studentId] = { name, studentId, nationalId, phone, passwordHash };
+
+                const ok = await saveUsers(data);
+                btn.disabled = false;
+                if (!ok) return showErr("فشل الحفظ، حاول مرة أخرى.");
+
+                showErr("✅ تم إنشاء الحساب! جارٍ الدخول...", true);
+                localStorage.setItem("nova_active_user", JSON.stringify({ name, studentId, isDeveloper: false }));
+                setTimeout(() => showMainApp(name), 800);
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                showErr("خطأ في الاتصال بالإنترنت.");
             }
-            let users = [];
-            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch { users = []; }
-            if (users.find(u => u.studentId === studentId || u.nationalId === nationalId)) {
-                alertBox.innerText = 'هذا الـ ID أو الرقم القومي مسجل بالفعل!';
-                alertBox.style.display = 'block';
-                alertBox.className = 'alert-msg';
-                return;
-            }
-            if (studentId === DEVELOPER_ID) {
-                alertBox.innerText = 'هذا الـ ID محجوز للمطور، لا يمكن إنشاء حساب به.';
-                alertBox.style.display = 'block';
-                alertBox.className = 'alert-msg';
-                return;
-            }
-            const newUser = { name, studentId, nationalId, password: encryptPassword(password), isDeveloper: false };
-            users.push(newUser);
-            localStorage.setItem('nova_registered_users', JSON.stringify(users));
-            localStorage.setItem('nova_active_user', JSON.stringify({ name, isDeveloper: false }));
-            alertBox.innerText = '✅ تم إنشاء الحساب بنجاح! جارٍ تسجيل الدخول...';
-            alertBox.style.display = 'block';
-            alertBox.className = 'alert-msg success';
-            setTimeout(() => { showMainApp(name); }, 800);
         });
 
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        // ===== Login =====
+        document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const loginId = document.getElementById('loginId').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const alertBox = document.getElementById('loginAlert');
+            const loginId = document.getElementById("loginId").value.trim();
+            const password = document.getElementById("loginPassword").value;
+            const alertBox = document.getElementById("loginAlert");
+            const btn = document.getElementById("loginSubmitBtn");
+
+            const showErr = (msg) => {
+                alertBox.innerText = msg;
+                alertBox.className = "alert-msg";
+                alertBox.style.display = "block";
+            };
 
             if (loginId === DEVELOPER_ID && password === DEVELOPER_PASSWORD) {
-                localStorage.setItem('nova_active_user', JSON.stringify({ name: 'Amin (Developer)', isDeveloper: true }));
-                alertBox.style.display = 'none';
-                showMainApp('Amin (Developer)');
+                localStorage.setItem("nova_active_user", JSON.stringify({ name: "Amin (Developer)", isDeveloper: true }));
+                alertBox.style.display = "none";
+                showMainApp("Amin (Developer)");
                 return;
             }
 
-            let users = [];
-            try { users = JSON.parse(localStorage.getItem('nova_registered_users')) || []; } catch { users = []; }
-            const matchedUser = users.find(u =>
-                (u.studentId === loginId || u.nationalId === loginId) &&
-                decryptPassword(u.password) === password
-            );
-            if (matchedUser) {
-                localStorage.setItem('nova_active_user', JSON.stringify({ name: matchedUser.name, isDeveloper: false }));
-                alertBox.style.display = 'none';
-                showMainApp(matchedUser.name);
-            } else {
-                alertBox.innerText = 'البيانات غير صحيحة، أو الحساب غير موجود. يرجى إنشاء حساب أولاً.';
-                alertBox.style.display = 'block';
-                alertBox.className = 'alert-msg';
+            showErr("⏳ جارٍ التحقق...");
+            alertBox.className = "alert-msg";
+            btn.disabled = true;
+
+            try {
+                const data = await loadUsers();
+                const users = data.users || {};
+                let found = null;
+
+                for (const key in users) {
+                    const u = users[key];
+                    if (u.studentId === loginId || u.nationalId === loginId) { found = u; break; }
+                }
+
+                btn.disabled = false;
+                if (!found) return showErr("الحساب غير موجود.");
+
+                const hash = await hashPassword(password);
+                if (hash !== found.passwordHash) return showErr("كلمة السر غير صحيحة.");
+
+                localStorage.setItem("nova_active_user", JSON.stringify({ name: found.name, studentId: found.studentId, isDeveloper: false }));
+                showMainApp(found.name);
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                showErr("خطأ في الاتصال.");
             }
         });
 
+        // ===== Forgot Password =====
+        let forgotStudentId = "";
+
+        function openForgot() {
+            document.getElementById("forgotModal").style.display = "flex";
+            document.getElementById("forgotStep1").style.display = "block";
+            document.getElementById("forgotStep2").style.display = "none";
+            document.getElementById("forgotAlert").style.display = "none";
+            document.getElementById("forgotStudentId").value = "";
+            document.getElementById("forgotPhone").value = "";
+            document.getElementById("newPassword").value = "";
+            forgotStudentId = "";
+        }
+
+        function closeForgot() {
+            document.getElementById("forgotModal").style.display = "none";
+        }
+
+        function forgotShow(msg, ok = false) {
+            const a = document.getElementById("forgotAlert");
+            a.innerText = msg;
+            a.className = "alert-msg" + (ok ? " success" : "");
+            a.style.display = "block";
+        }
+
+        async function verifyForgotIdentity() {
+            const sid = document.getElementById("forgotStudentId").value.trim();
+            const phone = document.getElementById("forgotPhone").value.trim();
+
+            if (!sid || !phone) return forgotShow("املأ الحقلين.");
+            forgotShow("⏳ جارٍ التحقق...");
+
+            try {
+                const data = await loadUsers();
+                const user = (data.users || {})[sid];
+                if (!user) return forgotShow("الـ ID غير مسجل.");
+                if (normalizePhone(user.phone) !== normalizePhone(phone)) {
+                    return forgotShow("رقم الهاتف غير مطابق للمسجل.");
+                }
+
+                forgotStudentId = sid;
+                document.getElementById("forgotStep1").style.display = "none";
+                document.getElementById("forgotStep2").style.display = "block";
+                forgotShow("✅ تم التحقق بنجاح.", true);
+            } catch (err) {
+                console.error(err);
+                forgotShow("خطأ في الاتصال.");
+            }
+        }
+
+        async function resetPassword() {
+            const newPass = document.getElementById("newPassword").value;
+            if (!forgotStudentId) return forgotShow("أعد التحقق.");
+            if (newPass.length < 6) return forgotShow("كلمة السر 6 أحرف على الأقل.");
+
+            forgotShow("⏳ جارٍ الحفظ...");
+
+            try {
+                const data = await loadUsers();
+                const user = (data.users || {})[forgotStudentId];
+                if (!user) return forgotShow("الحساب غير موجود.");
+
+                user.passwordHash = await hashPassword(newPass);
+                const ok = await saveUsers(data);
+                if (!ok) return forgotShow("فشل الحفظ.");
+
+                forgotShow("✅ تم تحديث كلمة السر. يمكنك الدخول الآن.", true);
+                setTimeout(() => { closeForgot(); switchAuthMode("login"); }, 1500);
+            } catch (err) {
+                console.error(err);
+                forgotShow("خطأ في الاتصال.");
+            }
+        }
+
+        // ===== App =====
         function showMainApp(userName) {
-            document.getElementById('userInfoDisplay').innerHTML = `الطالب: ${userName}`;
-            document.getElementById('authOverlay').style.display = 'none';
-            showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
+            document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
+            document.getElementById("authOverlay").style.display = "none";
+            showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             startSessionTimer();
             updateStats();
         }
 
         function logout() {
-            localStorage.removeItem('nova_active_user');
-            document.getElementById('authOverlay').style.display = 'flex';
-            document.getElementById('userInfoDisplay').innerText = 'أهلاً بك';
-            switchAuthMode('login');
-            document.getElementById('loginId').value = '';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('loginAlert').style.display = 'none';
-            document.getElementById('signupAlert').style.display = 'none';
-            showSection('home', document.querySelector('.tab-btn[onclick*="home"]'));
+            localStorage.removeItem("nova_active_user");
+            document.getElementById("authOverlay").style.display = "flex";
+            document.getElementById("userInfoDisplay").innerText = "أهلاً بك";
+            switchAuthMode("login");
+            document.getElementById("loginId").value = "";
+            document.getElementById("loginPassword").value = "";
+            document.getElementById("loginAlert").style.display = "none";
+            document.getElementById("signupAlert").style.display = "none";
+            showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             clearInterval(window.sessionInterval);
         }
 
@@ -1868,49 +1482,49 @@
             sessionSeconds = 0;
             window.sessionInterval = setInterval(() => {
                 sessionSeconds++;
-                const mins = String(Math.floor(sessionSeconds/60)).padStart(2,'0');
-                const secs = String(sessionSeconds%60).padStart(2,'0');
-                document.getElementById('sessionTime').innerText = `${mins}:${secs}`;
+                const mins = String(Math.floor(sessionSeconds/60)).padStart(2,"0");
+                const secs = String(sessionSeconds%60).padStart(2,"0");
+                document.getElementById("sessionTime").innerText = `${mins}:${secs}`;
             }, 1000);
         }
 
         function updateStats() {
-            document.getElementById('totalSubjects').innerText = coreSubjects.length;
-            document.getElementById('totalFiles').innerText = coreSubjects.length * 6;
+            document.getElementById("totalSubjects").innerText = coreSubjects.length;
+            document.getElementById("totalFiles").innerText = coreSubjects.length * 6;
         }
 
         function toggleTheme() {
             const html = document.documentElement;
-            const current = html.getAttribute('data-theme');
-            const btn = document.querySelector('.theme-toggle i');
-            if (current === 'light') {
-                html.removeAttribute('data-theme');
-                btn.className = 'fa-solid fa-moon';
+            const current = html.getAttribute("data-theme");
+            const btn = document.querySelector(".theme-toggle i");
+            if (current === "light") {
+                html.removeAttribute("data-theme");
+                btn.className = "fa-solid fa-moon";
             } else {
-                html.setAttribute('data-theme', 'light');
-                btn.className = 'fa-solid fa-sun';
+                html.setAttribute("data-theme", "light");
+                btn.className = "fa-solid fa-sun";
             }
         }
 
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('modal')) e.target.style.display = 'none';
+        document.addEventListener("click", function(e) {
+            if (e.target.classList.contains("modal")) e.target.style.display = "none";
         });
 
         // ================================================================
-        // ===== المتغيرات العامة والثوابت =====
+        // ===== المتغيرات العامة =====
         // ================================================================
-        let currentSubject = '';
+        let currentSubject = "";
         const coreSubjects = [
-            { id: 'anatomy', name: 'Anatomy', cover: 'anatomy-cover.jpg', fallbackIcon: 'fa-bone' },
-            { id: 'biochemistry', name: 'Biochemistry', cover: 'biochemistry-cover.jpg', fallbackIcon: 'fa-dna' },
-            { id: 'parasitology', name: 'Parasitology', cover: 'parasitology-cover.jpg', fallbackIcon: 'fa-bug' },
-            { id: 'pathology', name: 'Pathology', cover: 'pathology-cover.jpg', fallbackIcon: 'fa-vial-virus' },
-            { id: 'physiology', name: 'Physiology', cover: 'physiology-cover.jpg', fallbackIcon: 'fa-heart-pulse' },
-            { id: 'pharmacology', name: 'Pharmacology', cover: 'pharmacology-cover.jpg', fallbackIcon: 'fa-capsules' },
-            { id: 'microbiology', name: 'Microbiology', cover: 'microbiology-cover.jpg', fallbackIcon: 'fa-virus' },
-            { id: 'histology', name: 'Histology', cover: 'histology-cover.jpg', fallbackIcon: 'fa-microscope' },
-            { id: 'community', name: 'Community', cover: 'community-cover.jpg', fallbackIcon: 'fa-users' },
-            { id: 'family', name: 'Family', cover: 'family-cover.jpg', fallbackIcon: 'fa-people-group' }
+            { id: "anatomy", name: "Anatomy", cover: "anatomy-cover.jpg", fallbackIcon: "fa-bone" },
+            { id: "biochemistry", name: "Biochemistry", cover: "biochemistry-cover.jpg", fallbackIcon: "fa-dna" },
+            { id: "parasitology", name: "Parasitology", cover: "parasitology-cover.jpg", fallbackIcon: "fa-bug" },
+            { id: "pathology", name: "Pathology", cover: "pathology-cover.jpg", fallbackIcon: "fa-vial-virus" },
+            { id: "physiology", name: "Physiology", cover: "physiology-cover.jpg", fallbackIcon: "fa-heart-pulse" },
+            { id: "pharmacology", name: "Pharmacology", cover: "pharmacology-cover.jpg", fallbackIcon: "fa-capsules" },
+            { id: "microbiology", name: "Microbiology", cover: "microbiology-cover.jpg", fallbackIcon: "fa-virus" },
+            { id: "histology", name: "Histology", cover: "histology-cover.jpg", fallbackIcon: "fa-microscope" },
+            { id: "community", name: "Community", cover: "community-cover.jpg", fallbackIcon: "fa-users" },
+            { id: "family", name: "Family", cover: "family-cover.jpg", fallbackIcon: "fa-people-group" }
         ];
 
         const bSubtitles = {
@@ -1922,23 +1536,21 @@
             6: "Urinary System"
         };
 
-        // ===== تحميل الصفحة =====
         window.onload = function() {
             try {
-                const activeUser = JSON.parse(localStorage.getItem('nova_active_user'));
+                const activeUser = JSON.parse(localStorage.getItem("nova_active_user"));
                 if (activeUser && activeUser.name) {
                     showMainApp(activeUser.name);
                 }
             } catch (e) { console.error(e); }
             renderCoreSubjects();
             updateStats();
-            startSessionTimer();
             initCarousel();
             loadExamDate();
             loadTodos();
         };
 
-        console.log('NOVA Portal loaded successfully. Developer: admin/admin123');
+        console.log("NOVA Portal loaded. Developer: admin/admin123");
     </script>
 </body>
 </html>
