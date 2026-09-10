@@ -150,15 +150,30 @@
         .gpa-result .result-value.pass { color: #E67E22; }
         .gpa-result .result-value.fail { color: var(--error-red); }
 
-        .countdown-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+        .countdown-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1.1rem; }
         .countdown-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; }
-        .countdown-timer { display: flex; gap: 1.5rem; font-family: var(--font-english); font-weight: 700; font-size: 1.8rem; color: var(--gold-primary); }
+        .countdown-timer { display: flex; gap: 1.5rem; font-family: var(--font-english); font-weight: 700; font-size: 1.8rem; color: var(--gold-primary); justify-content: center; flex-wrap: wrap; }
         .countdown-timer .time-unit { display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; color: var(--beige-light); font-weight: 400; }
         .countdown-timer .time-unit span { font-size: 2rem; font-weight: 700; color: var(--gold-primary); }
-        .countdown-input { display: flex; align-items: center; gap: 8px; }
-        .countdown-input input[type="date"] { padding: 0.5rem 0.8rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.9rem; outline: none; }
-        [data-theme="light"] .countdown-input input[type="date"] { background: #F7F4EE; color: #29251F; }
-        .countdown-input button { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.5rem 1.2rem; border-radius: 30px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .next-appt-label { text-align: center; color: var(--gold-primary); font-weight: 700; font-family: var(--font-ui); font-size: 0.95rem; min-height: 1.2rem; }
+        .appt-input-group { display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 8px; }
+        .appt-input-group input { padding: 0.6rem 0.9rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.9rem; outline: none; font-family: var(--font-ui); width: 100%; }
+        [data-theme="light"] .appt-input-group input { background: #F7F4EE; border-color: #E4DCCF; color: #29251F; }
+        .appt-input-group input:focus { border-color: var(--gold-primary); }
+        .appt-input-group button { background: var(--gold-primary); color: #0A0A0A; border: none; padding: 0.6rem 1.4rem; border-radius: 10px; font-weight: 700; cursor: pointer; font-size: 0.9rem; font-family: var(--font-ui); transition: 0.25s; white-space: nowrap; }
+        .appt-input-group button:hover { background: var(--gold-secondary); color: #FFF; transform: translateY(-2px); }
+        .appt-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+        .appt-item { display: flex; align-items: center; gap: 10px; padding: 0.7rem 1rem; background: rgba(36,32,28,0.5); border: 1px solid var(--border-gold); border-radius: 12px; transition: 0.3s; }
+        [data-theme="light"] .appt-item { background: #F7F4EE; }
+        .appt-item.nearest { border-color: var(--gold-primary); background: rgba(212,175,55,0.08); box-shadow: 0 0 20px rgba(212,175,55,0.15); }
+        .appt-item.past { opacity: 0.45; }
+        .appt-item-icon { color: var(--gold-primary); font-size: 1.1rem; }
+        .appt-item-info { flex: 1; min-width: 0; }
+        .appt-item-title { font-weight: 700; color: var(--beige-main); font-size: 0.9rem; }
+        [data-theme="light"] .appt-item-title { color: #29251F; }
+        .appt-item-time { font-family: var(--font-ui); font-size: 0.75rem; color: var(--beige-light); opacity: 0.8; margin-top: 2px; }
+        .appt-item-remove { background: transparent; border: 1px solid var(--border-gold); color: var(--error-red); width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.75rem; transition: 0.2s; }
+        .appt-item-remove:hover { background: var(--error-red); color: #fff; }
 
         .todo-section { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.5rem 2rem; }
         .todo-section h3 { color: var(--gold-primary); font-size: 1.3rem; display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
@@ -282,7 +297,6 @@
         .section-content { display: none; }
         .section-content.active { display: block; }
 
-        /* ===== File Status Buttons ===== */
         .file-item .status-btn {
             display: inline-flex; align-items: center; gap: 4px;
             background: transparent; border: 1px solid var(--border-gold);
@@ -365,17 +379,25 @@
 
         .tasks-card { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1.15rem 1.2rem; }
         [data-theme="light"] .tasks-card { background: #FFFCF7; }
+        .dash-task-input-row { display: flex; gap: 8px; margin-bottom: 0.9rem; }
+        .dash-task-input-row input { flex: 1; padding: 0.6rem 1rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 0.85rem; outline: none; font-family: var(--font-ui); }
+        [data-theme="light"] .dash-task-input-row input { background: #F7F4EE; color: #29251F; }
+        .dash-task-input-row input:focus { border-color: var(--gold-primary); }
+        .dash-task-input-row button { background: var(--gold-primary); color: #0A0A0A; border: none; width: 40px; height: 40px; border-radius: 10px; cursor: pointer; font-size: 1rem; transition: 0.25s; flex-shrink: 0; }
+        .dash-task-input-row button:hover { background: var(--gold-secondary); transform: scale(1.05); }
         .dash-task { display: flex; align-items: center; gap: 12px; padding: 0.75rem 0.55rem; border-bottom: 1px dashed var(--border-gold); cursor: pointer; border-radius: 12px; }
         .dash-task:last-child { border-bottom: none; }
         .dash-task:hover { background: rgba(212,175,55,0.06); }
         .dash-task-check { width: 22px; height: 22px; border-radius: 7px; border: 1.5px solid var(--border-gold); display: flex; align-items: center; justify-content: center; color: transparent; font-size: 0.68rem; flex-shrink: 0; }
         .dash-task.done .dash-task-check { background: var(--gold-primary); border-color: var(--gold-primary); color: #0A0A0A; }
-        .dash-task-text { flex: 1; font-size: 0.85rem; color: var(--beige-main); line-height: 1.5; }
+        .dash-task-text { flex: 1; font-size: 0.85rem; color: var(--beige-main); line-height: 1.5; word-break: break-word; }
         [data-theme="light"] .dash-task-text { color: #29251F; }
         .dash-task.done .dash-task-text { text-decoration: line-through; opacity: 0.5; }
-        .dash-task-tag { font-family: var(--font-ui); font-size: 0.63rem; font-weight: 600; padding: 0.16rem 0.55rem; border-radius: 20px; border: 1px solid var(--border-gold); color: var(--gold-primary); background: rgba(212,175,55,0.08); white-space: nowrap; }
+        .dash-task-delete { background: transparent; border: none; color: var(--error-red); cursor: pointer; font-size: 0.85rem; padding: 4px 8px; border-radius: 6px; transition: 0.2s; }
+        .dash-task-delete:hover { background: rgba(231,76,60,0.15); }
         .tasks-footer { margin-top: 0.9rem; padding-top: 0.9rem; border-top: 1px solid var(--border-gold); display: flex; justify-content: space-between; font-family: var(--font-ui); font-size: 0.74rem; color: var(--beige-light); }
         .tasks-footer strong { color: var(--gold-primary); font-size: 0.92rem; }
+        .dash-empty-msg { text-align: center; color: var(--beige-light); opacity: 0.6; font-size: 0.82rem; padding: 1rem; font-family: var(--font-ui); }
 
         .activity-card { background: var(--beige-card); border: 1px solid var(--border-gold); border-radius: 24px; padding: 1rem 1.4rem; }
         [data-theme="light"] .activity-card { background: #FFFCF7; }
@@ -442,11 +464,281 @@
         .pdf-frame-wrap { flex: 1; background: #222; border-radius: 12px; overflow: auto; margin-top: 0.8rem; position: relative; }
         .pdf-frame { width: 100%; height: 100%; border: none; background: #fff; transition: transform 0.2s; transform-origin: top center; }
 
+        /* ===== Portfolio Enhanced ===== */
+        #portfolioModal .modal-content {
+            max-width: 1000px;
+            padding: 0;
+            position: relative;
+            max-height: 85vh;
+            height: 85vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border-radius: 24px;
+        }
+        #portfolioContent {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-primary) transparent;
+        }
+        #portfolioContent::-webkit-scrollbar { width: 8px; }
+        #portfolioContent::-webkit-scrollbar-track { background: transparent; }
+        #portfolioContent::-webkit-scrollbar-thumb {
+            background: var(--gold-primary);
+            border-radius: 10px;
+            border: 2px solid var(--card-black);
+        }
+        #portfolioContent::-webkit-scrollbar-thumb:hover { background: var(--gold-secondary); }
+
+        #portfolioModal .close-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 30;
+            margin: 0;
+            float: none;
+            padding: 0.42rem 1.1rem;
+            font-size: 0.8rem;
+            box-shadow: 0 6px 20px rgba(231,76,60,0.35);
+        }
+
+        .pf-hero {
+            position: relative;
+            padding: 2rem 2.2rem 1.7rem;
+            background: linear-gradient(135deg, rgba(28,25,23,0.96), rgba(14,13,12,0.98));
+            border-bottom: 1px solid var(--border-gold);
+            overflow: hidden;
+            border-radius: 24px 24px 0 0;
+        }
+        [data-theme="light"] .pf-hero { background: linear-gradient(135deg, #FFFCF7, #F0E9DC); }
+        .pf-hero::before {
+            content: ""; position: absolute; inset: 0; pointer-events: none;
+            background: radial-gradient(circle at 85% 20%, rgba(212,175,55,0.20), transparent 55%),
+                        radial-gradient(circle at 10% 100%, rgba(212,175,55,0.08), transparent 45%);
+        }
+        .pf-hero-inner {
+            position: relative; z-index: 2;
+            display: flex; justify-content: space-between; align-items: flex-start;
+            gap: 1rem; flex-wrap: wrap;
+        }
+        .pf-hero-left { display: flex; align-items: center; gap: 16px; }
+        .pf-hero-badge {
+            width: 72px; height: 72px; border-radius: 22px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-ui); font-weight: 800; font-size: 1.55rem;
+            color: #0A0A0A;
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-secondary));
+            box-shadow: 0 12px 30px rgba(212,175,55,0.4);
+            border: 2px solid rgba(255,255,255,0.12);
+        }
+        .pf-hero-text h2 {
+            font-family: var(--font-ui); font-size: 1.55rem; font-weight: 800;
+            color: var(--beige-main); margin: 0;
+        }
+        [data-theme="light"] .pf-hero-text h2 { color: #29251F; }
+        .pf-hero-text p {
+            font-family: var(--font-ui); font-size: 0.82rem;
+            color: var(--beige-light); margin-top: 5px; opacity: 0.85;
+        }
+        .pf-hero-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+        .pf-stat-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 0.44rem 0.9rem; border-radius: 30px;
+            background: rgba(212,175,55,0.10);
+            border: 1px solid var(--border-gold);
+            font-family: var(--font-ui); font-size: 0.72rem; font-weight: 700;
+            color: var(--gold-primary);
+        }
+        .pf-stat-chip i { font-size: 0.75rem; }
+
+        .pf-body { padding: 1.6rem 2rem 2rem; }
+
+        .pf-section {
+            background: var(--beige-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 22px;
+            padding: 1.3rem 1.5rem;
+            margin-bottom: 1.2rem;
+            transition: 0.3s;
+        }
+        [data-theme="light"] .pf-section { background: #FFFCF7; }
+        .pf-section:hover { border-color: rgba(212,175,55,0.55); }
+        .pf-section:last-child { margin-bottom: 0; }
+
+        .pf-section-head {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 1.1rem; padding-bottom: 0.85rem;
+            border-bottom: 1px dashed var(--border-gold);
+        }
+        .pf-section-icon {
+            width: 44px; height: 44px; border-radius: 14px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(212,175,55,0.05));
+            border: 1px solid var(--border-gold);
+            color: var(--gold-primary); font-size: 1.05rem;
+        }
+        .pf-section-title-wrap { flex: 1; min-width: 0; }
+        .pf-section-title {
+            font-family: var(--font-ui); font-weight: 800; font-size: 1.05rem;
+            color: var(--beige-main);
+        }
+        [data-theme="light"] .pf-section-title { color: #29251F; }
+        .pf-section-sub {
+            font-family: var(--font-ui); font-size: 0.7rem;
+            color: var(--beige-light); opacity: 0.75; margin-top: 2px;
+        }
+        .pf-section-count {
+            font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700;
+            color: var(--gold-primary); white-space: nowrap;
+            padding: 0.3rem 0.78rem; border-radius: 20px;
+            background: rgba(212,175,55,0.10); border: 1px solid var(--border-gold);
+        }
+
+        .pf-templates-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .pf-template-card {
+            position: relative;
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 1.1rem 1.2rem;
+            display: flex; align-items: center; gap: 14px;
+            transition: 0.3s; overflow: hidden;
+            background: rgba(255,255,255,0.015);
+        }
+        [data-theme="light"] .pf-template-card { background: #F7F4EE; }
+        .pf-template-card::before {
+            content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+            background: linear-gradient(180deg, var(--gold-primary), var(--gold-secondary));
+            opacity: 0.65;
+        }
+        .pf-template-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 14px 30px rgba(212,175,55,0.18);
+        }
+        .pf-template-icon {
+            width: 50px; height: 50px; border-radius: 14px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; color: var(--gold-primary);
+            background: rgba(212,175,55,0.10);
+            border: 1px solid var(--border-gold);
+        }
+        .pf-template-info { flex: 1; min-width: 0; }
+        .pf-template-label {
+            font-family: var(--font-ui); font-size: 0.68rem; font-weight: 800;
+            color: var(--gold-primary); letter-spacing: 1px;
+        }
+        .pf-template-name {
+            font-size: 0.95rem; font-weight: 700; color: var(--beige-main);
+            margin: 4px 0 9px; word-break: break-word;
+        }
+        [data-theme="light"] .pf-template-name { color: #29251F; }
+        .pf-template-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        .pf-action-btn {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 0.4rem 0.78rem; border-radius: 9px;
+            border: 1px solid var(--border-gold);
+            background: transparent; color: var(--gold-primary);
+            font-family: var(--font-ui); font-size: 0.7rem; font-weight: 700;
+            text-decoration: none; cursor: pointer; transition: 0.25s;
+            white-space: nowrap;
+        }
+        .pf-action-btn:hover {
+            background: var(--gold-primary); color: #0A0A0A;
+            border-color: var(--gold-primary);
+        }
+        .pf-action-btn i { font-size: 0.72rem; }
+
+        .pf-file-list {
+            list-style: none; padding: 0; margin: 0;
+            display: flex; flex-direction: column; gap: 6px;
+        }
+        .pf-file-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 0.72rem 0.9rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            transition: 0.25s;
+        }
+        [data-theme="light"] .pf-file-item { background: #F7F4EE; }
+        .pf-file-item:hover {
+            border-color: var(--gold-primary);
+            background: rgba(212,175,55,0.06);
+            transform: translateX(-3px);
+        }
+        .pf-file-icon {
+            width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(212,175,55,0.10); color: var(--gold-primary);
+            font-size: 0.85rem;
+        }
+        .pf-file-name {
+            flex: 1; min-width: 0; font-size: 0.86rem;
+            color: var(--beige-main); font-weight: 600;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+        [data-theme="light"] .pf-file-name { color: #29251F; }
+        .pf-file-actions { display: flex; gap: 5px; flex-shrink: 0; }
+
+        .pf-split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .pf-split-col {
+            border: 1px solid var(--border-gold);
+            border-radius: 14px;
+            padding: 0.95rem 1rem;
+            background: rgba(255,255,255,0.02);
+        }
+        [data-theme="light"] .pf-split-col { background: #F7F4EE; }
+        .pf-split-head {
+            display: flex; align-items: center; gap: 8px;
+            margin-bottom: 0.75rem; padding-bottom: 0.65rem;
+            border-bottom: 1px dashed var(--border-gold);
+            font-family: var(--font-ui); font-weight: 800; font-size: 0.84rem;
+        }
+        .pf-split-head.unsolved { color: #E67E22; }
+        .pf-split-head.solved { color: #2ECC71; }
+        .pf-split-head i { font-size: 0.92rem; }
+        .pf-split-head .pf-split-count {
+            margin-right: auto;
+            font-size: 0.68rem; padding: 0.18rem 0.6rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-gold);
+            color: var(--beige-light);
+        }
+
+        .pf-empty {
+            text-align: center; padding: 1.3rem 0.5rem;
+            color: var(--beige-light); opacity: 0.6;
+            font-size: 0.8rem; font-family: var(--font-ui);
+        }
+        .pf-empty i {
+            display: block; font-size: 1.6rem; color: var(--gold-primary);
+            opacity: 0.5; margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 700px) {
+            .pf-templates-grid, .pf-split-grid { grid-template-columns: 1fr; }
+            .pf-hero { padding: 1.5rem 1.2rem 1.2rem; }
+            .pf-hero-badge { width: 58px; height: 58px; font-size: 1.2rem; border-radius: 18px; }
+            .pf-hero-text h2 { font-size: 1.2rem; }
+            .pf-body { padding: 1.2rem 1rem 1.4rem; }
+            .pf-section { padding: 1rem; }
+            .pf-section-head { flex-wrap: wrap; }
+            .pf-file-actions { flex-wrap: wrap; }
+        }
+
         @media (max-width:1024px) {
             #coreSection .grid-container { grid-template-columns: repeat(4,1fr); }
             #subjectDetailSection .grid-container { grid-template-columns: repeat(2, 1fr); }
             .dash-stats { grid-template-columns: repeat(3, minmax(0,1fr)); }
             .dash-main-grid { grid-template-columns: 1fr; }
+            .appt-input-group { grid-template-columns: 1fr 1fr; }
+            .appt-input-group button { grid-column: 1 / -1; }
         }
         @media (max-width:767px) {
             header { padding:0.6rem 1rem; flex-wrap:wrap; }
@@ -472,6 +764,7 @@
             .saved-grid { grid-template-columns: 1fr; }
             .file-item { flex-wrap: wrap; }
             .file-item .file-actions { width: 100%; justify-content: flex-start; }
+            .appt-input-group { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -563,8 +856,8 @@
                     <p class="dash-sub">Here's your academic overview — إليك نظرة سريعة على يومك الأكاديمي</p>
                     <div class="dash-hero-badges">
                         <span class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> FOM · EPNU</span>
-                        <span class="hero-badge"><i class="fa-solid fa-layer-group"></i> Block B3</span>
-                        <span class="hero-badge"><i class="fa-solid fa-fire"></i> 7 Day Streak</span>
+                        <span class="hero-badge"><i class="fa-solid fa-layer-group"></i> Block B1</span>
+                        <span class="hero-badge"><i class="fa-solid fa-seedling"></i> بداية الرحلة</span>
                     </div>
                 </div>
             </div>
@@ -590,19 +883,19 @@
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-file-pen"></i></div>
-                    <div class="dash-stat-value" id="dashExamValue">بعد 12 يوم</div>
-                    <div class="dash-stat-label">الامتحان القادم</div>
-                    <div class="dash-stat-desc">Upcoming Exam</div>
+                    <div class="dash-stat-value" id="dashExamValue">—</div>
+                    <div class="dash-stat-label">الموعد القادم</div>
+                    <div class="dash-stat-desc">Next Appointment</div>
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-fire"></i></div>
-                    <div class="dash-stat-value">7</div>
+                    <div class="dash-stat-value">0</div>
                     <div class="dash-stat-label">سلسلة المذاكرة</div>
                     <div class="dash-stat-desc">Study Streak · أيام</div>
                 </div>
                 <div class="dash-stat-card">
                     <div class="dash-stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <div class="dash-stat-value">340</div>
+                    <div class="dash-stat-value">0</div>
                     <div class="dash-stat-label">نقاط NOVA</div>
                     <div class="dash-stat-desc">NOVA Points</div>
                 </div>
@@ -616,10 +909,14 @@
                 <div class="dash-col">
                     <h2 class="dash-section-title">مهام اليوم <span class="dash-title-en">— Today's Tasks</span></h2>
                     <div class="tasks-card">
+                        <div class="dash-task-input-row">
+                            <input type="text" id="dashTaskInput" placeholder="اكتب مهمة وأضفها..." onkeypress="if(event.key==='Enter') addDashTask();">
+                            <button onclick="addDashTask()" title="إضافة مهمة"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                         <div id="dashTaskList"></div>
                         <div class="tasks-footer">
                             <span>Completed today</span>
-                            <span><strong id="dashTasksDone">0/3</strong></span>
+                            <span><strong id="dashTasksDone">0/0</strong></span>
                         </div>
                     </div>
                 </div>
@@ -742,17 +1039,21 @@
                 </div>
 
                 <div class="countdown-section">
-                    <h3><i class="fa-solid fa-hourglass-half"></i> العد التنازلي للامتحان القادم</h3>
+                    <h3><i class="fa-solid fa-hourglass-half"></i> المواعيد والعد التنازلي</h3>
                     <div class="countdown-timer">
                         <div class="time-unit"><span id="cdDays">00</span> أيام</div>
                         <div class="time-unit"><span id="cdHours">00</span> ساعات</div>
                         <div class="time-unit"><span id="cdMinutes">00</span> دقائق</div>
                         <div class="time-unit"><span id="cdSeconds">00</span> ثواني</div>
                     </div>
-                    <div class="countdown-input">
-                        <input type="date" id="examDateInput">
-                        <button onclick="setExamDate()">تحديث التاريخ</button>
+                    <div class="next-appt-label" id="nextApptLabel">لا توجد مواعيد — أضف موعداً</div>
+                    <div class="appt-input-group">
+                        <input type="text" id="apptTitle" placeholder="عنوان الموعد (مثلاً: امتحان Anatomy)">
+                        <input type="date" id="apptDate">
+                        <input type="time" id="apptTime">
+                        <button onclick="addAppointment()"><i class="fa-solid fa-plus"></i> إضافة موعد</button>
                     </div>
+                    <ul class="appt-list" id="apptList"></ul>
                 </div>
 
                 <div class="todo-section">
@@ -775,10 +1076,6 @@
     <div id="portfolioModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
-            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-bottom:0.5rem;">
-                <h2 id="portfolioTitle" style="margin:0;">تفاصيل Portfolio</h2>
-                <button class="refresh-btn" onclick="refreshPortfolio()"><i class="fa-solid fa-rotate"></i> تحديث</button>
-            </div>
             <div id="portfolioContent"></div>
         </div>
     </div>
@@ -898,6 +1195,7 @@
         function esc(str) { return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
         function enc(s) { return encodeURIComponent(String(s == null ? '' : s)); }
         function dec(s) { return decodeURIComponent(String(s == null ? '' : s)); }
+        function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
         // ================================================================
         // ===== Subject Files Data =====
@@ -988,7 +1286,7 @@
         const portfolioFiles = {
             'B1': { 'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' }, 'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' }, 'formative_unsolved': [{ name: 'F1 Unsolved', url: 'f1-u.pdf' }], 'formative_solved': [{ name: 'F1 Solved', url: 'f1-s.pdf' }], 'incision': [{ name: 'Incision B1', url: 'ia-b1.pdf' }] },
             'B2': { 'general_empty': { name: 'P2 Empty', url: '2th-e.pdf' }, 'general_filled': { name: 'P2 Filled', url: '2th-f.pdf' }, 'formative_unsolved': [{ name: 'F2 Unsolved', url: 'f2-u.pdf' }], 'formative_solved': [{ name: 'F2 Solved', url: 'f2-s.pdf' }], 'incision': [{ name: 'Incision B2', url: 'ia-b2.pdf' }] },
-            'B3': { 'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' }, 'general_filled': { name: 'P3 filled', url: '3th-f.pdf' }, 'formative_unsolved': [{ name: 'F3 Unsolved', url: 'f3-u.pdf' }], 'formative_solved': [{ name: 'F3 Solved', url: 'f3-s.pdf' }], 'incision': [{ name: 'Incision B3', url: 'ia-b3.pdf' }] },
+            'B3': { 'general_empty': { name: 'P3 Empty', url: '3th-e.pdf' }, 'general_filled': { name: 'P3 Filled', url: '3th-f.pdf' }, 'formative_unsolved': [{ name: 'F3 Unsolved', url: 'f3-u.pdf' }], 'formative_solved': [{ name: 'F3 Solved', url: 'f3-s.pdf' }], 'incision': [{ name: 'Incision B3', url: 'ia-b3.pdf' }] },
             'B4': { 'general_empty': { name: 'P4 Empty', url: '4th-e.pdf' }, 'general_filled': { name: 'P4 Filled', url: '4th-f.pdf' }, 'formative_unsolved': [{ name: 'F4 Unsolved', url: 'f4-u.pdf' }], 'formative_solved': [{ name: 'F4 Solved', url: 'f4-s.pdf' }], 'incision': [{ name: 'Incision B4', url: 'ia-b4.pdf' }] },
             'B5': { 'general_empty': { name: 'P5 Empty', url: '5th-e.pdf' }, 'general_filled': { name: 'P5 Filled', url: '5th-f.pdf' }, 'formative_unsolved': [{ name: 'F5 Unsolved', url: 'f5-u.pdf' }], 'formative_solved': [{ name: 'F5 Solved', url: 'f5-s.pdf' }], 'incision': [{ name: 'Incision B5', url: 'ia-b5.pdf' }] },
             'B6': { 'general_empty': { name: 'P6 Empty', url: '6th-e.pdf' }, 'general_filled': { name: 'P6 Filled', url: '6th-f.pdf' }, 'formative_unsolved': [{ name: 'F6 Unsolved', url: 'f6-u.pdf' }], 'formative_solved': [{ name: 'F6 Solved', url: 'f6-s.pdf' }], 'incision': [{ name: 'Incision B6', url: 'ia-b6.pdf' }] }
@@ -1021,7 +1319,7 @@
         let currentPortfolioBlock = null;
 
         // ================================================================
-        // ===== File Status (Memorized / Reviewed) =====
+        // ===== User Key =====
         // ================================================================
         function getUserKey() {
             try {
@@ -1030,6 +1328,10 @@
             } catch (e) {}
             return 'guest';
         }
+
+        // ================================================================
+        // ===== File Status (Memorized / Reviewed) =====
+        // ================================================================
         function getFileStatusMap() {
             try {
                 const all = JSON.parse(localStorage.getItem('nova_file_status') || '{}');
@@ -1189,6 +1491,177 @@
         function audioToggleStatus(field) {
             if (!audioEl || !audioEl.src) return;
             toggleFileStatus(audioEl.src, field);
+        }
+
+        // ================================================================
+        // ===== Appointments / Multi-Countdown =====
+        // ================================================================
+        function getAppointments() {
+            try {
+                const all = JSON.parse(localStorage.getItem('nova_appointments') || '{}');
+                return all[getUserKey()] || [];
+            } catch (e) { return []; }
+        }
+        function saveAppointments(arr) {
+            let all = {};
+            try { all = JSON.parse(localStorage.getItem('nova_appointments') || '{}'); } catch (e) {}
+            all[getUserKey()] = arr;
+            localStorage.setItem('nova_appointments', JSON.stringify(all));
+        }
+        function addAppointment() {
+            const title = document.getElementById('apptTitle').value.trim();
+            const date = document.getElementById('apptDate').value;
+            const time = document.getElementById('apptTime').value;
+            if (!title || !date || !time) { alert('املأ العنوان والتاريخ والوقت'); return; }
+            const dt = new Date(date + 'T' + time + ':00').getTime();
+            if (isNaN(dt)) { alert('تاريخ غير صحيح'); return; }
+            const list = getAppointments();
+            list.push({ id: 'appt_' + Date.now() + '_' + Math.random().toString(36).slice(2,7), title, dateTime: dt });
+            list.sort((a,b) => a.dateTime - b.dateTime);
+            saveAppointments(list);
+            document.getElementById('apptTitle').value = '';
+            renderAppointments();
+            startAppointmentsCountdown();
+            updateDashExamCard();
+        }
+        function removeAppointment(id) {
+            const list = getAppointments().filter(a => a.id !== id);
+            saveAppointments(list);
+            renderAppointments();
+            startAppointmentsCountdown();
+            updateDashExamCard();
+        }
+        function renderAppointments() {
+            const list = getAppointments();
+            const ul = document.getElementById('apptList');
+            if (!ul) return;
+            if (list.length === 0) {
+                ul.innerHTML = '<li style="text-align:center; color:var(--beige-light); opacity:0.6; font-size:0.85rem; padding:1rem; font-family:var(--font-ui);">لا توجد مواعيد. أضف موعداً من الأعلى.</li>';
+                return;
+            }
+            const now = Date.now();
+            const nextAppt = list.find(a => a.dateTime > now);
+            const nearestId = nextAppt ? nextAppt.id : null;
+            ul.innerHTML = list.map(a => {
+                const d = new Date(a.dateTime);
+                const dateStr = d.toLocaleDateString('ar-EG', { year:'numeric', month:'long', day:'numeric' });
+                const timeStr = d.toLocaleTimeString('ar-EG', { hour:'2-digit', minute:'2-digit' });
+                const isPast = a.dateTime <= now;
+                const isNearest = a.id === nearestId;
+                const icon = isPast ? 'fa-check-circle' : (isNearest ? 'fa-bell' : 'fa-calendar-day');
+                const suffix = isNearest ? ' • التالي' : (isPast ? ' • انتهى' : '');
+                return `<li class="appt-item ${isPast ? 'past' : ''} ${isNearest ? 'nearest' : ''}">
+                    <i class="fa-solid ${icon} appt-item-icon"></i>
+                    <div class="appt-item-info">
+                        <div class="appt-item-title">${escapeHtml(a.title)}${suffix}</div>
+                        <div class="appt-item-time">${dateStr} — ${timeStr}</div>
+                    </div>
+                    <button class="appt-item-remove" onclick="removeAppointment('${a.id}')" title="حذف"><i class="fa-solid fa-trash"></i></button>
+                </li>`;
+            }).join('');
+        }
+        function startAppointmentsCountdown() {
+            if (window._apptInterval) clearInterval(window._apptInterval);
+            function tick() {
+                const list = getAppointments();
+                const now = Date.now();
+                const next = list.find(a => a.dateTime > now);
+                const cdDays = document.getElementById('cdDays');
+                const cdHours = document.getElementById('cdHours');
+                const cdMinutes = document.getElementById('cdMinutes');
+                const cdSeconds = document.getElementById('cdSeconds');
+                const label = document.getElementById('nextApptLabel');
+                if (!next) {
+                    if (cdDays) cdDays.innerText = '00';
+                    if (cdHours) cdHours.innerText = '00';
+                    if (cdMinutes) cdMinutes.innerText = '00';
+                    if (cdSeconds) cdSeconds.innerText = '00';
+                    if (label) label.innerText = list.length ? 'انتهت كل المواعيد' : 'لا توجد مواعيد — أضف موعداً';
+                    return;
+                }
+                const diff = next.dateTime - now;
+                const d = Math.floor(diff / 86400000);
+                const h = Math.floor((diff % 86400000) / 3600000);
+                const m = Math.floor((diff % 3600000) / 60000);
+                const s = Math.floor((diff % 60000) / 1000);
+                if (cdDays) cdDays.innerText = String(d).padStart(2,'0');
+                if (cdHours) cdHours.innerText = String(h).padStart(2,'0');
+                if (cdMinutes) cdMinutes.innerText = String(m).padStart(2,'0');
+                if (cdSeconds) cdSeconds.innerText = String(s).padStart(2,'0');
+                if (label) label.innerText = '⏳ الموعد القادم: ' + next.title;
+            }
+            tick();
+            window._apptInterval = setInterval(tick, 1000);
+        }
+        function updateDashExamCard() {
+            const el = document.getElementById('dashExamValue');
+            if (!el) return;
+            const list = getAppointments();
+            const now = Date.now();
+            const next = list.find(a => a.dateTime > now);
+            if (!next) { el.innerText = '—'; return; }
+            const diff = next.dateTime - now;
+            const days = Math.floor(diff / 86400000);
+            const hours = Math.floor((diff % 86400000) / 3600000);
+            if (days > 0) el.innerText = `بعد ${days} يوم`;
+            else if (hours > 0) el.innerText = `بعد ${hours} ساعة`;
+            else el.innerText = `بعد ${Math.floor(diff / 60000)} دقيقة`;
+        }
+
+        // ================================================================
+        // ===== Dashboard Tasks (User-driven) =====
+        // ================================================================
+        function loadDashTasks() {
+            try {
+                const all = JSON.parse(localStorage.getItem('nova_dash_tasks_v2') || '{}');
+                return all[getUserKey()] || [];
+            } catch (e) { return []; }
+        }
+        function saveDashTasks(tasks) {
+            let all = {};
+            try { all = JSON.parse(localStorage.getItem('nova_dash_tasks_v2') || '{}'); } catch (e) {}
+            all[getUserKey()] = tasks;
+            localStorage.setItem('nova_dash_tasks_v2', JSON.stringify(all));
+        }
+        function addDashTask() {
+            const input = document.getElementById('dashTaskInput');
+            const text = input.value.trim();
+            if (!text) return;
+            const tasks = loadDashTasks();
+            tasks.push({ id: 'dt_' + Date.now() + '_' + Math.random().toString(36).slice(2,7), text, done: false });
+            saveDashTasks(tasks);
+            input.value = '';
+            renderDashTasks();
+        }
+        function deleteDashTask(id) {
+            const tasks = loadDashTasks().filter(t => t.id !== id);
+            saveDashTasks(tasks);
+            renderDashTasks();
+        }
+        function toggleDashTask(id) {
+            const tasks = loadDashTasks();
+            const t = tasks.find(x => x.id === id);
+            if (!t) return;
+            t.done = !t.done;
+            saveDashTasks(tasks);
+            renderDashTasks();
+        }
+        function renderDashTasks() {
+            const wrap = document.getElementById('dashTaskList');
+            if (!wrap) return;
+            const tasks = loadDashTasks();
+            if (tasks.length === 0) {
+                wrap.innerHTML = '<div class="dash-empty-msg">لا توجد مهام. أضف مهمة من الأعلى.</div>';
+            } else {
+                wrap.innerHTML = tasks.map(t => `
+                    <div class="dash-task ${t.done ? 'done' : ''}" onclick="toggleDashTask('${t.id}')">
+                        <div class="dash-task-check"><i class="fa-solid fa-check"></i></div>
+                        <div class="dash-task-text">${escapeHtml(t.text)}</div>
+                        <button class="dash-task-delete" onclick="event.stopPropagation(); deleteDashTask('${t.id}')" title="حذف"><i class="fa-solid fa-xmark"></i></button>
+                    </div>`).join('');
+            }
+            const el = document.getElementById('dashTasksDone');
+            if (el) el.innerText = `${tasks.filter(t => t.done).length}/${tasks.length}`;
         }
 
         // ================================================================
@@ -1564,56 +2037,6 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
-        // ===== Countdown =====
-        let countdownInterval;
-        function startCountdown(targetDate) {
-            if (countdownInterval) clearInterval(countdownInterval);
-            countdownInterval = setInterval(() => {
-                const distance = targetDate - Date.now();
-                if (distance < 0) {
-                    ['cdDays','cdHours','cdMinutes','cdSeconds'].forEach(id => { const e = document.getElementById(id); if (e) e.innerText='00'; });
-                    clearInterval(countdownInterval);
-                    updateDashExamCard();
-                    return;
-                }
-                const d = document.getElementById('cdDays'); if (d) d.innerText = String(Math.floor(distance/(1000*60*60*24))).padStart(2,'0');
-                const h = document.getElementById('cdHours'); if (h) h.innerText = String(Math.floor((distance%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
-                const m = document.getElementById('cdMinutes'); if (m) m.innerText = String(Math.floor((distance%(1000*60*60))/(1000*60))).padStart(2,'0');
-                const s = document.getElementById('cdSeconds'); if (s) s.innerText = String(Math.floor((distance%(1000*60))/1000)).padStart(2,'0');
-            }, 1000);
-        }
-        function setExamDate() {
-            const val = document.getElementById('examDateInput').value;
-            if (!val) return;
-            localStorage.setItem('nova_exam_date', val);
-            startCountdown(new Date(val+'T00:00:00').getTime());
-            updateDashExamCard();
-        }
-        function loadExamDate() {
-            const saved = localStorage.getItem('nova_exam_date');
-            const el = document.getElementById('examDateInput');
-            if (saved) {
-                if (el) el.value = saved;
-                startCountdown(new Date(saved+'T00:00:00').getTime());
-            } else {
-                const d = new Date(); d.setDate(d.getDate()+30);
-                const iso = d.toISOString().split('T')[0];
-                if (el) el.value = iso;
-                localStorage.setItem('nova_exam_date', iso);
-                startCountdown(d.getTime());
-            }
-            updateDashExamCard();
-        }
-        function updateDashExamCard() {
-            const el = document.getElementById('dashExamValue');
-            if (!el) return;
-            const saved = localStorage.getItem('nova_exam_date');
-            if (!saved) { el.innerText = '—'; return; }
-            const diff = new Date(saved + 'T00:00:00').getTime() - Date.now();
-            if (diff <= 0) { el.innerText = 'انتهى'; return; }
-            el.innerText = `بعد ${Math.ceil(diff / 86400000)} يوم`;
-        }
-
         // ===== To-Do =====
         function loadTodos() {
             const todos = JSON.parse(localStorage.getItem('nova_todos') || '[]');
@@ -1651,47 +2074,13 @@
             loadTodos();
         }
 
-        // ===== Dashboard Tasks & Activity =====
-        const DASH_DEFAULT_TASKS = [
-            { id: 'dt1', text: 'مراجعة Anatomy Lecture 4 — محاضرة التشريح الرابعة', tag: 'Anatomy', done: false },
-            { id: 'dt2', text: 'إكمال B3 Quiz — اختبار B3', tag: 'Quiz', done: false },
-            { id: 'dt3', text: 'مشاهدة Histology Lecture 2 — محاضرة الهستولوجي الثانية', tag: 'Histology', done: false }
-        ];
+        // ===== Dashboard Activity =====
         const DASH_ACTIVITY = [
-            { icon: 'fa-book-open', text: 'فتحت Anatomy — Lecture 4', sub: 'Block B3 · محاضرة تشريح', time: 'منذ 20 دقيقة' },
-            { icon: 'fa-circle-check', text: 'أكملت B3 Quiz — الجزء الأول', sub: 'Anatomy · اختبار', time: 'منذ ساعة' },
-            { icon: 'fa-file-pdf', text: 'حمّلت ملخص Biochemistry B2', sub: 'From Doctor · PDF', time: 'أمس 21:40' },
-            { icon: 'fa-microscope', text: 'شاهدت Histology Lecture 1', sub: 'Block B3 · محاضرة', time: 'أمس 18:05' }
+            { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
+            { icon: 'fa-book-open', text: 'تصفح المواد الأساسية', sub: 'Core Subjects', time: '' },
+            { icon: 'fa-file-pdf', text: 'افتح أي ملف لتعليمه كـ ذاكرة أو مراجعة', sub: 'Data · Doctor · Past Exams', time: '' },
+            { icon: 'fa-bell', text: 'أضف مواعيدك لمتابعة العد التنازلي', sub: 'المواعيد', time: '' }
         ];
-        function loadDashTasks() {
-            try {
-                const raw = localStorage.getItem('nova_dash_tasks');
-                if (raw) { const p = JSON.parse(raw); if (Array.isArray(p) && p.length) return p; }
-            } catch (e) {}
-            return DASH_DEFAULT_TASKS.map(t => ({ ...t }));
-        }
-        function saveDashTasks(tasks) { localStorage.setItem('nova_dash_tasks', JSON.stringify(tasks)); }
-        function toggleDashTask(id) {
-            const tasks = loadDashTasks();
-            const t = tasks.find(x => x.id === id);
-            if (!t) return;
-            t.done = !t.done;
-            saveDashTasks(tasks);
-            renderDashTasks();
-        }
-        function renderDashTasks() {
-            const wrap = document.getElementById('dashTaskList');
-            if (!wrap) return;
-            const tasks = loadDashTasks();
-            wrap.innerHTML = tasks.map(t => `
-                <div class="dash-task ${t.done ? 'done' : ''}" onclick="toggleDashTask('${t.id}')">
-                    <div class="dash-task-check"><i class="fa-solid fa-check"></i></div>
-                    <div class="dash-task-text">${t.text}</div>
-                    <span class="dash-task-tag">${t.tag}</span>
-                </div>`).join('');
-            const el = document.getElementById('dashTasksDone');
-            if (el) el.innerText = `${tasks.filter(t => t.done).length}/${tasks.length}`;
-        }
         function renderDashActivity() {
             const wrap = document.getElementById('dashActivityList');
             if (!wrap) return;
@@ -1715,6 +2104,8 @@
             renderDashTasks();
             renderDashActivity();
             renderContinueCard();
+            renderAppointments();
+            startAppointmentsCountdown();
             updateDashboardStats();
             updateDashExamCard();
         }
@@ -1936,7 +2327,7 @@
             }, 300);
         }
 
-        // ===== Portfolio =====
+        // ===== Portfolio (Enhanced) =====
         function renderPortfolioContent(blockName, content) {
             const data = portfolioFiles[blockName] || {};
             const emptyFile = data['general_empty'] || null;
@@ -1944,42 +2335,155 @@
             const unsolvedFiles = data['formative_unsolved'] || [];
             const solvedFiles = data['formative_solved'] || [];
             const incisionFiles = data['incision'] || [];
-            function renderSingleFile(file) {
-                if (file) return `<div style="display:flex; align-items:center; gap:10px; margin-top:5px; flex-wrap:wrap;">
-                    <a href="${file.url}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${file.name}</a>
-                    <a href="${file.url}" download="${file.name}" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a>
+
+            const totalFiles = (emptyFile ? 1 : 0) + (filledFile ? 1 : 0)
+                              + unsolvedFiles.length + solvedFiles.length + incisionFiles.length;
+
+            function renderTemplateCard(file, label, icon) {
+                if (!file) {
+                    return `<div class="pf-template-card" style="opacity:0.65;">
+                        <div class="pf-template-icon"><i class="fa-solid ${icon}"></i></div>
+                        <div class="pf-template-info">
+                            <div class="pf-template-label">${label}</div>
+                            <div class="pf-template-name" style="opacity:0.55;">غير متوفر</div>
+                        </div>
+                    </div>`;
+                }
+                return `<div class="pf-template-card">
+                    <div class="pf-template-icon"><i class="fa-solid ${icon}"></i></div>
+                    <div class="pf-template-info">
+                        <div class="pf-template-label">${label}</div>
+                        <div class="pf-template-name">${escapeHtml(file.name)}</div>
+                        <div class="pf-template-actions">
+                            <a href="${file.url}" target="_blank" class="pf-action-btn"><i class="fa-regular fa-eye"></i> فتح</a>
+                            <a href="${file.url}" download="${file.name}" class="pf-action-btn"><i class="fa-solid fa-download"></i> تنزيل</a>
+                        </div>
+                    </div>
                 </div>`;
-                return `<span class="no-files-msg">لا يوجد ملف مرفوع</span>`;
             }
+
             function renderFileList(files) {
-                if (files.length === 0) return '<li class="no-files-msg">لا توجد ملفات</li>';
-                return files.map((f) => `<li style="display:flex; justify-content:space-between; padding:0.2rem 0; border-bottom:1px solid var(--border-gold); flex-wrap:wrap; gap:5px;">
-                    <a href="${f.url}" target="_blank" style="color:var(--gold-primary);"><i class="fa-solid fa-file-pdf"></i> ${f.name}</a>
-                    <span><a href="${f.url}" target="_blank" style="margin-left:8px; color:var(--gold-primary);"><i class="fa-regular fa-eye"></i> فتح</a>
-                    <a href="${f.url}" download="${f.name}" style="color:var(--gold-primary);"><i class="fa-solid fa-download"></i> تنزيل</a></span>
-                </li>`).join('');
+                if (!files.length) {
+                    return `<div class="pf-empty"><i class="fa-regular fa-folder-open"></i>لا توجد ملفات</div>`;
+                }
+                return `<ul class="pf-file-list">${files.map(f => `
+                    <li class="pf-file-item">
+                        <span class="pf-file-icon"><i class="fa-solid fa-file-pdf"></i></span>
+                        <span class="pf-file-name" title="${escapeHtml(f.name)}">${escapeHtml(f.name)}</span>
+                        <span class="pf-file-actions">
+                            <a href="${f.url}" target="_blank" class="pf-action-btn"><i class="fa-regular fa-eye"></i></a>
+                            <a href="${f.url}" download="${f.name}" class="pf-action-btn"><i class="fa-solid fa-download"></i></a>
+                        </span>
+                    </li>
+                `).join('')}</ul>`;
             }
+
+            const blockSubs = {
+                'B1': 'Introduction To Medicine',
+                'B2': 'Man & Environment',
+                'B3': 'Nutrition & Metabolism',
+                'B4': 'Growth & Development',
+                'B5': 'Principles of Diseases',
+                'B6': 'Urinary System'
+            };
+            const blockSub = blockSubs[blockName] || 'Portfolio';
+
             let html = '';
-            html += `<div class="block-card" style="margin-bottom:1.5rem;"><h4><i class="fa-regular fa-file-pdf"></i> شكل البورتفوليو</h4>
-                <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                    <div style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem;"><h5>📄 فاضي</h5>${renderSingleFile(emptyFile)}</div>
-                    <div style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem;"><h5>📄 مليان</h5>${renderSingleFile(filledFile)}</div>
-                </div></div>`;
-            html += `<div class="block-card" style="margin-bottom:1.5rem;"><h4><i class="fa-solid fa-scissors"></i> اسئلة Incision</h4>
-                <div style="margin-top:0.8rem;"><ul style="list-style:none; padding:0;">${renderFileList(incisionFiles)}</ul></div></div>`;
-            html += `<div class="block-card"><h4><i class="fa-regular fa-file-lines"></i> اسئلة Formative</h4>
-                <div style="display:flex; gap:20px; flex-wrap:wrap; margin-top:0.8rem;">
-                    <div style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem;"><h5>📄 بدون حل</h5><ul style="list-style:none; padding:0;">${renderFileList(unsolvedFiles)}</ul></div>
-                    <div style="flex:1; min-width:200px; border:1px solid var(--border-gold); border-radius:14px; padding:1rem;"><h5>✅ محلول</h5><ul style="list-style:none; padding:0;">${renderFileList(solvedFiles)}</ul></div>
-                </div></div>`;
+
+            html += `
+                <div class="pf-hero">
+                    <div class="pf-hero-inner">
+                        <div class="pf-hero-left">
+                            <div class="pf-hero-badge">${blockName}</div>
+                            <div class="pf-hero-text">
+                                <h2>Portfolio ${blockName}</h2>
+                                <p>${blockSub} · ملفات البورتفوليو الكاملة</p>
+                            </div>
+                        </div>
+                        <div class="pf-hero-stats">
+                            <span class="pf-stat-chip"><i class="fa-solid fa-file-pdf"></i> ${totalFiles} ملف</span>
+                            <span class="pf-stat-chip"><i class="fa-solid fa-scissors"></i> ${incisionFiles.length} Incision</span>
+                            <span class="pf-stat-chip"><i class="fa-regular fa-file-lines"></i> ${unsolvedFiles.length + solvedFiles.length} Formative</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            html += `<div class="pf-body">`;
+
+            html += `
+                <div class="pf-section">
+                    <div class="pf-section-head">
+                        <div class="pf-section-icon"><i class="fa-regular fa-file-pdf"></i></div>
+                        <div class="pf-section-title-wrap">
+                            <div class="pf-section-title">شكل البورتفوليو</div>
+                            <div class="pf-section-sub">Portfolio Templates — فاضي ومليان</div>
+                        </div>
+                        <span class="pf-section-count">${(emptyFile ? 1 : 0) + (filledFile ? 1 : 0)} ملف</span>
+                    </div>
+                    <div class="pf-templates-grid">
+                        ${renderTemplateCard(emptyFile, 'EMPTY TEMPLATE', 'fa-file')}
+                        ${renderTemplateCard(filledFile, 'FILLED TEMPLATE', 'fa-file-circle-check')}
+                    </div>
+                </div>
+            `;
+
+            html += `
+                <div class="pf-section">
+                    <div class="pf-section-head">
+                        <div class="pf-section-icon"><i class="fa-solid fa-scissors"></i></div>
+                        <div class="pf-section-title-wrap">
+                            <div class="pf-section-title">اسئلة Incision</div>
+                            <div class="pf-section-sub">Incision Questions</div>
+                        </div>
+                        <span class="pf-section-count">${incisionFiles.length} ملف</span>
+                    </div>
+                    ${renderFileList(incisionFiles)}
+                </div>
+            `;
+
+            html += `
+                <div class="pf-section">
+                    <div class="pf-section-head">
+                        <div class="pf-section-icon"><i class="fa-regular fa-file-lines"></i></div>
+                        <div class="pf-section-title-wrap">
+                            <div class="pf-section-title">اسئلة Formative</div>
+                            <div class="pf-section-sub">Formative Questions — بدون حل / محلول</div>
+                        </div>
+                        <span class="pf-section-count">${unsolvedFiles.length + solvedFiles.length} ملف</span>
+                    </div>
+                    <div class="pf-split-grid">
+                        <div class="pf-split-col">
+                            <div class="pf-split-head unsolved">
+                                <i class="fa-regular fa-circle-question"></i>
+                                <span>بدون حل</span>
+                                <span class="pf-split-count">${unsolvedFiles.length}</span>
+                            </div>
+                            ${renderFileList(unsolvedFiles)}
+                        </div>
+                        <div class="pf-split-col">
+                            <div class="pf-split-head solved">
+                                <i class="fa-regular fa-circle-check"></i>
+                                <span>محلول</span>
+                                <span class="pf-split-count">${solvedFiles.length}</span>
+                            </div>
+                            ${renderFileList(solvedFiles)}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            html += `</div>`;
+
             content.innerHTML = html;
         }
         function openPortfolioBlock(blockName) {
             currentPortfolioBlock = blockName;
             const modal = document.getElementById('portfolioModal');
-            document.getElementById('portfolioTitle').innerText = `تفاصيل Portfolio - ${blockName}`;
             renderPortfolioContent(blockName, document.getElementById('portfolioContent'));
             modal.style.display = 'flex';
+            const scroller = document.getElementById('portfolioContent');
+            if (scroller) scroller.scrollTop = 0;
         }
         function refreshPortfolio() {
             if (!currentPortfolioBlock) return;
@@ -2215,10 +2719,10 @@
             renderCoreSubjects();
             updateStats();
             initCarousel();
-            loadExamDate();
             loadTodos();
             renderDashboard();
             renderSavedSection();
+            startAppointmentsCountdown();
         };
 
         console.log("NOVA Portal loaded. Developer: admin/admin123");
