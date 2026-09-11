@@ -296,7 +296,7 @@
         .block-card h4 { color: var(--gold-primary); margin-bottom: 0.8rem; font-size: 1.2rem; }
         .block-card p { color: var(--beige-light); font-size: 0.9rem; line-height: 1.6; }
 
-        /* ===== Colored file sections (Lectures / Prelabs / Records / Doctor / Past Exams) ===== */
+        /* ===== Colored file sections ===== */
         .block-card.file-section-lectures { border-color: rgba(212,175,55,0.75); border-right: 4px solid #D4AF37; }
         .block-card.file-section-prelabs  { border-color: rgba(52,152,219,0.75); border-right: 4px solid #3498DB; }
         .block-card.file-section-records  { border-color: rgba(46,204,113,0.75); border-right: 4px solid #2ECC71; }
@@ -566,7 +566,6 @@
         .pf-template-card::before { content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--gold-primary), var(--gold-secondary)); opacity: 0.65; }
         .pf-template-card:hover { transform: translateY(-3px); box-shadow: 0 14px 30px rgba(212,175,55,0.18); }
 
-        /* Empty Template - Orange */
         .pf-template-card.empty-template { border-color: rgba(230,126,34,0.55); background: rgba(230,126,34,0.06); }
         [data-theme="light"] .pf-template-card.empty-template { background: rgba(230,126,34,0.08); }
         .pf-template-card.empty-template::before { background: linear-gradient(180deg, #E67E22, #D35400); opacity: 0.9; }
@@ -575,7 +574,6 @@
         .pf-template-card.empty-template .pf-template-label { color: #E67E22; }
         .pf-template-card.empty-template .pf-template-name { color: #E67E22; }
 
-        /* Filled Template - Green */
         .pf-template-card.filled-template { border-color: rgba(46,204,113,0.55); background: rgba(46,204,113,0.06); }
         [data-theme="light"] .pf-template-card.filled-template { background: rgba(46,204,113,0.08); }
         .pf-template-card.filled-template::before { background: linear-gradient(180deg, #2ECC71, #27AE60); opacity: 0.9; }
@@ -613,40 +611,15 @@
         .pf-split-head i { font-size: 0.92rem; }
         .pf-split-head .pf-split-count { margin-right: auto; font-size: 0.68rem; padding: 0.18rem 0.6rem; border-radius: 20px; background: rgba(255,255,255,0.06); border: 1px solid var(--border-gold); color: var(--beige-light); }
 
-        /* ===== Split Column Colored Borders (NEW) ===== */
-        .pf-split-col.unsolved-col {
-            border: 1.5px solid rgba(230,126,34,0.65);
-            background: rgba(230,126,34,0.05);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .pf-split-col.unsolved-col:hover {
-            border-color: #E67E22;
-            box-shadow: 0 6px 20px rgba(230,126,34,0.18);
-        }
-        [data-theme="light"] .pf-split-col.unsolved-col {
-            background: rgba(230,126,34,0.07);
-            border-color: rgba(230,126,34,0.7);
-        }
-        .pf-split-col.unsolved-col .pf-split-head {
-            border-bottom-color: rgba(230,126,34,0.4);
-        }
+        .pf-split-col.unsolved-col { border: 1.5px solid rgba(230,126,34,0.65); background: rgba(230,126,34,0.05); transition: border-color 0.3s, box-shadow 0.3s; }
+        .pf-split-col.unsolved-col:hover { border-color: #E67E22; box-shadow: 0 6px 20px rgba(230,126,34,0.18); }
+        [data-theme="light"] .pf-split-col.unsolved-col { background: rgba(230,126,34,0.07); border-color: rgba(230,126,34,0.7); }
+        .pf-split-col.unsolved-col .pf-split-head { border-bottom-color: rgba(230,126,34,0.4); }
 
-        .pf-split-col.solved-col {
-            border: 1.5px solid rgba(46,204,113,0.65);
-            background: rgba(46,204,113,0.05);
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .pf-split-col.solved-col:hover {
-            border-color: #2ECC71;
-            box-shadow: 0 6px 20px rgba(46,204,113,0.18);
-        }
-        [data-theme="light"] .pf-split-col.solved-col {
-            background: rgba(46,204,113,0.07);
-            border-color: rgba(46,204,113,0.7);
-        }
-        .pf-split-col.solved-col .pf-split-head {
-            border-bottom-color: rgba(46,204,113,0.4);
-        }
+        .pf-split-col.solved-col { border: 1.5px solid rgba(46,204,113,0.65); background: rgba(46,204,113,0.05); transition: border-color 0.3s, box-shadow 0.3s; }
+        .pf-split-col.solved-col:hover { border-color: #2ECC71; box-shadow: 0 6px 20px rgba(46,204,113,0.18); }
+        [data-theme="light"] .pf-split-col.solved-col { background: rgba(46,204,113,0.07); border-color: rgba(46,204,113,0.7); }
+        .pf-split-col.solved-col .pf-split-head { border-bottom-color: rgba(46,204,113,0.4); }
 
         .pf-empty { text-align: center; padding: 1.3rem 0.5rem; color: var(--beige-light); opacity: 0.6; font-size: 0.8rem; font-family: var(--font-ui); }
         .pf-empty i { display: block; font-size: 1.6rem; color: var(--gold-primary); opacity: 0.5; margin-bottom: 0.5rem; }
@@ -765,7 +738,6 @@
 
     <!-- ===== Main Content ===== -->
     <div class="container">
-        <!-- ✅ الترتيب الجديد: الرئيسية قبل لوحة التحكم -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
             <button class="tab-btn" onclick="showSection('dashboard', this)"><i class="fa-solid fa-gauge-high"></i> لوحة التحكم</button>
@@ -778,7 +750,7 @@
 
         <div class="loader" id="globalLoader"></div>
 
-        <!-- ===================== HOME (default active) ===================== -->
+        <!-- ===================== HOME ===================== -->
         <div class="section-content active" id="homeSection">
             <div class="carousel-container" id="mainCarousel">
                 <div class="carousel-slides" id="carouselSlides">
@@ -938,7 +910,7 @@
             </div>
         </div>
 
-        <!-- ===================== SAVED RESOURCES ===================== -->
+        <!-- ===================== SAVED ===================== -->
         <div class="section-content" id="savedSection">
             <h2 class="section-title">
                 <span><i class="fa-solid fa-star"></i> My Saved Resources — المحفوظات</span>
@@ -952,7 +924,6 @@
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
             <div class="other-tools">
 
-                <!-- 1) المواعيد والعد التنازلي -->
                 <div class="countdown-section">
                     <h3><i class="fa-solid fa-hourglass-half"></i> المواعيد والعد التنازلي</h3>
                     <div class="countdown-timer">
@@ -971,7 +942,6 @@
                     <ul class="appt-list" id="apptList"></ul>
                 </div>
 
-                <!-- 2) مؤقت المذاكرة Pomodoro -->
                 <div class="study-timer-section">
                     <h3><i class="fa-solid fa-stopwatch"></i> مؤقت المذاكرة (Pomodoro)</h3>
                     <p class="timer-cycle-info">🎯 <b>50 دقيقة تركيز</b> + ☕ <b>10 دقايق راحة</b> · 🛋️ راحة طويلة <b>30 دقيقة</b> بعد كل <b>4 جلسات</b></p>
@@ -1002,7 +972,6 @@
                     </div>
                 </div>
 
-                <!-- 3) حاسبة التقدير التراكمي (نسبة مئوية) -->
                 <div class="gpa-calculator">
                     <h3><i class="fa-solid fa-calculator"></i> حاسبة التقدير التراكمي</h3>
                     <p style="color: var(--beige-light); margin-bottom: 1rem; font-size: 0.9rem;">اكتب <b style="color:var(--gold-primary)">النسبة المئوية</b> اللي جبتها في كل مادة (من 0% لـ 100%)، والموقع هيحسبلك النسبة الكلية والتقدير بناءً على أوزان الدرجات.</p>
@@ -1139,13 +1108,33 @@
         </div>
     </div>
 
+    <!-- ============================================================= -->
+    <!-- Firebase Compat SDKs (لازم تكون قبل السكربت الرئيسي) -->
+    <!-- ============================================================= -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics-compat.js"></script>
+
     <script>
         // ================================================================
-        // ===== Constants =====
+        // ===== Firebase Config & Init =====
         // ================================================================
-        const JSONBIN_BIN_ID = "6aa2a174ffd5d16053f62171";
-        const JSONBIN_API_KEY = "$2a$10$jpxQck8gDyiH2r55BYVM.et8Nb6vtwxbZhWQKKCAoqVh2kucFEuKq";
-        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
+        const firebaseConfig = {
+            apiKey: "AIzaSyBTi67uNI66_Ijy4BcAv2zET0A_EJ_mgJo",
+            authDomain: "nova-155be.firebaseapp.com",
+            projectId: "nova-155be",
+            storageBucket: "nova-155be.firebasestorage.app",
+            messagingSenderId: "775058062118",
+            appId: "1:775058062118:web:3c5912192128f3ee431fe7",
+            measurementId: "G-TKGQ3L2EQ7"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        try { firebase.analytics(); } catch (e) { /* analytics اختياري */ }
+
+        // ================================================================
+        // ===== Developer Account =====
+        // ================================================================
         const DEVELOPER_ID = "admin";
         const DEVELOPER_PASSWORD = "admin123";
 
@@ -1157,6 +1146,37 @@
         function enc(s) { return encodeURIComponent(String(s == null ? '' : s)); }
         function dec(s) { return decodeURIComponent(String(s == null ? '' : s)); }
         function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+        // ================================================================
+        // ===== Users: Firestore =====
+        // ================================================================
+        async function loadUsers() {
+            try {
+                const snap = await db.collection('users').get();
+                const users = {};
+                snap.forEach(doc => { users[doc.id] = doc.data(); });
+                return { users };
+            } catch (err) {
+                console.error('loadUsers error:', err);
+                return { users: {} };
+            }
+        }
+
+        async function saveUsers(data) {
+            try {
+                const users = data.users || {};
+                const batch = db.batch();
+                Object.keys(users).forEach(studentId => {
+                    const ref = db.collection('users').doc(studentId);
+                    batch.set(ref, users[studentId], { merge: true });
+                });
+                await batch.commit();
+                return true;
+            } catch (err) {
+                console.error('saveUsers error:', err);
+                return false;
+            }
+        }
 
         // ================================================================
         // ===== Subject Files Data =====
@@ -1997,7 +2017,7 @@
         }
 
         // ================================================================
-        // ===== GPA Calculator (Percentage-based, Weighted) =====
+        // ===== GPA Calculator =====
         // ================================================================
         const GPA_ENTRIES = [
             { id: 'gpaResearch', name: 'Research', max: 30 },
@@ -2296,7 +2316,6 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         }
 
-        // ✅ أضفنا باراميتر sectionClass لتلوين الإطار حسب النوع
         function renderSubjectFileSection(subject, bBlock, type, subType, label, icon, sectionClass) {
             let files = [];
             try {
@@ -2600,9 +2619,6 @@
             renderPortfolioContent(currentPortfolioBlock, document.getElementById('portfolioContent'));
         }
 
-        // ================================================================
-        // ===== Portfolio → Open inside NOVA Viewer =====
-        // ================================================================
         function collectPortfolioFiles(blockName) {
             const data = portfolioFiles[blockName] || {};
             const out = [];
@@ -2626,22 +2642,8 @@
         }
 
         // ================================================================
-        // ===== Auth =====
+        // ===== Auth (Firebase-ready) =====
         // ================================================================
-        async function loadUsers() {
-            try {
-                const res = await fetch(JSONBIN_URL + "/latest", { headers: { "X-Master-Key": JSONBIN_API_KEY } });
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const json = await res.json();
-                return json.record || { users: {} };
-            } catch (err) { console.error(err); return { users: {} }; }
-        }
-        async function saveUsers(data) {
-            try {
-                const res = await fetch(JSONBIN_URL, { method: "PUT", headers: { "Content-Type": "application/json", "X-Master-Key": JSONBIN_API_KEY }, body: JSON.stringify(data) });
-                return res.ok;
-            } catch (err) { console.error(err); return false; }
-        }
         async function hashPassword(password) {
             const data = new TextEncoder().encode(password + "::nova-salt-2025");
             const buf = await crypto.subtle.digest("SHA-256", data);
@@ -2682,19 +2684,26 @@
             alertBox.className = "alert-msg";
             btn.disabled = true;
             try {
-                const data = await loadUsers();
-                data.users = data.users || {};
-                for (const key in data.users) {
-                    const u = data.users[key];
-                    if (u.studentId === studentId) { btn.disabled = false; return showErr("هذا الـ ID مسجل بالفعل."); }
-                    if (u.nationalId === nationalId) { btn.disabled = false; return showErr("هذا الرقم القومي مسجل بالفعل."); }
-                    if (normalizePhone(u.phone) === normalizePhone(phone)) { btn.disabled = false; return showErr("رقم الهاتف مسجل بالفعل."); }
-                }
+                // فحص التكرار من Firestore
+                const existing = await db.collection('users').doc(studentId).get();
+                if (existing.exists) { btn.disabled = false; return showErr("هذا الـ ID مسجل بالفعل."); }
+
+                const snap = await db.collection('users').get();
+                let duplicate = null;
+                snap.forEach(doc => {
+                    const u = doc.data();
+                    if (u.nationalId === nationalId) duplicate = "هذا الرقم القومي مسجل بالفعل.";
+                    else if (normalizePhone(u.phone) === normalizePhone(phone)) duplicate = "رقم الهاتف مسجل بالفعل.";
+                });
+                if (duplicate) { btn.disabled = false; return showErr(duplicate); }
+
                 const passwordHash = await hashPassword(password);
-                data.users[studentId] = { name, studentId, nationalId, phone, passwordHash };
-                const ok = await saveUsers(data);
+                await db.collection('users').doc(studentId).set({
+                    name, studentId, nationalId, phone, passwordHash,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
                 btn.disabled = false;
-                if (!ok) return showErr("فشل الحفظ.");
                 showErr("✅ تم إنشاء الحساب! جارٍ الدخول...", true);
                 localStorage.setItem("nova_active_user", JSON.stringify({ name, studentId, isDeveloper: false }));
                 setTimeout(() => showMainApp(name), 800);
@@ -2718,12 +2727,16 @@
             alertBox.className = "alert-msg";
             btn.disabled = true;
             try {
-                const data = await loadUsers();
-                const users = data.users || {};
+                // 1) جرّب الـ studentId كـ document ID
                 let found = null;
-                for (const key in users) {
-                    const u = users[key];
-                    if (u.studentId === loginId || u.nationalId === loginId) { found = u; break; }
+                const docRef = db.collection('users').doc(loginId);
+                const docSnap = await docRef.get();
+                if (docSnap.exists) {
+                    found = docSnap.data();
+                } else {
+                    // 2) لو مدخلش ID، جرّب nationalId
+                    const snap = await db.collection('users').where('nationalId', '==', loginId).limit(1).get();
+                    if (!snap.empty) found = snap.docs[0].data();
                 }
                 btn.disabled = false;
                 if (!found) return showErr("الحساب غير موجود.");
@@ -2757,9 +2770,9 @@
             if (!sid || !phone) return forgotShow("املأ الحقلين.");
             forgotShow("⏳ جارٍ التحقق...");
             try {
-                const data = await loadUsers();
-                const user = (data.users || {})[sid];
-                if (!user) return forgotShow("الـ ID غير مسجل.");
+                const docSnap = await db.collection('users').doc(sid).get();
+                if (!docSnap.exists) return forgotShow("الـ ID غير مسجل.");
+                const user = docSnap.data();
                 if (normalizePhone(user.phone) !== normalizePhone(phone)) return forgotShow("رقم الهاتف غير مطابق.");
                 forgotStudentId = sid;
                 document.getElementById("forgotStep1").style.display = "none";
@@ -2773,12 +2786,8 @@
             if (newPass.length < 6) return forgotShow("كلمة السر 6 أحرف على الأقل.");
             forgotShow("⏳ جارٍ الحفظ...");
             try {
-                const data = await loadUsers();
-                const user = (data.users || {})[forgotStudentId];
-                if (!user) return forgotShow("الحساب غير موجود.");
-                user.passwordHash = await hashPassword(newPass);
-                const ok = await saveUsers(data);
-                if (!ok) return forgotShow("فشل الحفظ.");
+                const passwordHash = await hashPassword(newPass);
+                await db.collection('users').doc(forgotStudentId).update({ passwordHash });
                 forgotShow("✅ تم تحديث كلمة السر.", true);
                 setTimeout(() => { closeForgot(); switchAuthMode("login"); }, 1500);
             } catch (err) { console.error(err); forgotShow("خطأ في الاتصال."); }
@@ -2838,7 +2847,6 @@
         function showMainApp(userName) {
             document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
             document.getElementById("authOverlay").style.display = "none";
-            // ✅ نبدأ من الرئيسية (أول تابة)
             showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             renderDashboard();
             startSessionTimer();
@@ -2897,7 +2905,7 @@
         });
 
         // ================================================================
-        // ===== Global Interceptor: open ALL local files inside NOVA =====
+        // ===== Global Interceptor =====
         // ================================================================
         document.addEventListener('click', function(e) {
             if (e.defaultPrevented) return;
@@ -2943,7 +2951,7 @@
             renderTimer();
         };
 
-        console.log("NOVA Portal loaded. Developer: admin/admin123");
+        console.log("NOVA Portal loaded. Developer: admin/admin123 · Firestore backend");
     </script>
 </body>
 </html>
