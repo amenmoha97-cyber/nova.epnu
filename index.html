@@ -725,7 +725,8 @@
                 <div class="input-group"><label>الاسم الكامل (الرباعي)</label><input type="text" id="signupName" required placeholder="أدخل اسمك رباعياً"></div>
                 <div class="input-group"><label>الـ ID الجامعي</label><input type="text" id="signupStudentId" required placeholder="مثال: 202400123"></div>
                 <div class="input-group"><label>الرقم القومي (14 رقم)</label><input type="text" id="signupNationalId" maxlength="14" required placeholder="أدخل الـ 14 رقم" pattern="\d{14}"></div>
-                <div class="input-group"><label>رقم الهاتف المحمول</label><input type="tel" id="signupPhone" required placeholder="مثال: 01098919599"></div>
+                <div class="input-group"><label>البريد الإلكتروني</label><input type="email" id="signupEmail" required placeholder="example@gmail.com"></div>
+                <div class="input-group"><label>رقم الهاتف</label><input type="tel" id="signupPhone" required placeholder="مثال: 01098919599"></div>
                 <div class="input-group">
                     <label>كلمة السر</label>
                     <div class="password-wrapper">
@@ -1103,12 +1104,20 @@
         <div class="modal-content" style="max-width:520px;">
             <button class="close-btn" onclick="closeForgot()">إغلاق</button>
             <h2><i class="fa-solid fa-key"></i> استعادة كلمة السر</h2>
-            <div id="forgotStep1">
-                <p style="color:var(--beige-light); font-size:0.9rem; margin-bottom:1rem;">أدخل الـ ID الجامعي ورقم هاتفك المسجل.</p>
-                <div class="input-group"><label>الـ ID الجامعي</label><input type="text" id="forgotStudentId"></div>
-                <div class="input-group"><label>رقم الهاتف المسجل</label><input type="tel" id="forgotPhone"></div>
-                <button class="btn-gold" onclick="verifyForgotIdentity()">تحقق</button>
-            </div>
+          <div id="forgotStep1">
+    <p style="color:var(--beige-light); font-size:0.9rem; margin-bottom:1rem;">
+        أدخل البريد الإلكتروني لاستعادة كلمة السر.
+    </p>
+
+    <div class="input-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="forgotEmail" placeholder="example@gmail.com">
+    </div>
+
+    <button class="btn-gold" onclick="verifyForgotIdentity()">
+        متابعة
+    </button>
+</div>
             <div id="forgotStep2" style="display:none;">
                 <p style="color:var(--success-green); font-size:0.9rem; margin-bottom:1rem;">✅ تم التحقق. أدخل كلمة السر الجديدة.</p>
                 <div class="input-group">
@@ -1125,15 +1134,6 @@
     </div>
 
     <script>
-        // ================================================================
-        // ===== Constants =====
-        // ================================================================
-        const JSONBIN_BIN_ID = "6aa2a174ffd5d16053f62171";
-        const JSONBIN_API_KEY = "$2a$10$jpxQck8gDyiH2r55BYVM.et8Nb6vtwxbZhWQKKCAoqVh2kucFEuKq";
-        const JSONBIN_URL = "https://api.jsonbin.io/v3/b/" + JSONBIN_BIN_ID;
-        const DEVELOPER_ID = "admin";
-        const DEVELOPER_PASSWORD = "admin123";
-
         // ================================================================
         // ===== Helpers =====
         // ================================================================
@@ -1290,7 +1290,10 @@
         let currentPortfolioBlock = null;
 
         // ================================================================
-        // ===== User Key =====
+        // ===== User Key (مفتاح البيانات المحلية للمستخدم الحالي) =====
+        // ملاحظة: هذا ليس نظام حسابات، هو فقط مفتاح لتخزين بيانات
+        // الملفات/المواعيد/المهام محليًا لكل مستخدم داخل المتصفح.
+        // المصادقة نفسها تتم عبر Supabase فقط.
         // ================================================================
         function getUserKey() {
             try {
@@ -2607,27 +2610,8 @@
         }
 
         // ================================================================
-        // ===== Auth =====
+        // ===== Auth (Supabase فقط) =====
         // ================================================================
-        async function loadUsers() {
-            try {
-                const res = await fetch(JSONBIN_URL + "/latest", { headers: { "X-Master-Key": JSONBIN_API_KEY } });
-                if (!res.ok) throw new Error("HTTP " + res.status);
-                const json = await res.json();
-                return json.record || { users: {} };
-            } catch (err) { console.error(err); return { users: {} }; }
-        }
-        async function saveUsers(data) {
-            try {
-                const res = await fetch(JSONBIN_URL, { method: "PUT", headers: { "Content-Type": "application/json", "X-Master-Key": JSONBIN_API_KEY }, body: JSON.stringify(data) });
-                return res.ok;
-            } catch (err) { console.error(err); return false; }
-        }
-        async function hashPassword(password) {
-            const data = new TextEncoder().encode(password + "::nova-salt-2025");
-            const buf = await crypto.subtle.digest("SHA-256", data);
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
-        }
         function normalizePhone(p) { return String(p).replace(/[^\d]/g, "").replace(/^20/, "0").replace(/^0+/, "0"); }
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
@@ -2644,152 +2628,212 @@
             document.getElementById("signupAlert").style.display = "none";
         }
 
-document.getElementById("signupForm").addEventListener("submit", async function(e) {
-    e.preventDefault();
+        // ===== إنشاء حساب جديد =====
+        document.getElementById("signupForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
 
-    const name = document.getElementById("signupName").value.trim();
-    const studentId = document.getElementById("signupStudentId").value.trim();
-    const nationalId = document.getElementById("signupNationalId").value.trim();
-    const phone = document.getElementById("signupPhone").value.trim();
-    const password = document.getElementById("signupPassword").value;
+            const name = document.getElementById("signupName").value.trim();
+            const studentId = document.getElementById("signupStudentId").value.trim();
+            const email = document.getElementById("signupEmail").value.trim();
+            const nationalId = document.getElementById("signupNationalId").value.trim();
+            const phone = document.getElementById("signupPhone").value.trim();
+            const password = document.getElementById("signupPassword").value;
 
-    const alertBox = document.getElementById("signupAlert");
-    const btn = document.getElementById("signupSubmitBtn");
+            const alertBox = document.getElementById("signupAlert");
+            const btn = document.getElementById("signupSubmitBtn");
 
-    const showErr = (msg, ok = false) => {
-        alertBox.innerText = msg;
-        alertBox.className = "alert-msg" + (ok ? " success" : "");
-        alertBox.style.display = "block";
-    };
+            const showErr = (msg, ok = false) => {
+                alertBox.innerText = msg;
+                alertBox.className = "alert-msg" + (ok ? " success" : "");
+                alertBox.style.display = "block";
+            };
 
-    // ===== التحقق من البيانات =====
-
-    if (name.split(/\s+/).filter(Boolean).length < 4) {
-        return showErr("الاسم يجب أن يكون رباعياً.");
-    }
-
-    if (!/^\d{14}$/.test(nationalId)) {
-        return showErr("الرقم القومي يجب أن يكون 14 رقم.");
-    }
-
-    if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) {
-        return showErr("رقم الهاتف غير صحيح.");
-    }
-
-    if (password.length < 6) {
-        return showErr("كلمة السر 6 أحرف على الأقل.");
-    }
-
-    if (studentId === DEVELOPER_ID) {
-        return showErr("هذا الـ ID محجوز.");
-    }
-
-    showErr("⏳ جارٍ إنشاء الحساب...");
-
-    alertBox.className = "alert-msg";
-    btn.disabled = true;
-
-    try {
-
-        // ===== إنشاء Email داخلي =====
-        const authEmail = makeAuthEmail(studentId);
-
-        // ===== إنشاء الحساب في Supabase Auth =====
-        const { data: authData, error: authError } =
-            await supabaseClient.auth.signUp({
-                email: authEmail,
-                password: password
-            });
-
-        if (authError) {
-            console.error(authError);
-            btn.disabled = false;
-
-            if (authError.message?.toLowerCase().includes("already")) {
-                return showErr("هذا الـ ID مسجل بالفعل.");
+            // ===== التحقق من البيانات =====
+            if (name.split(/\s+/).filter(Boolean).length < 4) {
+                return showErr("الاسم يجب أن يكون رباعياً.");
             }
 
-            return showErr("فشل إنشاء الحساب: " + authError.message);
-        }
+            if (!/^\d{14}$/.test(nationalId)) {
+                return showErr("الرقم القومي يجب أن يكون 14 رقم.");
+            }
 
-        if (!authData.user) {
-            btn.disabled = false;
-            return showErr("فشل إنشاء الحساب.");
-        }
+            if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) {
+                return showErr("رقم الهاتف غير صحيح.");
+            }
 
-        // ===== حفظ بيانات المستخدم في profiles =====
-        const { error: profileError } = await supabaseClient
-            .from("profiles")
-            .insert({
-                id: authData.user.id,
-                full_name: name,
-                national_id: nationalId,
-                id_student: studentId,
-                phone: phone
-            });
+            if (password.length < 6) {
+                return showErr("كلمة السر 6 أحرف على الأقل.");
+            }
 
-        if (profileError) {
-            console.error(profileError);
+            showErr("⏳ جارٍ إنشاء الحساب...");
 
-            // لو حصل خطأ في إنشاء Profile
-            // نحاول تسجيل الخروج فقط
-            await supabaseClient.auth.signOut();
+            alertBox.className = "alert-msg";
+            btn.disabled = true;
 
-            btn.disabled = false;
-            return showErr("تم إنشاء الحساب لكن حدث خطأ في حفظ البيانات.");
-        }
+            try {
 
-        // ===== نجاح =====
+                // ===== إنشاء الحساب في Supabase Auth =====
+                const { data: authData, error: authError } =
+                    await supabaseClient.auth.signUp({
+                        email: email,
+                        password: password
+                    });
 
-        btn.disabled = false;
+                if (authError) {
+                    console.error(authError);
+                    btn.disabled = false;
 
-        showErr("✅ تم إنشاء الحساب بنجاح! جارٍ الدخول...", true);
+                    if (authError.message?.toLowerCase().includes("already")) {
+                        return showErr("هذا البريد الإلكتروني مسجل بالفعل.");
+                    }
 
-        setTimeout(() => {
-            showMainApp(name);
-        }, 800);
+                    return showErr("فشل إنشاء الحساب: " + authError.message);
+                }
 
-    } catch (err) {
+                if (!authData.user) {
+                    btn.disabled = false;
+                    return showErr("فشل إنشاء الحساب.");
+                }
 
-        console.error(err);
+                // ===== حفظ بيانات المستخدم في profiles =====
+                const { error: profileError } = await supabaseClient
+                    .from("profiles")
+                    .insert({
+                        id: authData.user.id,
+                        full_name: name,
+                        national_id: nationalId,
+                        id_student: studentId,
+                        phone: phone,
+                        email: email
+                    });
 
-        btn.disabled = false;
+                if (profileError) {
+                    console.error(profileError);
 
-        showErr("حدث خطأ في الاتصال بـ Supabase.");
-    }
-});
+                    // لو حصل خطأ في إنشاء Profile
+                    // نحاول تسجيل الخروج فقط
+                    await supabaseClient.auth.signOut();
 
+                    btn.disabled = false;
+                    return showErr("تم إنشاء الحساب لكن حدث خطأ في حفظ البيانات.");
+                }
+
+                // ===== نجاح =====
+                btn.disabled = false;
+
+                // تخزين مفتاح المستخدم الحالي للبيانات المحلية (ليس للمصادقة)
+                localStorage.setItem("nova_active_user", JSON.stringify({
+                    name: name,
+                    studentId: studentId,
+                    email: email,
+                    supabaseId: authData.user.id
+                }));
+
+                showErr("✅ تم إنشاء الحساب بنجاح! جارٍ الدخول...", true);
+
+                setTimeout(() => {
+                    showMainApp(name);
+                }, 800);
+
+            } catch (err) {
+
+                console.error(err);
+
+                btn.disabled = false;
+
+                showErr("حدث خطأ في الاتصال بـ Supabase.");
+            }
+        });
+
+        // ===== تسجيل الدخول =====
         document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
+
             const loginId = document.getElementById("loginId").value.trim();
             const password = document.getElementById("loginPassword").value;
             const alertBox = document.getElementById("loginAlert");
             const btn = document.getElementById("loginSubmitBtn");
-            const showErr = (msg) => { alertBox.innerText = msg; alertBox.className = "alert-msg"; alertBox.style.display = "block"; };
-            if (loginId === DEVELOPER_ID && password === DEVELOPER_PASSWORD) {
-                localStorage.setItem("nova_active_user", JSON.stringify({ name: "Amin (Developer)", studentId: "admin", isDeveloper: true }));
-                alertBox.style.display = "none";
-                showMainApp("Amin (Developer)");
-                return;
+
+            const showErr = (msg, ok = false) => {
+                alertBox.innerText = msg;
+                alertBox.className = "alert-msg" + (ok ? " success" : "");
+                alertBox.style.display = "block";
+            };
+
+            if (!loginId || !password) {
+                return showErr("أدخل الـ ID وكلمة السر.");
             }
+
             showErr("⏳ جارٍ التحقق...");
             alertBox.className = "alert-msg";
             btn.disabled = true;
+
             try {
-                const data = await loadUsers();
-                const users = data.users || {};
-                let found = null;
-                for (const key in users) {
-                    const u = users[key];
-                    if (u.studentId === loginId || u.nationalId === loginId) { found = u; break; }
+
+                // ===== إيجاد البريد الإلكتروني المرتبط بالـ ID أو الرقم القومي =====
+                let email = null;
+
+                const { data: byStudentId } = await supabaseClient
+                    .from("profiles")
+                    .select("email")
+                    .eq("id_student", loginId)
+                    .maybeSingle();
+
+                if (byStudentId && byStudentId.email) email = byStudentId.email;
+
+                if (!email) {
+                    const { data: byNationalId } = await supabaseClient
+                        .from("profiles")
+                        .select("email")
+                        .eq("national_id", loginId)
+                        .maybeSingle();
+
+                    if (byNationalId && byNationalId.email) email = byNationalId.email;
                 }
+
+                if (!email) {
+                    btn.disabled = false;
+                    return showErr("الحساب غير موجود.");
+                }
+
+                // ===== المصادقة عبر Supabase =====
+                const { data: authData, error: authError } =
+                    await supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: password
+                    });
+
+                if (authError || !authData || !authData.user) {
+                    btn.disabled = false;
+                    return showErr("كلمة السر غير صحيحة.");
+                }
+
+                // ===== جلب بيانات المستخدم من profiles =====
+                const { data: profile } = await supabaseClient
+                    .from("profiles")
+                    .select("*")
+                    .eq("id", authData.user.id)
+                    .maybeSingle();
+
+                const displayName = (profile && profile.full_name) ? profile.full_name : email;
+
+                // تخزين مفتاح المستخدم الحالي للبيانات المحلية (ليس للمصادقة)
+                localStorage.setItem("nova_active_user", JSON.stringify({
+                    name: displayName,
+                    studentId: (profile && profile.id_student) || "",
+                    email: email,
+                    supabaseId: authData.user.id
+                }));
+
                 btn.disabled = false;
-                if (!found) return showErr("الحساب غير موجود.");
-                const hash = await hashPassword(password);
-                if (hash !== found.passwordHash) return showErr("كلمة السر غير صحيحة.");
-                localStorage.setItem("nova_active_user", JSON.stringify({ name: found.name, studentId: found.studentId, isDeveloper: false }));
-                showMainApp(found.name);
-            } catch (err) { console.error(err); btn.disabled = false; showErr("خطأ في الاتصال."); }
+                alertBox.style.display = "none";
+                showMainApp(displayName);
+
+            } catch (err) {
+                console.error(err);
+                btn.disabled = false;
+                showErr("خطأ في الاتصال بـ Supabase.");
+            }
         });
 
         // ===== Forgot Password =====
@@ -2799,8 +2843,6 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             document.getElementById("forgotStep1").style.display = "block";
             document.getElementById("forgotStep2").style.display = "none";
             document.getElementById("forgotAlert").style.display = "none";
-            document.getElementById("forgotStudentId").value = "";
-            document.getElementById("forgotPhone").value = "";
             document.getElementById("newPassword").value = "";
             forgotStudentId = "";
         }
@@ -2810,36 +2852,79 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             a.innerText = msg; a.className = "alert-msg" + (ok ? " success" : ""); a.style.display = "block";
         }
         async function verifyForgotIdentity() {
-            const sid = document.getElementById("forgotStudentId").value.trim();
-            const phone = document.getElementById("forgotPhone").value.trim();
-            if (!sid || !phone) return forgotShow("املأ الحقلين.");
-            forgotShow("⏳ جارٍ التحقق...");
+
+            const email = document.getElementById("forgotEmail").value.trim();
+
+            if (!email) {
+                return forgotShow("اكتب البريد الإلكتروني.");
+            }
+
+            forgotShow("⏳ جارٍ إرسال رابط استعادة كلمة السر...");
+
             try {
-                const data = await loadUsers();
-                const user = (data.users || {})[sid];
-                if (!user) return forgotShow("الـ ID غير مسجل.");
-                if (normalizePhone(user.phone) !== normalizePhone(phone)) return forgotShow("رقم الهاتف غير مطابق.");
-                forgotStudentId = sid;
-                document.getElementById("forgotStep1").style.display = "none";
-                document.getElementById("forgotStep2").style.display = "block";
-                forgotShow("✅ تم التحقق بنجاح.", true);
-            } catch (err) { console.error(err); forgotShow("خطأ في الاتصال."); }
+
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(
+                    email,
+                    {
+                        redirectTo: window.location.origin + window.location.pathname
+                    }
+                );
+
+                if (error) {
+                    console.error(error);
+                    return forgotShow("فشل إرسال رابط الاستعادة: " + error.message);
+                }
+
+                forgotShow(
+                    "✅ تم إرسال رابط استعادة كلمة السر إلى بريدك الإلكتروني.",
+                    true
+                );
+
+            } catch (err) {
+
+                console.error(err);
+                forgotShow("خطأ في الاتصال بـ Supabase.");
+
+            }
         }
         async function resetPassword() {
+
             const newPass = document.getElementById("newPassword").value;
-            if (!forgotStudentId) return forgotShow("أعد التحقق.");
-            if (newPass.length < 6) return forgotShow("كلمة السر 6 أحرف على الأقل.");
-            forgotShow("⏳ جارٍ الحفظ...");
+
+            if (!forgotStudentId) {
+                return forgotShow("أعد التحقق.");
+            }
+
+            if (newPass.length < 6) {
+                return forgotShow("كلمة السر 6 أحرف على الأقل.");
+            }
+
+            forgotShow("⏳ جارٍ تحديث كلمة السر...");
+
             try {
-                const data = await loadUsers();
-                const user = (data.users || {})[forgotStudentId];
-                if (!user) return forgotShow("الحساب غير موجود.");
-                user.passwordHash = await hashPassword(newPass);
-                const ok = await saveUsers(data);
-                if (!ok) return forgotShow("فشل الحفظ.");
-                forgotShow("✅ تم تحديث كلمة السر.", true);
-                setTimeout(() => { closeForgot(); switchAuthMode("login"); }, 1500);
-            } catch (err) { console.error(err); forgotShow("خطأ في الاتصال."); }
+
+                const { error } = await supabaseClient.auth.updateUser({
+                    password: newPass
+                });
+
+                if (error) {
+                    console.error(error);
+                    return forgotShow("فشل تحديث كلمة السر: " + error.message);
+                }
+
+                forgotShow("✅ تم تحديث كلمة السر بنجاح.", true);
+
+                setTimeout(() => {
+                    closeForgot();
+                    switchAuthMode("login");
+                }, 1500);
+
+            } catch (err) {
+
+                console.error(err);
+                forgotShow("خطأ في الاتصال بـ Supabase.");
+
+            }
         }
 
         // ================================================================
@@ -2873,7 +2958,6 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             if (u && u.name) {
                 nameEn = firstNameOf(u.name);
                 nameAr = nameEn;
-                if (u.isDeveloper) { nameEn = 'Amin'; nameAr = 'أمين'; }
             }
             const elEn = document.getElementById('dashUserName'); if (elEn) elEn.innerText = nameEn;
             const elAr = document.getElementById('dashUserNameAr'); if (elAr) elAr.innerText = nameAr;
@@ -2903,6 +2987,7 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             renderTimer();
         }
         function logout() {
+            try { supabaseClient.auth.signOut(); } catch (e) { console.error(e); }
             localStorage.removeItem("nova_active_user");
             document.getElementById("authOverlay").style.display = "flex";
             document.getElementById("userInfoDisplay").innerText = "أهلاً بك";
@@ -2985,12 +3070,39 @@ document.getElementById("signupForm").addEventListener("submit", async function(
         // ================================================================
         // ===== Init =====
         // ================================================================
-        window.onload = function() {
+        window.onload = async function() {
             loadPdfCompleted();
+
+            let restored = false;
+
+            // ===== استرجاع الجلسة من Supabase =====
             try {
-                const activeUser = JSON.parse(localStorage.getItem("nova_active_user"));
-                if (activeUser && activeUser.name) showMainApp(activeUser.name);
-            } catch (e) { console.error(e); }
+                const { data: sessionData } = await supabaseClient.auth.getSession();
+                const session = sessionData && sessionData.session;
+
+                if (session && session.user) {
+                    const { data: profile } = await supabaseClient
+                        .from("profiles")
+                        .select("*")
+                        .eq("id", session.user.id)
+                        .maybeSingle();
+
+                    const name = (profile && profile.full_name) || session.user.email || "Student";
+
+                    localStorage.setItem("nova_active_user", JSON.stringify({
+                        name: name,
+                        studentId: (profile && profile.id_student) || "",
+                        email: session.user.email || "",
+                        supabaseId: session.user.id
+                    }));
+
+                    showMainApp(name);
+                    restored = true;
+                }
+            } catch (e) {
+                console.error(e);
+            }
+
             renderCoreSubjects();
             updateStats();
             initCarousel();
@@ -3000,7 +3112,7 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             renderTimer();
         };
 
-        console.log("NOVA Portal loaded. Developer: admin/admin123");
+        console.log("NOVA Portal loaded.");
     </script>
 
     <!-- Supabase -->
@@ -3017,10 +3129,6 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             SUPABASE_URL,
             SUPABASE_PUBLISHABLE_KEY
         );
-
-        function makeAuthEmail(studentId) {
-            return `${studentId}@auth.nova.local`;
-        }
     </script>
 </body>
 </html>
