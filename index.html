@@ -43,7 +43,7 @@
         @keyframes pulseBg { 0% { opacity:0.6; transform:scale(1); } 100% { opacity:1; transform:scale(1.05); } }
 
         /* ==========================================================
-           ===== AUTH OVERLAY — PROFESSIONAL PORTAL =====
+           ===== AUTH OVERLAY — PREMIUM EXPERIENCE =====
            ========================================================== */
         .auth-overlay {
             position: fixed;
@@ -57,9 +57,16 @@
             background: #050505;
             opacity: 1;
             visibility: visible;
-            transition: opacity 0.5s ease, visibility 0.5s ease;
+            transition: opacity 0.55s cubic-bezier(.22,1,.36,1), visibility 0.55s cubic-bezier(.22,1,.36,1);
         }
         [data-theme="light"] .auth-overlay { background: #F7F4EE; }
+
+        /* Graceful fade-out when entering the app */
+        .auth-overlay.hiding {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
 
         .auth-overlay::before {
             content: "";
@@ -69,7 +76,7 @@
                 radial-gradient(circle at 20% 30%, rgba(212,175,55,0.20), transparent 45%),
                 radial-gradient(circle at 80% 70%, rgba(212,175,55,0.13), transparent 50%),
                 radial-gradient(circle at 50% 100%, rgba(155,89,182,0.10), transparent 55%);
-            animation: authBgShift 12s ease-in-out infinite alternate;
+            animation: authBgShift 14s ease-in-out infinite alternate;
             pointer-events: none;
         }
         [data-theme="light"] .auth-overlay::before {
@@ -91,6 +98,16 @@
             height: 100%;
             pointer-events: none;
             opacity: 0.7;
+        }
+
+        /* Parallax layer for orbs (desktop only) */
+        .auth-parallax-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+            transition: transform 0.9s cubic-bezier(.22,1,.36,1);
         }
 
         /* Floating orbs */
@@ -137,8 +154,8 @@
             box-shadow: 0 40px 100px rgba(0,0,0,0.15), 0 0 80px rgba(181,138,42,0.08);
         }
         @keyframes authContainerIn {
-            0% { opacity: 0; transform: translateY(40px) scale(0.96); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
+            0% { opacity: 0; transform: translateY(40px) scale(0.96); filter: blur(8px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
         /* ===== LEFT PANEL — BRANDING ===== */
@@ -178,7 +195,7 @@
             width: 200%;
             height: 200%;
             background: conic-gradient(from 0deg, transparent, rgba(212,175,55,0.08), transparent 30%);
-            animation: brandSweep 10s linear infinite;
+            animation: brandSweep 14s linear infinite;
             pointer-events: none;
         }
         @keyframes brandSweep { to { transform: rotate(360deg); } }
@@ -190,7 +207,7 @@
             width: 100%;
         }
 
-        /* Logo with rotating rings */
+        /* Logo with rotating rings + light sweep */
         .auth-logo-wrap {
             position: relative;
             width: 140px;
@@ -241,6 +258,29 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
         }
+        /* One-time light sweep on logo */
+        .auth-logo-wrap::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 108px;
+            height: 108px;
+            margin: -54px 0 0 -54px;
+            border-radius: 50%;
+            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.75) 50%, transparent 70%);
+            transform: translateX(-160%) skewX(-20deg);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 6;
+            animation: logoSweep 1.6s cubic-bezier(.5,0,.5,1) 1.1s 1 forwards;
+        }
+        @keyframes logoSweep {
+            0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { transform: translateX(160%) skewX(-20deg); opacity: 0; }
+        }
 
         .auth-brand-title {
             font-family: var(--font-english);
@@ -282,7 +322,7 @@
             border-radius: 14px;
             background: rgba(255,255,255,0.025);
             border: 1px solid rgba(212,175,55,0.18);
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.22,1,.36,1);
         }
         .auth-feature:hover {
             border-color: rgba(212,175,55,0.55);
@@ -301,7 +341,9 @@
             background: rgba(212,175,55,0.10);
             border: 1px solid rgba(212,175,55,0.30);
             flex-shrink: 0;
+            transition: transform 0.3s ease;
         }
+        .auth-feature:hover i { transform: scale(1.1) rotate(-4deg); }
         .auth-feature div { display: flex; flex-direction: column; min-width: 0; }
         .auth-feature strong { color: var(--beige-main); font-size: 0.85rem; font-weight: 700; }
         .auth-feature small { color: var(--beige-light); font-size: 0.72rem; opacity: 0.8; font-family: var(--font-ui); }
@@ -324,8 +366,6 @@
         }
         [data-theme="light"] .auth-form-panel { background: rgba(255,252,247,0.6); }
 
-        .auth-mobile-logo { display: none; }
-
         .auth-welcome-title {
             font-family: var(--font-english);
             font-size: 1.9rem;
@@ -333,6 +373,7 @@
             color: var(--beige-main);
             margin-bottom: 0.3rem;
             letter-spacing: 0.5px;
+            transition: color 0.3s ease;
         }
         [data-theme="light"] .auth-welcome-title { color: #29251F; }
         .auth-welcome-sub {
@@ -340,6 +381,7 @@
             color: var(--beige-light);
             opacity: 0.85;
             margin-bottom: 1.8rem;
+            transition: color 0.3s ease;
         }
 
         /* Modern Tabs with sliding indicator */
@@ -363,7 +405,7 @@
             border-radius: 10px;
             background: linear-gradient(135deg, #D4AF37, #C5A059);
             box-shadow: 0 6px 20px rgba(212,175,55,0.40);
-            transition: transform 0.45s cubic-bezier(.65,0,.35,1);
+            transition: transform 0.5s cubic-bezier(.65,0,.35,1);
             z-index: 0;
         }
         .auth-tab-indicator.right { transform: translateX(calc(-100% - 0px)); }
@@ -378,21 +420,52 @@
             color: var(--beige-light);
             cursor: pointer;
             font-family: var(--font-english);
-            transition: color 0.35s ease;
+            transition: color 0.35s ease, transform 0.2s ease;
             border-radius: 10px;
         }
+        .auth-tab-btn:hover { color: var(--beige-main); }
         .auth-tab-btn.active { color: #0A0A0A; }
 
-        /* Forms with fade/slide transition */
-        .auth-form {
-            display: none;
-            animation: formSlideIn 0.55s cubic-bezier(.22,1,.36,1);
-        }
+        /* Forms */
+        .auth-form { display: none; }
         .auth-form.active { display: block; }
-        @keyframes formSlideIn {
-            from { opacity: 0; transform: translateY(14px); }
+
+        /* ===== Entrance animations (JS-triggered via .entrance on overlay) ===== */
+        @keyframes authFadeSlide {
+            from { opacity: 0; transform: translateY(22px); filter: blur(10px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+        @keyframes logoCinemaIn {
+            0% { opacity: 0; transform: scale(0.78); filter: blur(14px); }
+            60% { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        @keyframes inputShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+        }
+        @keyframes spin360 { to { transform: rotate(360deg); } }
+        @keyframes successPulse {
+            0% { box-shadow: 0 0 0 0 rgba(46,204,113,0.55); }
+            100% { box-shadow: 0 0 0 22px rgba(46,204,113,0); }
+        }
+        @keyframes reqPop {
+            from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        .auth-overlay.entrance .auth-logo-wrap { animation: logoCinemaIn 0.95s cubic-bezier(.22,1,.36,1) 0.10s both; }
+        .auth-overlay.entrance .auth-brand-title { animation: authFadeSlide 0.7s cubic-bezier(.22,1,.36,1) 0.38s both; }
+        .auth-overlay.entrance .auth-brand-tag { animation: authFadeSlide 0.7s cubic-bezier(.22,1,.36,1) 0.46s both; }
+        .auth-overlay.entrance .auth-brand-features { animation: authFadeSlide 0.7s cubic-bezier(.22,1,.36,1) 0.56s both; }
+        .auth-overlay.entrance .auth-brand-credit { animation: authFadeSlide 0.7s cubic-bezier(.22,1,.36,1) 0.68s both; }
+
+        .auth-overlay.entrance .auth-welcome-title { animation: authFadeSlide 0.65s cubic-bezier(.22,1,.36,1) 0.42s both; }
+        .auth-overlay.entrance .auth-welcome-sub { animation: authFadeSlide 0.65s cubic-bezier(.22,1,.36,1) 0.50s both; }
+        .auth-overlay.entrance .auth-tabs-modern { animation: authFadeSlide 0.65s cubic-bezier(.22,1,.36,1) 0.58s both; }
 
         /* Inputs with floating label */
         .auth-field {
@@ -408,7 +481,7 @@
             color: var(--beige-main);
             font-size: 0.95rem;
             outline: none;
-            transition: all 0.3s ease;
+            transition: border-color 0.25s ease, box-shadow 0.3s ease, background 0.3s ease;
             font-family: var(--font-ui);
         }
         [data-theme="light"] .auth-field input {
@@ -426,7 +499,7 @@
             font-size: 0.88rem;
             font-weight: 600;
             pointer-events: none;
-            transition: all 0.25s cubic-bezier(.65,0,.35,1);
+            transition: all 0.28s cubic-bezier(.65,0,.35,1);
             background: transparent;
             padding: 0 6px;
             opacity: 0.85;
@@ -460,13 +533,28 @@
             opacity: 0.55;
             font-size: 0.95rem;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.22,1,.36,1);
         }
         .auth-field input:focus ~ .field-icon {
             color: var(--gold-primary);
             opacity: 1;
-            transform: translateY(-50%) scale(1.08);
+            transform: translateY(-50%) scale(1.1);
         }
+
+        /* Error / Success states */
+        .auth-field.error input {
+            border-color: var(--error-red);
+            background: rgba(231,76,60,0.06);
+            box-shadow: 0 0 0 4px rgba(231,76,60,0.14);
+            animation: inputShake 0.45s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        .auth-field.error .field-icon { color: var(--error-red); opacity: 1; }
+        .auth-field.success input {
+            border-color: var(--success-green);
+            background: rgba(46,204,113,0.06);
+            box-shadow: 0 0 0 4px rgba(46,204,113,0.12);
+        }
+        .auth-field.success .field-icon { color: var(--success-green); opacity: 1; }
 
         /* Password toggle */
         .auth-field .pwd-toggle {
@@ -481,10 +569,57 @@
             font-size: 0.9rem;
             padding: 8px;
             border-radius: 8px;
-            transition: 0.2s;
+            transition: background 0.2s ease;
             z-index: 2;
         }
         .auth-field .pwd-toggle:hover { background: rgba(212,175,55,0.15); }
+        .auth-field .pwd-toggle i { transition: transform 0.35s cubic-bezier(.34,1.56,.64,1); }
+        .auth-field .pwd-toggle:hover i { transform: scale(1.12); }
+        .auth-field .pwd-toggle.toggled i { transform: rotate(180deg); }
+
+        /* Password strength + requirements */
+        .pwd-strength {
+            margin-top: 0.55rem;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        [data-theme="light"] .pwd-strength { background: rgba(0,0,0,0.08); }
+        .pwd-strength.visible { display: block; opacity: 1; }
+        .pwd-strength-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, #E74C3C, #E67E22);
+            transition: width 0.45s cubic-bezier(.22,1,.36,1), background 0.3s ease;
+        }
+        .pwd-requirements {
+            display: none;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            margin-top: 0.6rem;
+            padding: 0;
+        }
+        .pwd-requirements.visible { display: flex; }
+        .pwd-req {
+            font-family: var(--font-ui);
+            font-size: 0.7rem;
+            color: var(--beige-light);
+            opacity: 0.7;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.25s ease, opacity 0.25s ease;
+            animation: reqPop 0.35s cubic-bezier(.22,1,.36,1) both;
+        }
+        .pwd-req i { font-size: 0.68rem; transition: color 0.25s ease; }
+        .pwd-req.met { color: var(--success-green); opacity: 1; }
+        .pwd-req.met i { color: var(--success-green); }
+        .pwd-req.met i::before { content: "\f058"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
 
         /* Submit button with shine + ripple */
         .auth-submit {
@@ -496,13 +631,14 @@
             border: none;
             border-radius: 14px;
             background: linear-gradient(135deg, #D4AF37 0%, #C5A059 100%);
+            background-size: 200% 100%;
             color: #0A0A0A;
             font-size: 1rem;
             font-weight: 800;
             font-family: var(--font-english);
             letter-spacing: 0.5px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(.22,1,.36,1);
             box-shadow: 0 10px 28px rgba(212,175,55,0.35);
             display: inline-flex;
             align-items: center;
@@ -516,17 +652,44 @@
             width: 45%; height: 100%;
             background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
             transform: skewX(-20deg);
-            transition: left 0.85s ease;
+            transition: left 0.85s cubic-bezier(.22,1,.36,1);
             pointer-events: none;
         }
         .auth-submit:hover::before { left: 140%; }
         .auth-submit:hover {
             transform: translateY(-2px);
             box-shadow: 0 16px 38px rgba(212,175,55,0.50);
-            background: linear-gradient(135deg, #E0BC4E 0%, #D4AF37 100%);
+            background-position: 100% 0;
         }
         .auth-submit:active { transform: translateY(0) scale(0.99); }
-        .auth-submit:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+        .auth-submit:disabled { cursor: not-allowed; transform: none; }
+
+        /* Loading state */
+        .auth-submit.loading {
+            pointer-events: none;
+        }
+        .auth-submit.loading > * { opacity: 0; }
+        .auth-submit.loading::after {
+            content: "";
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            border: 2.5px solid rgba(10,10,10,0.28);
+            border-top-color: #0A0A0A;
+            border-radius: 50%;
+            animation: spin360 0.75s linear infinite;
+            top: 50%;
+            left: 50%;
+            margin: -11px 0 0 -11px;
+        }
+
+        /* Success state */
+        .auth-submit.success {
+            background: linear-gradient(135deg, #2ECC71, #27AE60) !important;
+            color: #fff !important;
+            animation: successPulse 0.7s ease-out;
+        }
+        .auth-submit.success::before { display: none; }
 
         /* Ripple */
         .ripple {
@@ -534,7 +697,7 @@
             border-radius: 50%;
             transform: scale(0);
             background: rgba(255,255,255,0.55);
-            animation: rippleAnim 0.6s ease-out;
+            animation: rippleAnim 0.65s cubic-bezier(.22,1,.36,1);
             pointer-events: none;
         }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
@@ -551,8 +714,22 @@
             cursor: pointer;
             font-weight: 600;
             transition: 0.25s;
+            position: relative;
+            display: inline-block;
         }
-        .auth-forgot a:hover { text-decoration: underline; opacity: 0.85; }
+        .auth-forgot a::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--gold-primary);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s cubic-bezier(.22,1,.36,1);
+        }
+        .auth-forgot a:hover::after { transform: scaleX(1); transform-origin: left; }
 
         /* Alerts */
         .alert-msg {
@@ -564,20 +741,20 @@
             border-radius: 10px;
             background: rgba(231,76,60,0.10);
             border: 1px solid rgba(231,76,60,0.55);
-            animation: alertIn 0.4s ease;
+            animation: alertIn 0.4s cubic-bezier(.22,1,.36,1);
         }
         .alert-msg.success { color: var(--success-green); border-color: rgba(46,204,113,0.55); background: rgba(46,204,113,0.10); }
         @keyframes alertIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ===== RESPONSIVE ===== */
+        /* Responsive */
         @media (max-width: 900px) {
             .auth-container { grid-template-columns: 1fr; min-height: auto; max-width: 520px; }
-            .auth-brand-panel { padding: 2rem 1.5rem; border-right: none; border-bottom: 1px solid rgba(212,175,55,0.20); }
+            .auth-brand-panel { padding: 2rem 1.5rem; border-right: none; border-bottom: 1px solid rgba(212,175,55,0.20); min-height: auto; }
             .auth-brand-features, .auth-brand-credit, .auth-brand-tag { display: none; }
             .auth-logo-wrap { width: 90px; height: 90px; margin-bottom: 0.8rem; }
             .auth-logo { width: 72px; height: 72px; }
+            .auth-logo-wrap::after { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
             .auth-brand-title { font-size: 1.9rem; letter-spacing: 5px; margin-bottom: 0.5rem; }
-            .auth-brand-panel { min-height: auto; }
             .auth-form-panel { padding: 2rem 1.5rem; }
         }
         @media (max-width: 480px) {
@@ -587,6 +764,7 @@
             .auth-brand-panel { padding: 1.5rem 1rem; }
             .auth-form-panel { padding: 1.5rem 1.1rem; }
             .auth-field input { padding: 1rem 2.8rem 0.9rem 0.9rem; font-size: 0.9rem; }
+            .pwd-requirements { font-size: 0.65rem; gap: 4px 9px; }
         }
 
         /* ==========================================================
@@ -759,26 +937,9 @@
         .bd-stat-value { font-family: var(--font-ui); font-weight: 800; font-size: 1rem; color: var(--beige-main); line-height: 1; }
         [data-theme="light"] .bd-stat-value { color: #29251F; }
         .bd-stat-label { font-family: var(--font-ui); font-size: 0.56rem; color: var(--beige-light); opacity: 0.85; }
-
-        /* ===== Premium Action Buttons ===== */
         .bd-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
-        .bd-action-btn {
-            position: relative; overflow: hidden;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 0.6rem 0.7rem; border-radius: 12px;
-            font-size: 0.74rem; font-weight: 800; letter-spacing: 0.2px;
-            cursor: pointer; text-decoration: none; font-family: var(--font-ui);
-            min-width: 0; transition: all 0.3s ease;
-            border: 1px solid var(--border-gold);
-            background: rgba(24,22,20,0.6);
-            color: var(--beige-light);
-        }
-        .bd-action-btn::before {
-            content: ""; position: absolute; top: 0; left: -70%;
-            width: 45%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
-            transform: skewX(-20deg); transition: left 0.75s ease; pointer-events: none;
-        }
+        .bd-action-btn { position: relative; overflow: hidden; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0.6rem 0.7rem; border-radius: 12px; font-size: 0.74rem; font-weight: 800; letter-spacing: 0.2px; cursor: pointer; text-decoration: none; font-family: var(--font-ui); min-width: 0; transition: all 0.3s ease; border: 1px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-light); }
+        .bd-action-btn::before { content: ""; position: absolute; top: 0; left: -70%; width: 45%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent); transform: skewX(-20deg); transition: left 0.75s ease; pointer-events: none; }
         .bd-action-btn:hover::before { left: 130%; }
         .bd-action-btn i { font-size: 0.9rem; transition: color 0.3s ease; }
         .bd-action-btn:hover { transform: translateY(-2px); }
@@ -814,7 +975,6 @@
         [data-theme="light"] .bd-action-btn.qb-action-btn i { color: #0E7490; }
         [data-theme="light"] .bd-action-btn.qb-action-btn:hover { background: linear-gradient(135deg, #06B6D4, #0E7490); color: #FFFCF7; }
         [data-theme="light"] .bd-action-btn.qb-action-btn:hover i { color: #FFFCF7; }
-
         .extra-tabs { display: flex; gap: 12px; margin-bottom: 2rem; border-bottom: 2px solid var(--border-gold); padding-bottom: 10px; }
         .extra-tab-btn { padding: 0.7rem 2rem; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; color: var(--beige-light); border: 2px solid transparent; background: var(--beige-card); }
         [data-theme="light"] .extra-tab-btn { background: #FFFCF7; color: #6F685D; }
@@ -1166,13 +1326,15 @@
     <div class="bg-animation"></div>
 
     <!-- ============================================
-         ===== AUTH OVERLAY — PROFESSIONAL =====
+         ===== AUTH OVERLAY — PREMIUM =====
          ============================================ -->
-    <div class="auth-overlay" id="authOverlay">
+    <div class="auth-overlay entrance" id="authOverlay">
         <canvas class="auth-particles" id="authParticles"></canvas>
-        <div class="auth-orb auth-orb-1"></div>
-        <div class="auth-orb auth-orb-2"></div>
-        <div class="auth-orb auth-orb-3"></div>
+        <div class="auth-parallax-layer" id="authParallaxLayer">
+            <div class="auth-orb auth-orb-1"></div>
+            <div class="auth-orb auth-orb-2"></div>
+            <div class="auth-orb auth-orb-3"></div>
+        </div>
 
         <div class="auth-container">
             <!-- ===== LEFT: BRANDING ===== -->
@@ -1228,7 +1390,7 @@
                     </div>
 
                     <!-- LOGIN FORM -->
-                    <form id="loginForm" class="auth-form active" autocomplete="on">
+                    <form id="loginForm" class="auth-form active" autocomplete="on" novalidate>
                         <div class="auth-field">
                             <input type="text" id="loginId" required placeholder=" " autocomplete="username">
                             <label for="loginId">الـ ID الجامعي أو الرقم القومي</label>
@@ -1248,7 +1410,7 @@
                     </form>
 
                     <!-- SIGNUP FORM -->
-                    <form id="signupForm" class="auth-form" autocomplete="on">
+                    <form id="signupForm" class="auth-form" autocomplete="on" novalidate>
                         <div class="auth-field">
                             <input type="text" id="signupName" required placeholder=" ">
                             <label for="signupName">الاسم الكامل (الرباعي)</label>
@@ -1260,7 +1422,7 @@
                             <i class="fa-solid fa-id-badge field-icon"></i>
                         </div>
                         <div class="auth-field">
-                            <input type="text" id="signupNationalId" maxlength="14" required placeholder=" " pattern="\d{14}">
+                            <input type="text" id="signupNationalId" maxlength="14" required placeholder=" " pattern="\d{14}" inputmode="numeric">
                             <label for="signupNationalId">الرقم القومي (14 رقم)</label>
                             <i class="fa-solid fa-address-card field-icon"></i>
                         </div>
@@ -1270,7 +1432,7 @@
                             <i class="fa-solid fa-envelope field-icon"></i>
                         </div>
                         <div class="auth-field">
-                            <input type="tel" id="signupPhone" required placeholder=" ">
+                            <input type="tel" id="signupPhone" required placeholder=" " inputmode="tel">
                             <label for="signupPhone">رقم الهاتف</label>
                             <i class="fa-solid fa-phone field-icon"></i>
                         </div>
@@ -1279,6 +1441,15 @@
                             <label for="signupPassword">كلمة السر (6 أحرف على الأقل)</label>
                             <i class="fa-solid fa-lock field-icon"></i>
                             <button type="button" class="pwd-toggle" onclick="togglePassword('signupPassword', this)"><i class="fa-regular fa-eye"></i></button>
+                            <div class="pwd-strength" id="pwdStrength">
+                                <div class="pwd-strength-fill" id="pwdStrengthFill"></div>
+                            </div>
+                            <div class="pwd-requirements" id="pwdRequirements">
+                                <span class="pwd-req" data-req="length"><i class="fa-regular fa-circle"></i> 6+ أحرف</span>
+                                <span class="pwd-req" data-req="upper"><i class="fa-regular fa-circle"></i> حرف كبير</span>
+                                <span class="pwd-req" data-req="lower"><i class="fa-regular fa-circle"></i> حرف صغير</span>
+                                <span class="pwd-req" data-req="number"><i class="fa-regular fa-circle"></i> رقم</span>
+                            </div>
                         </div>
                         <button type="submit" class="auth-submit" id="signupSubmitBtn">
                             <i class="fa-solid fa-user-plus"></i> <span>إنشاء الحساب</span>
@@ -1359,42 +1530,12 @@
             </div>
 
             <div class="dash-stats">
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-book-medical"></i></div>
-                    <div class="dash-stat-value">B1</div>
-                    <div class="dash-stat-label">البلوك الحالي</div>
-                    <div class="dash-stat-desc">Current Block</div>
-                </div>
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-chart-line"></i></div>
-                    <div class="dash-stat-value" id="dashStatProgress">0%</div>
-                    <div class="dash-stat-label">التقدم الأكاديمي</div>
-                    <div class="dash-stat-desc">Academic Progress</div>
-                </div>
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-circle-check"></i></div>
-                    <div class="dash-stat-value" id="dashStatMemorized">0/0</div>
-                    <div class="dash-stat-label">ملفات ذاكرتها</div>
-                    <div class="dash-stat-desc">Memorized Files</div>
-                </div>
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-file-pen"></i></div>
-                    <div class="dash-stat-value" id="dashExamValue">—</div>
-                    <div class="dash-stat-label">الموعد القادم</div>
-                    <div class="dash-stat-desc">Next Appointment</div>
-                </div>
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-fire"></i></div>
-                    <div class="dash-stat-value">0</div>
-                    <div class="dash-stat-label">سلسلة المذاكرة</div>
-                    <div class="dash-stat-desc">Study Streak · أيام</div>
-                </div>
-                <div class="dash-stat-card">
-                    <div class="dash-stat-icon"><i class="fa-solid fa-star"></i></div>
-                    <div class="dash-stat-value">0</div>
-                    <div class="dash-stat-label">نقاط NOVA</div>
-                    <div class="dash-stat-desc">NOVA Points</div>
-                </div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-book-medical"></i></div><div class="dash-stat-value">B1</div><div class="dash-stat-label">البلوك الحالي</div><div class="dash-stat-desc">Current Block</div></div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-chart-line"></i></div><div class="dash-stat-value" id="dashStatProgress">0%</div><div class="dash-stat-label">التقدم الأكاديمي</div><div class="dash-stat-desc">Academic Progress</div></div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-circle-check"></i></div><div class="dash-stat-value" id="dashStatMemorized">0/0</div><div class="dash-stat-label">ملفات ذاكرتها</div><div class="dash-stat-desc">Memorized Files</div></div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-file-pen"></i></div><div class="dash-stat-value" id="dashExamValue">—</div><div class="dash-stat-label">الموعد القادم</div><div class="dash-stat-desc">Next Appointment</div></div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-fire"></i></div><div class="dash-stat-value">0</div><div class="dash-stat-label">سلسلة المذاكرة</div><div class="dash-stat-desc">Study Streak · أيام</div></div>
+                <div class="dash-stat-card"><div class="dash-stat-icon"><i class="fa-solid fa-star"></i></div><div class="dash-stat-value">0</div><div class="dash-stat-label">نقاط NOVA</div><div class="dash-stat-desc">NOVA Points</div></div>
             </div>
 
             <div class="dash-main-grid">
@@ -1671,7 +1812,6 @@
     </div>
 
     <style>
-        /* small helpers for forgot modal inputs */
         .input-group { margin-bottom: 1rem; }
         .input-group label { display: block; margin-bottom: 0.4rem; color: var(--beige-main); font-size: 0.9rem; font-weight: 600; }
         .input-group input { width: 100%; padding: 0.85rem 1rem; border-radius: 10px; border: 1.5px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-main); font-size: 1rem; outline: none; }
@@ -1804,7 +1944,6 @@
             }
         };
 
-        // Auto-init Question Bank arrays
         Object.keys(subjectFiles).forEach(sub => {
             Object.keys(subjectFiles[sub]).forEach(block => {
                 if (!subjectFiles[sub][block]['Question Bank']) {
@@ -3005,12 +3144,8 @@
             }
 
             const blockSubs = {
-                'B1': 'Introduction To Medicine',
-                'B2': 'Man & Environment',
-                'B3': 'Nutrition & Metabolism',
-                'B4': 'Growth & Development',
-                'B5': 'Principles of Diseases',
-                'B6': 'Urinary System'
+                'B1': 'Introduction To Medicine', 'B2': 'Man & Environment', 'B3': 'Nutrition & Metabolism',
+                'B4': 'Growth & Development', 'B5': 'Principles of Diseases', 'B6': 'Urinary System'
             };
             const blockSub = blockSubs[blockName] || 'Portfolio';
 
@@ -3075,19 +3210,11 @@
                     </div>
                     <div class="pf-split-grid">
                         <div class="pf-split-col unsolved-col">
-                            <div class="pf-split-head unsolved">
-                                <i class="fa-regular fa-circle-question"></i>
-                                <span>بدون حل</span>
-                                <span class="pf-split-count">${unsolvedFiles.length}</span>
-                            </div>
+                            <div class="pf-split-head unsolved"><i class="fa-regular fa-circle-question"></i><span>بدون حل</span><span class="pf-split-count">${unsolvedFiles.length}</span></div>
                             ${renderFileList(unsolvedFiles)}
                         </div>
                         <div class="pf-split-col solved-col">
-                            <div class="pf-split-head solved">
-                                <i class="fa-regular fa-circle-check"></i>
-                                <span>محلول</span>
-                                <span class="pf-split-count">${solvedFiles.length}</span>
-                            </div>
+                            <div class="pf-split-head solved"><i class="fa-regular fa-circle-check"></i><span>محلول</span><span class="pf-split-count">${solvedFiles.length}</span></div>
                             ${renderFileList(solvedFiles)}
                         </div>
                     </div>
@@ -3125,13 +3252,136 @@
             }
         }
 
-        // ===== Auth UI =====
+        // ================================================================
+        // ===== AUTH ENHANCEMENTS =====
+        // ================================================================
+
+        // ===== Password visibility toggle (with icon rotation) =====
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
             const icon = btn.querySelector("i");
-            if (input.type === "password") { input.type = "text"; icon.className = "fa-regular fa-eye-slash"; }
-            else { input.type = "password"; icon.className = "fa-regular fa-eye"; }
+            if (input.type === "password") {
+                input.type = "text";
+                icon.className = "fa-regular fa-eye-slash";
+                btn.classList.add("toggled");
+            } else {
+                input.type = "password";
+                icon.className = "fa-regular fa-eye";
+                btn.classList.remove("toggled");
+            }
         }
+
+        // ===== Helper: shake a field on error =====
+        function shakeField(fieldEl) {
+            if (!fieldEl) return;
+            fieldEl.classList.remove("error");
+            void fieldEl.offsetHeight;
+            fieldEl.classList.add("error");
+            setTimeout(() => fieldEl.classList.remove("error"), 550);
+        }
+
+        // ===== Helper: mark field as success =====
+        function markFieldSuccess(fieldEl) {
+            if (!fieldEl) return;
+            fieldEl.classList.add("success");
+            setTimeout(() => fieldEl.classList.remove("success"), 1500);
+        }
+
+        // ===== Helper: set button loading =====
+        function setBtnLoading(btn, loading) {
+            if (!btn) return;
+            if (loading) {
+                btn.classList.add("loading");
+                btn.disabled = true;
+            } else {
+                btn.classList.remove("loading");
+                btn.disabled = false;
+            }
+        }
+
+        // ===== Helper: set button success =====
+        function setBtnSuccess(btn) {
+            if (!btn) return;
+            btn.classList.add("success");
+            const span = btn.querySelector("span");
+            const icon = btn.querySelector("i");
+            if (icon) icon.className = "fa-solid fa-check";
+            if (span) span.textContent = "تم بنجاح";
+        }
+
+        // ===== Password strength calculator =====
+        function evaluatePasswordStrength(pwd) {
+            const reqs = {
+                length: pwd.length >= 6,
+                upper: /[A-Z]/.test(pwd),
+                lower: /[a-z]/.test(pwd),
+                number: /[0-9]/.test(pwd)
+            };
+            let met = 0;
+            Object.values(reqs).forEach(v => { if (v) met++; });
+            let pct = 0, color = "linear-gradient(90deg, #E74C3C, #E67E22)";
+            if (pwd.length === 0) { pct = 0; }
+            else if (met === 1) { pct = 25; color = "linear-gradient(90deg, #E74C3C, #E74C3C)"; }
+            else if (met === 2) { pct = 50; color = "linear-gradient(90deg, #E67E22, #F1C40F)"; }
+            else if (met === 3) { pct = 75; color = "linear-gradient(90deg, #F1C40F, #3498DB)"; }
+            else if (met === 4) { pct = 100; color = "linear-gradient(90deg, #3498DB, #2ECC71)"; }
+            return { reqs, pct, color };
+        }
+
+        function updatePasswordStrengthUI(pwd) {
+            const fill = document.getElementById("pwdStrengthFill");
+            const wrap = document.getElementById("pwdStrength");
+            const reqWrap = document.getElementById("pwdRequirements");
+            if (!fill || !wrap || !reqWrap) return;
+
+            const { reqs, pct, color } = evaluatePasswordStrength(pwd);
+            fill.style.width = pct + "%";
+            fill.style.background = color;
+
+            // Requirements chips
+            reqWrap.querySelectorAll(".pwd-req").forEach(el => {
+                const key = el.getAttribute("data-req");
+                const met = reqs[key];
+                el.classList.toggle("met", met);
+                const i = el.querySelector("i");
+                if (i) i.className = met ? "fa-solid fa-circle-check" : "fa-regular fa-circle";
+            });
+        }
+
+        function showPasswordHelpers(show) {
+            const wrap = document.getElementById("pwdStrength");
+            const reqWrap = document.getElementById("pwdRequirements");
+            if (wrap) wrap.classList.toggle("visible", show);
+            if (reqWrap) reqWrap.classList.toggle("visible", show);
+        }
+
+        // ===== Trigger staggered form entrance when switching forms =====
+        function triggerFormEntrance(formEl) {
+            if (!formEl) return;
+            const fields = formEl.querySelectorAll(".auth-field");
+            fields.forEach((f, i) => {
+                f.style.animation = "none";
+                void f.offsetHeight;
+                f.style.animation = `authFadeSlide 0.55s cubic-bezier(.22,1,.36,1) ${0.05 + i * 0.07}s both`;
+            });
+            const submit = formEl.querySelector(".auth-submit");
+            if (submit) {
+                submit.style.animation = "none";
+                void submit.offsetHeight;
+                submit.style.animation = `authFadeSlide 0.55s cubic-bezier(.22,1,.36,1) ${0.10 + fields.length * 0.07}s both`;
+            }
+        }
+
+        // ===== Retrigger full entrance animation =====
+        function playEntrance() {
+            const overlay = document.getElementById("authOverlay");
+            if (!overlay) return;
+            overlay.classList.remove("entrance");
+            void overlay.offsetWidth;
+            overlay.classList.add("entrance");
+        }
+
+        // ===== Switch Auth Mode (Login ↔ Signup) — Smooth crossfade =====
         function switchAuthMode(mode) {
             const lf = document.getElementById("loginForm");
             const sf = document.getElementById("signupForm");
@@ -3141,28 +3391,56 @@
             const title = document.getElementById("authWelcomeTitle");
             const sub = document.getElementById("authWelcomeSub");
 
-            if (mode === "login") {
-                lf.classList.add("active");
-                sf.classList.remove("active");
-                lb.classList.add("active");
-                sb.classList.remove("active");
-                if (ind) ind.classList.remove("right");
-                if (title) title.innerText = "Welcome Back";
-                if (sub) sub.innerText = "سجّل دخولك للمتابعة من حيث توقفت";
+            const targetForm = mode === "login" ? lf : sf;
+            const hideForm = mode === "login" ? sf : lf;
+
+            // Fade out the currently visible form briefly
+            if (hideForm && hideForm.classList.contains("active")) {
+                hideForm.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+                hideForm.style.opacity = "0";
+                hideForm.style.transform = mode === "login" ? "translateX(-20px)" : "translateX(20px)";
+                setTimeout(() => {
+                    hideForm.classList.remove("active");
+                    hideForm.style.opacity = "";
+                    hideForm.style.transform = "";
+                    hideForm.style.transition = "";
+
+                    targetForm.classList.add("active");
+                    if (mode === "login") {
+                        lb.classList.add("active"); sb.classList.remove("active");
+                        if (ind) ind.classList.remove("right");
+                        if (title) title.textContent = "Welcome Back";
+                        if (sub) sub.textContent = "سجّل دخولك للمتابعة من حيث توقفت";
+                    } else {
+                        lb.classList.remove("active"); sb.classList.add("active");
+                        if (ind) ind.classList.add("right");
+                        if (title) title.textContent = "Create Account";
+                        if (sub) sub.textContent = "أنشئ حسابك وابدأ رحلتك في NOVA";
+                    }
+                    triggerFormEntrance(targetForm);
+                }, 220);
             } else {
-                lf.classList.remove("active");
-                sf.classList.add("active");
-                lb.classList.remove("active");
-                sb.classList.add("active");
-                if (ind) ind.classList.add("right");
-                if (title) title.innerText = "Create Account";
-                if (sub) sub.innerText = "أنشئ حسابك وابدأ رحلتك في NOVA";
+                targetForm.classList.add("active");
+                if (mode === "login") {
+                    lb.classList.add("active"); sb.classList.remove("active");
+                    if (ind) ind.classList.remove("right");
+                    if (title) title.textContent = "Welcome Back";
+                    if (sub) sub.textContent = "سجّل دخولك للمتابعة من حيث توقفت";
+                } else {
+                    lb.classList.remove("active"); sb.classList.add("active");
+                    if (ind) ind.classList.add("right");
+                    if (title) title.textContent = "Create Account";
+                    if (sub) sub.textContent = "أنشئ حسابك وابدأ رحلتك في NOVA";
+                }
+                triggerFormEntrance(targetForm);
             }
-            document.getElementById("loginAlert").style.display = "none";
-            document.getElementById("signupAlert").style.display = "none";
+            const loginAlert = document.getElementById("loginAlert");
+            const signupAlert = document.getElementById("signupAlert");
+            if (loginAlert) loginAlert.style.display = "none";
+            if (signupAlert) signupAlert.style.display = "none";
         }
 
-        // ===== AUTH — SIGNUP =====
+        // ===== SIGNUP FORM HANDLER =====
         document.getElementById("signupForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signupName").value.trim();
@@ -3181,24 +3459,30 @@
                 alertBox.style.display = "block";
             };
 
-            if (name.split(/\s+/).filter(Boolean).length < 4) return showErr("الاسم يجب أن يكون رباعياً.");
-            if (!/^\d{14}$/.test(nationalId)) return showErr("الرقم القومي يجب أن يكون 14 رقم.");
-            if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) return showErr("رقم الهاتف غير صحيح.");
-            if (password.length < 6) return showErr("كلمة السر 6 أحرف على الأقل.");
-            if (studentId === DEVELOPER_ID) return showErr("هذا الـ ID محجوز.");
+            const nameField = document.getElementById("signupName").closest(".auth-field");
+            const nationalField = document.getElementById("signupNationalId").closest(".auth-field");
+            const phoneField = document.getElementById("signupPhone").closest(".auth-field");
+            const pwdField = document.getElementById("signupPassword").closest(".auth-field");
+
+            if (name.split(/\s+/).filter(Boolean).length < 4) { shakeField(nameField); return showErr("الاسم يجب أن يكون رباعياً."); }
+            if (!/^\d{14}$/.test(nationalId)) { shakeField(nationalField); return showErr("الرقم القومي يجب أن يكون 14 رقم."); }
+            if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) { shakeField(phoneField); return showErr("رقم الهاتف غير صحيح."); }
+            if (password.length < 6) { shakeField(pwdField); return showErr("كلمة السر 6 أحرف على الأقل."); }
+            if (studentId === DEVELOPER_ID) { shakeField(document.getElementById("signupStudentId").closest(".auth-field")); return showErr("هذا الـ ID محجوز."); }
 
             showErr("⏳ جارٍ إنشاء الحساب...");
             alertBox.className = "alert-msg";
-            btn.disabled = true;
+            setBtnLoading(btn, true);
 
             try {
                 const { data: authData, error: authError } = await supabaseClient.auth.signUp({ email, password });
                 if (authError) {
-                    btn.disabled = false;
+                    setBtnLoading(btn, false);
+                    shakeField(document.getElementById("signupEmail").closest(".auth-field"));
                     if (authError.message?.toLowerCase().includes("already")) return showErr("هذا البريد مسجل بالفعل.");
                     return showErr("فشل إنشاء الحساب: " + authError.message);
                 }
-                if (!authData.user) { btn.disabled = false; return showErr("فشل إنشاء الحساب."); }
+                if (!authData.user) { setBtnLoading(btn, false); return showErr("فشل إنشاء الحساب."); }
 
                 const { error: profileError } = await supabaseClient.from("profiles").insert({
                     id: authData.user.id,
@@ -3211,21 +3495,23 @@
 
                 if (profileError) {
                     await supabaseClient.auth.signOut();
-                    btn.disabled = false;
+                    setBtnLoading(btn, false);
                     return showErr("تم إنشاء الحساب لكن حدث خطأ في حفظ البيانات.");
                 }
 
-                btn.disabled = false;
+                // Success animation
+                setBtnLoading(btn, false);
+                setBtnSuccess(btn);
                 showErr("✅ تم إنشاء الحساب بنجاح! جارٍ الدخول...", true);
-                setTimeout(() => { showMainApp(name); }, 800);
+                setTimeout(() => { showMainApp(name); }, 900);
             } catch (err) {
                 console.error(err);
-                btn.disabled = false;
+                setBtnLoading(btn, false);
                 showErr("حدث خطأ في الاتصال بـ Supabase.");
             }
         });
 
-        // ===== AUTH — LOGIN =====
+        // ===== LOGIN FORM HANDLER =====
         document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const loginId = document.getElementById("loginId").value.trim();
@@ -3239,11 +3525,15 @@
                 alertBox.style.display = "block";
             };
 
-            if (!loginId || !password) return showErr("أدخل الـ ID وكلمة السر.");
+            if (!loginId || !password) {
+                if (!loginId) shakeField(document.getElementById("loginId").closest(".auth-field"));
+                if (!password) shakeField(document.getElementById("loginPassword").closest(".auth-field"));
+                return showErr("أدخل الـ ID وكلمة السر.");
+            }
 
             showErr("⏳ جارٍ التحقق...");
             alertBox.className = "alert-msg";
-            btn.disabled = true;
+            setBtnLoading(btn, true);
 
             try {
                 const { data: emailResult, error: rpcError } = await supabaseClient.rpc(
@@ -3251,11 +3541,19 @@
                     { identifier: loginId }
                 );
                 const email = emailResult;
-                if (rpcError) { btn.disabled = false; return showErr("خطأ في الاتصال بقاعدة البيانات."); }
-                if (!email) { btn.disabled = false; return showErr("الحساب غير موجود."); }
+                if (rpcError) { setBtnLoading(btn, false); return showErr("خطأ في الاتصال بقاعدة البيانات."); }
+                if (!email) {
+                    setBtnLoading(btn, false);
+                    shakeField(document.getElementById("loginId").closest(".auth-field"));
+                    return showErr("الحساب غير موجود.");
+                }
 
                 const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({ email, password });
-                if (authError || !authData || !authData.user) { btn.disabled = false; return showErr("كلمة السر غير صحيحة."); }
+                if (authError || !authData || !authData.user) {
+                    setBtnLoading(btn, false);
+                    shakeField(document.getElementById("loginPassword").closest(".auth-field"));
+                    return showErr("كلمة السر غير صحيحة.");
+                }
 
                 const { data: profile } = await supabaseClient.from("profiles").select("*").eq("id", authData.user.id).maybeSingle();
                 const displayName = (profile && profile.full_name) ? profile.full_name : email;
@@ -3267,12 +3565,13 @@
                     supabaseId: authData.user.id
                 }));
 
-                btn.disabled = false;
-                alertBox.style.display = "none";
-                showMainApp(displayName);
+                // Success animation
+                setBtnLoading(btn, false);
+                setBtnSuccess(btn);
+                setTimeout(() => { showMainApp(displayName); }, 700);
             } catch (err) {
                 console.error(err);
-                btn.disabled = false;
+                setBtnLoading(btn, false);
                 showErr("خطأ في الاتصال بـ Supabase.");
             }
         });
@@ -3340,9 +3639,7 @@
                     <div class="activity-time">${a.time}</div>
                 </div>`).join('');
         }
-        function firstNameOf(name) {
-            return String(name || '').trim().split(/\s+/)[0] || '';
-        }
+        function firstNameOf(name) { return String(name || '').trim().split(/\s+/)[0] || ''; }
         function renderDashboard() {
             const u = (() => {
                 try { return JSON.parse(localStorage.getItem('nova_active_user') || 'null'); }
@@ -3372,7 +3669,12 @@
         // ===== Main App =====
         function showMainApp(userName) {
             document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
-            document.getElementById("authOverlay").style.display = "none";
+            const overlay = document.getElementById("authOverlay");
+            overlay.classList.add("hiding");
+            setTimeout(() => {
+                overlay.style.display = "none";
+                overlay.classList.remove("hiding");
+            }, 520);
             showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             renderDashboard();
             startSessionTimer();
@@ -3381,7 +3683,9 @@
         }
         function logout() {
             localStorage.removeItem("nova_active_user");
-            document.getElementById("authOverlay").style.display = "flex";
+            const overlay = document.getElementById("authOverlay");
+            overlay.style.display = "flex";
+            overlay.classList.remove("hiding");
             document.getElementById("userInfoDisplay").innerText = "أهلاً بك";
             switchAuthMode("login");
             document.getElementById("loginId").value = "";
@@ -3390,6 +3694,7 @@
             document.getElementById("signupAlert").style.display = "none";
             showSection("home", document.querySelector('.tab-btn[onclick*="home"]'));
             clearInterval(window.sessionInterval);
+            setTimeout(() => playEntrance(), 60);
         }
         let sessionSeconds = 0;
         function startSessionTimer() {
@@ -3472,6 +3777,44 @@
             });
         });
 
+        // ===== Password strength listeners =====
+        (function initPasswordStrength() {
+            const pwdInput = document.getElementById("signupPassword");
+            if (!pwdInput) return;
+            pwdInput.addEventListener("focus", () => showPasswordHelpers(true));
+            pwdInput.addEventListener("input", () => updatePasswordStrengthUI(pwdInput.value));
+            pwdInput.addEventListener("blur", () => {
+                if (!pwdInput.value) showPasswordHelpers(false);
+            });
+        })();
+
+        // ===== Cursor Parallax (Desktop only) =====
+        (function initParallax() {
+            const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+            if (!canHover || reduceMotion) return;
+
+            const layer = document.getElementById("authParallaxLayer");
+            if (!layer) return;
+            let mx = 0, my = 0;
+            let cx = 0, cy = 0;
+
+            window.addEventListener("mousemove", (e) => {
+                const x = (e.clientX / window.innerWidth - 0.5) * 2;
+                const y = (e.clientY / window.innerHeight - 0.5) * 2;
+                mx = x * 22;
+                my = y * 22;
+            });
+
+            function loop() {
+                cx += (mx - cx) * 0.06;
+                cy += (my - cy) * 0.06;
+                layer.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+                requestAnimationFrame(loop);
+            }
+            loop();
+        })();
+
         // ===== Particle canvas =====
         (function initParticles() {
             const canvas = document.getElementById('authParticles');
@@ -3479,6 +3822,8 @@
             const ctx = canvas.getContext('2d');
             let particles = [];
             let w = 0, h = 0;
+            const isMobile = window.innerWidth < 768;
+            const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
             function resize() {
                 w = canvas.width = canvas.offsetWidth;
@@ -3486,7 +3831,10 @@
             }
             function createParticles() {
                 particles = [];
-                const count = Math.min(80, Math.floor((w * h) / 16000));
+                // Reduce particles on mobile & for reduced-motion users
+                let count = Math.min(80, Math.floor((w * h) / 16000));
+                if (isMobile) count = Math.floor(count * 0.45);
+                if (reduceMotion) count = Math.floor(count * 0.35);
                 for (let i = 0; i < count; i++) {
                     particles.push({
                         x: Math.random() * w,
@@ -3499,7 +3847,15 @@
                     });
                 }
             }
-            function draw() {
+            let rafId = null;
+            let lastFrame = 0;
+            function draw(t) {
+                // Throttle to ~30fps on mobile for smoothness
+                if (isMobile && t - lastFrame < 33) {
+                    rafId = requestAnimationFrame(draw);
+                    return;
+                }
+                lastFrame = t;
                 ctx.clearRect(0, 0, w, h);
                 const isLight = document.documentElement.getAttribute('data-theme') === 'light';
                 const gold = isLight ? '181,138,42' : '212,175,55';
@@ -3515,33 +3871,38 @@
                     ctx.fillStyle = `rgba(${gold},${alpha})`;
                     ctx.fill();
                 });
-                // Connect nearby particles
-                for (let i = 0; i < particles.length; i++) {
-                    for (let j = i + 1; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        if (dist < 110) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(${gold},${0.10 * (1 - dist / 110)})`;
-                            ctx.lineWidth = 0.5;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
+                // Connections (skip on mobile for performance)
+                if (!isMobile) {
+                    const maxDist = 110;
+                    for (let i = 0; i < particles.length; i++) {
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx = particles[i].x - particles[j].x;
+                            const dy = particles[i].y - particles[j].y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
+                            if (dist < maxDist) {
+                                ctx.beginPath();
+                                ctx.strokeStyle = `rgba(${gold},${0.10 * (1 - dist / maxDist)})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
                         }
                     }
                 }
-                requestAnimationFrame(draw);
+                rafId = requestAnimationFrame(draw);
             }
             window.addEventListener('resize', () => { resize(); createParticles(); });
             resize();
             createParticles();
-            draw();
+            rafId = requestAnimationFrame(draw);
         })();
 
         // ===== Init =====
         window.onload = function() {
             loadPdfCompleted();
+            // Play the entrance animation on first load
+            playEntrance();
             try {
                 const activeUser = JSON.parse(localStorage.getItem("nova_active_user"));
                 if (activeUser && activeUser.name) showMainApp(activeUser.name);
