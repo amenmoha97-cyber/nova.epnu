@@ -260,11 +260,155 @@
         .bd-stat-value { font-family: var(--font-ui); font-weight: 800; font-size: 1rem; color: var(--beige-main); line-height: 1; }
         [data-theme="light"] .bd-stat-value { color: #29251F; }
         .bd-stat-label { font-family: var(--font-ui); font-size: 0.56rem; color: var(--beige-light); opacity: 0.85; }
-        .bd-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .bd-action-btn { flex: 1; min-width: 82px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0.6rem 0.7rem; border-radius: 12px; border: 1px solid var(--border-gold); background: rgba(24,22,20,0.6); color: var(--beige-light); font-size: 0.74rem; font-weight: 700; cursor: pointer; text-decoration: none; font-family: var(--font-ui); }
-        [data-theme="light"] .bd-action-btn { background: #F7F4EE; color: #6F685D; }
-        .bd-action-btn i { color: var(--gold-primary); font-size: 0.9rem; }
-        .bd-action-btn:hover { background: var(--gold-primary); color: #0A0A0A; border-color: var(--gold-primary); }
+
+        /* =====================================================
+           ===== Premium Action Buttons (Multi-Colored) =====
+           ===================================================== */
+        .bd-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
+
+        .bd-action-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 0.6rem 0.7rem;
+            border-radius: 12px;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            cursor: pointer;
+            text-decoration: none;
+            font-family: var(--font-ui);
+            min-width: 0;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-gold);
+            background: rgba(24,22,20,0.6);
+            color: var(--beige-light);
+        }
+        .bd-action-btn::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -70%;
+            width: 45%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.55), transparent);
+            transform: skewX(-20deg);
+            transition: left 0.75s ease;
+            pointer-events: none;
+        }
+        .bd-action-btn:hover::before { left: 130%; }
+        .bd-action-btn i { font-size: 0.9rem; transition: color 0.3s ease; }
+        .bd-action-btn:hover { transform: translateY(-2px); }
+
+        /* ===== 🗄️ Data — Emerald Green ===== */
+        .bd-action-btn.data-action-btn {
+            background: linear-gradient(135deg, rgba(16,185,129,0.22), rgba(16,185,129,0.04));
+            border: 1px solid rgba(16,185,129,0.65);
+            color: #10B981;
+        }
+        .bd-action-btn.data-action-btn i { color: #10B981; }
+        .bd-action-btn.data-action-btn:hover {
+            background: linear-gradient(135deg, #10B981, #059669);
+            border-color: #10B981;
+            color: #022C22;
+            box-shadow: 0 8px 22px rgba(16,185,129,0.45);
+        }
+        .bd-action-btn.data-action-btn:hover i { color: #022C22; }
+
+        /* ===== 👨‍⚕️ Doctor — Purple ===== */
+        .bd-action-btn.doctor-action-btn {
+            background: linear-gradient(135deg, rgba(155,89,182,0.22), rgba(155,89,182,0.04));
+            border: 1px solid rgba(155,89,182,0.65);
+            color: #B07CC6;
+        }
+        .bd-action-btn.doctor-action-btn i { color: #B07CC6; }
+        .bd-action-btn.doctor-action-btn:hover {
+            background: linear-gradient(135deg, #9B59B6, #7D3C98);
+            border-color: #9B59B6;
+            color: #FFFFFF;
+            box-shadow: 0 8px 22px rgba(155,89,182,0.50);
+        }
+        .bd-action-btn.doctor-action-btn:hover i { color: #FFFFFF; }
+
+        /* ===== 📝 Past Exams — Orange ===== */
+        .bd-action-btn.exams-action-btn {
+            background: linear-gradient(135deg, rgba(230,126,34,0.22), rgba(230,126,34,0.04));
+            border: 1px solid rgba(230,126,34,0.65);
+            color: #E67E22;
+        }
+        .bd-action-btn.exams-action-btn i { color: #E67E22; }
+        .bd-action-btn.exams-action-btn:hover {
+            background: linear-gradient(135deg, #E67E22, #CA6F1E);
+            border-color: #E67E22;
+            color: #2C1305;
+            box-shadow: 0 8px 22px rgba(230,126,34,0.45);
+        }
+        .bd-action-btn.exams-action-btn:hover i { color: #2C1305; }
+
+        /* ===== ❓ Question Bank — Cyan ===== */
+        .bd-action-btn.qb-action-btn {
+            background: linear-gradient(135deg, rgba(6,182,212,0.22), rgba(6,182,212,0.04));
+            border: 1px solid rgba(6,182,212,0.65);
+            color: #06B6D4;
+        }
+        .bd-action-btn.qb-action-btn i { color: #06B6D4; }
+        .bd-action-btn.qb-action-btn:hover {
+            background: linear-gradient(135deg, #06B6D4, #0891B2);
+            border-color: #06B6D4;
+            color: #052A33;
+            box-shadow: 0 8px 22px rgba(6,182,212,0.45);
+        }
+        .bd-action-btn.qb-action-btn:hover i { color: #052A33; }
+
+        /* ===== Light Theme Variants ===== */
+        [data-theme="light"] .bd-action-btn.data-action-btn {
+            background: linear-gradient(135deg, rgba(16,185,129,0.15), rgba(16,185,129,0.03));
+            border-color: rgba(5,150,105,0.7);
+            color: #047857;
+        }
+        [data-theme="light"] .bd-action-btn.data-action-btn i { color: #047857; }
+        [data-theme="light"] .bd-action-btn.data-action-btn:hover {
+            background: linear-gradient(135deg, #10B981, #047857);
+            color: #FFFCF7;
+        }
+        [data-theme="light"] .bd-action-btn.data-action-btn:hover i { color: #FFFCF7; }
+
+        [data-theme="light"] .bd-action-btn.doctor-action-btn {
+            background: linear-gradient(135deg, rgba(155,89,182,0.15), rgba(155,89,182,0.03));
+            border-color: rgba(125,60,152,0.7);
+            color: #7D3C98;
+        }
+        [data-theme="light"] .bd-action-btn.doctor-action-btn i { color: #7D3C98; }
+        [data-theme="light"] .bd-action-btn.doctor-action-btn:hover {
+            background: linear-gradient(135deg, #9B59B6, #7D3C98);
+            color: #FFFCF7;
+        }
+        [data-theme="light"] .bd-action-btn.doctor-action-btn:hover i { color: #FFFCF7; }
+
+        [data-theme="light"] .bd-action-btn.exams-action-btn {
+            background: linear-gradient(135deg, rgba(230,126,34,0.15), rgba(230,126,34,0.03));
+            border-color: rgba(202,111,30,0.7);
+            color: #CA6F1E;
+        }
+        [data-theme="light"] .bd-action-btn.exams-action-btn i { color: #CA6F1E; }
+        [data-theme="light"] .bd-action-btn.exams-action-btn:hover {
+            background: linear-gradient(135deg, #E67E22, #CA6F1E);
+            color: #FFFCF7;
+        }
+        [data-theme="light"] .bd-action-btn.exams-action-btn:hover i { color: #FFFCF7; }
+
+        [data-theme="light"] .bd-action-btn.qb-action-btn {
+            background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(6,182,212,0.03));
+            border-color: rgba(8,145,178,0.7);
+            color: #0E7490;
+        }
+        [data-theme="light"] .bd-action-btn.qb-action-btn i { color: #0E7490; }
+        [data-theme="light"] .bd-action-btn.qb-action-btn:hover {
+            background: linear-gradient(135deg, #06B6D4, #0E7490);
+            color: #FFFCF7;
+        }
+        [data-theme="light"] .bd-action-btn.qb-action-btn:hover i { color: #FFFCF7; }
 
         .extra-tabs { display: flex; gap: 12px; margin-bottom: 2rem; border-bottom: 2px solid var(--border-gold); padding-bottom: 10px; }
         .extra-tab-btn { padding: 0.7rem 2rem; border-radius: 40px; font-weight: 700; font-size: 1.1rem; cursor: pointer; color: var(--beige-light); border: 2px solid transparent; background: var(--beige-card); }
@@ -299,24 +443,28 @@
         .block-card.file-section-records  { border-color: rgba(46,204,113,0.75); border-right: 4px solid #2ECC71; }
         .block-card.file-section-doctor   { border-color: rgba(155,89,182,0.75); border-right: 4px solid #9B59B6; }
         .block-card.file-section-exams    { border-color: rgba(230,126,34,0.75); border-right: 4px solid #E67E22; }
+        .block-card.file-section-questionbank { border-color: rgba(6,182,212,0.75); border-right: 4px solid #06B6D4; }
 
         .block-card.file-section-lectures .file-section-title { color: #D4AF37; border-bottom-color: rgba(212,175,55,0.55); }
         .block-card.file-section-prelabs  .file-section-title { color: #3498DB; border-bottom-color: rgba(52,152,219,0.55); }
         .block-card.file-section-records  .file-section-title { color: #2ECC71; border-bottom-color: rgba(46,204,113,0.55); }
         .block-card.file-section-doctor   .file-section-title { color: #9B59B6; border-bottom-color: rgba(155,89,182,0.55); }
         .block-card.file-section-exams    .file-section-title { color: #E67E22; border-bottom-color: rgba(230,126,34,0.55); }
+        .block-card.file-section-questionbank .file-section-title { color: #06B6D4; border-bottom-color: rgba(6,182,212,0.55); }
 
         .block-card.file-section-lectures .file-section-title i,
         .block-card.file-section-prelabs  .file-section-title i,
         .block-card.file-section-records  .file-section-title i,
         .block-card.file-section-doctor   .file-section-title i,
-        .block-card.file-section-exams    .file-section-title i { color: inherit; }
+        .block-card.file-section-exams    .file-section-title i,
+        .block-card.file-section-questionbank .file-section-title i { color: inherit; }
 
         [data-theme="light"] .block-card.file-section-lectures .file-section-title { color: #B58A2A; }
         [data-theme="light"] .block-card.file-section-prelabs  .file-section-title { color: #2980B9; }
         [data-theme="light"] .block-card.file-section-records  .file-section-title { color: #27AE60; }
         [data-theme="light"] .block-card.file-section-doctor   .file-section-title { color: #8E44AD; }
         [data-theme="light"] .block-card.file-section-exams    .file-section-title { color: #CA6F1E; }
+        [data-theme="light"] .block-card.file-section-questionbank .file-section-title { color: #0E7490; }
 
         .close-btn { background: var(--error-red); color: white; border: none; padding: 0.5rem 1.5rem; border-radius: 40px; cursor: pointer; float: left; font-weight: 700; margin-bottom: 1rem; }
 
@@ -1181,7 +1329,12 @@
                   { name: ' EBE (MCQ) ', url: 'Anatomy/B1/MCQ.pdf' },
                   { name: ' EBE (SEQ) ', url: 'Anatomy/B1/SEQ.pdf' },
                  ],
-                  'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }] },
+                  'Past Exams': [{ name: 'امتحان B1 2024', url: 'files/anatomy/B1/PastExams/exam2024.pdf' }],
+                  'Question Bank': [
+                    { name: 'Question Bank - Anatomy B1', url: 'Anatomy/B1/QuestionBank/QB-Anatomy-B1.pdf' },
+                    { name: 'MCQs - Anatomy B1', url: 'Anatomy/B1/QuestionBank/MCQs-Anatomy-B1.pdf' },
+                    { name: 'SAQs - Anatomy B1', url: 'Anatomy/B1/QuestionBank/SAQs-Anatomy-B1.pdf' }
+                  ] },
                   
                 'B2': { 'Data': { 'Lectures': [{ name: 'محاضرة B2-1', url: 'files/anatomy/B2/Lectures/lec1.pdf' }, { name: 'محاضرة B2-2', url: 'files/anatomy/B2/Lectures/lec2.pdf' }], 'Prelabs': [{ name: 'Prelab B2-1', url: 'files/anatomy/B2/Prelabs/prelab1.pdf' }], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B2', url: 'files/anatomy/B2/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B2 2024', url: 'files/anatomy/B2/PastExams/exam2024.pdf' }] },
                 'B3': { 'Data': { 'Lectures': [{ name: 'محاضرة B3-1', url: 'files/anatomy/B3/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B3', url: 'files/anatomy/B3/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B3 2024', url: 'files/anatomy/B3/PastExams/exam2024.pdf' }] },
@@ -1262,6 +1415,15 @@
                 'B6': { 'Data': { 'Lectures': [{ name: 'محاضرة B6-1', url: 'files/family/B6/Lectures/lec1.pdf' }], 'Prelabs': [], 'Records': [] }, 'From Doctor': [{ name: 'ملاحظات الدكتور - B6', url: 'files/family/B6/FromDoctor/notes.pdf' }], 'Past Exams': [{ name: 'امتحان B6 2024', url: 'files/family/B6/PastExams/exam2024.pdf' }] }
             }
         };
+
+        // ===== Auto-init Question Bank array for every block =====
+        Object.keys(subjectFiles).forEach(sub => {
+            Object.keys(subjectFiles[sub]).forEach(block => {
+                if (!subjectFiles[sub][block]['Question Bank']) {
+                    subjectFiles[sub][block]['Question Bank'] = [];
+                }
+            });
+        });
 
         const portfolioFiles = {
             'B1': { 'general_empty': { name: 'P1 Empty', url: '1th-e.pdf' }, 'general_filled': { name: 'P1 Filled', url: '1th-f.pdf' }, 'formative_unsolved': [{ name: 'F1 Unsolved', url: 'f1-u.pdf' }], 'formative_solved': [{ name: 'F1 Solved', url: 'f1-s.pdf' }], 'incision': [{ name: 'Incision B1', url: 'ia-b1.pdf' }] },
@@ -1351,6 +1513,7 @@
             ['Lectures', 'Prelabs', 'Records'].forEach(k => (d[k] || []).forEach(f => out.push(f)));
             (data['From Doctor'] || []).forEach(f => out.push(f));
             (data['Past Exams'] || []).forEach(f => out.push(f));
+            (data['Question Bank'] || []).forEach(f => out.push(f));
             return out;
         }
         function computeBlockStats(subjectName, blockNum) {
@@ -1363,6 +1526,7 @@
                 records: (d['Records'] || []).length,
                 pastExams: (data && data['Past Exams'] || []).length,
                 doctor: (data && data['From Doctor'] || []).length,
+                questionBank: (data && data['Question Bank'] || []).length,
                 memorized: 0, reviewed: 0, total: 0, progress: 0, status: 'not-started'
             };
             const files = collectBlockFiles(subjectName, blockKey);
@@ -2276,9 +2440,10 @@
                         <div class="bd-stat"><i class="fa-solid fa-user-md"></i><span class="bd-stat-value">${stats.doctor}</span><span class="bd-stat-label">Doctor</span></div>
                     </div>
                     <div class="bd-actions">
-                        <a href="#" class="bd-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','Data'); return false;"><i class="fa-solid fa-database"></i> Data</a>
-                        <a href="#" class="bd-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','From Doctor'); return false;"><i class="fa-solid fa-user-md"></i> Doctor</a>
-                        <a href="#" class="bd-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','Past Exams'); return false;"><i class="fa-solid fa-file-pen"></i> Past Exams</a>
+                        <a href="#" class="bd-action-btn data-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','Data'); return false;"><i class="fa-solid fa-database"></i> Data</a>
+                        <a href="#" class="bd-action-btn doctor-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','From Doctor'); return false;"><i class="fa-solid fa-user-md"></i> Doctor</a>
+                        <a href="#" class="bd-action-btn exams-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','Past Exams'); return false;"><i class="fa-solid fa-file-pen"></i> Past Exams</a>
+                        <a href="#" class="bd-action-btn qb-action-btn" onclick="handleIconClick('${esc(subjectName)}','B${i}','Question Bank'); return false;"><i class="fa-solid fa-clipboard-question"></i> Question Bank</a>
                     </div>`;
                 container.appendChild(card);
             }
@@ -2346,6 +2511,8 @@
                     ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'prelabs')}
                     ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'records')}
                 </div>`;
+            } else if (type === 'Question Bank') {
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, 'Question Bank', null, '❓ Question Bank · بنك الأسئلة', 'fa-clipboard-question', 'questionbank')}</div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
@@ -2379,6 +2546,8 @@
                     ${renderSubjectFileSection(subject, b, 'Data', 'Prelabs', '🧪 Prelabs', 'fa-flask', 'prelabs')}
                     ${renderSubjectFileSection(subject, b, 'Data', 'Records', '🎧 Records', 'fa-microphone', 'records')}
                 </div>`;
+            } else if (type === 'Question Bank') {
+                contentHTML = `<div style="margin-bottom:1rem;">${renderSubjectFileSection(subject, b, 'Question Bank', null, '❓ Question Bank · بنك الأسئلة', 'fa-clipboard-question', 'questionbank')}</div>`;
             } else {
                 const icon = type === 'From Doctor' ? 'fa-user-md' : 'fa-file-pen';
                 const label = type === 'From Doctor' ? '📄 محاضرات الدكتور' : '📝 امتحانات سابقة';
