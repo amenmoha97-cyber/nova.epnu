@@ -61,7 +61,6 @@
         }
         [data-theme="light"] .auth-overlay { background: #F7F4EE; }
 
-        /* Graceful fade-out when entering the app */
         .auth-overlay.hiding {
             opacity: 0;
             visibility: hidden;
@@ -90,7 +89,6 @@
             100% { transform: scale(1.15) rotate(3deg); opacity: 1; }
         }
 
-        /* Particle canvas */
         .auth-particles {
             position: absolute;
             inset: 0;
@@ -100,7 +98,6 @@
             opacity: 0.7;
         }
 
-        /* Parallax layer for orbs (desktop only) */
         .auth-parallax-layer {
             position: absolute;
             inset: 0;
@@ -110,7 +107,6 @@
             transition: transform 0.9s cubic-bezier(.22,1,.36,1);
         }
 
-        /* Floating orbs */
         .auth-orb {
             position: absolute;
             border-radius: 50%;
@@ -128,7 +124,6 @@
             66% { transform: translate(-30px,30px) scale(0.95); }
         }
 
-        /* Main container */
         .auth-container {
             position: relative;
             z-index: 2;
@@ -158,7 +153,6 @@
             100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
         }
 
-        /* ===== LEFT PANEL — BRANDING ===== */
         .auth-brand-panel {
             position: relative;
             padding: 3rem 2.5rem;
@@ -207,7 +201,6 @@
             width: 100%;
         }
 
-        /* Logo with rotating rings + light sweep */
         .auth-logo-wrap {
             position: relative;
             width: 140px;
@@ -259,7 +252,6 @@
             50% { transform: translateY(-6px); }
         }
 
-        /* One-time light sweep on logo — مقصوصة على دايرة اللوجو */
         .auth-logo-sheen {
             position: absolute;
             top: 50%;
@@ -268,26 +260,26 @@
             height: 108px;
             margin: -54px 0 0 -54px;
             border-radius: 50%;
-            overflow: hidden;          /* ← ده اللي بيقص اللمعة على الدايرة */
+            overflow: hidden;
             pointer-events: none;
             z-index: 6;
-            animation: logoFloat 4s ease-in-out infinite; /* تتحرك مع اللوجو */
+            animation: logoFloat 4s ease-in-out infinite;
         }
         .auth-logo-sheen::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%);
-    transform: translateX(-160%) skewX(-20deg);
-    opacity: 0;
-    animation: logoSweep 2s cubic-bezier(.5,0,.5,1) 1.1s infinite;
-}
-       @keyframes logoSweep {
-    0%   { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { transform: translateX(160%) skewX(-20deg); opacity: 0; }
-}
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%);
+            transform: translateX(-160%) skewX(-20deg);
+            opacity: 0;
+            animation: logoSweep 2s cubic-bezier(.5,0,.5,1) 1.1s infinite;
+        }
+        @keyframes logoSweep {
+            0%   { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
+            8%   { opacity: 1; }
+            92%  { opacity: 1; }
+            100% { transform: translateX(160%) skewX(-20deg); opacity: 0; }
+        }
 
         .auth-brand-title {
             font-family: var(--font-english);
@@ -363,7 +355,6 @@
         }
         .auth-brand-credit b { color: var(--gold-primary); }
 
-        /* ===== RIGHT PANEL — FORM ===== */
         .auth-form-panel {
             padding: 3rem 2.5rem;
             display: flex;
@@ -391,7 +382,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Modern Tabs with sliding indicator */
         .auth-tabs-modern {
             position: relative;
             display: grid;
@@ -433,11 +423,9 @@
         .auth-tab-btn:hover { color: var(--beige-main); }
         .auth-tab-btn.active { color: #0A0A0A; }
 
-        /* Forms */
         .auth-form { display: none; }
         .auth-form.active { display: block; }
 
-        /* ===== Entrance animations (JS-triggered via .entrance on overlay) ===== */
         @keyframes authFadeSlide {
             from { opacity: 0; transform: translateY(22px); filter: blur(10px); }
             to { opacity: 1; transform: translateY(0); filter: blur(0); }
@@ -474,7 +462,6 @@
         .auth-overlay.entrance .auth-welcome-sub { animation: authFadeSlide 0.65s cubic-bezier(.22,1,.36,1) 0.50s both; }
         .auth-overlay.entrance .auth-tabs-modern { animation: authFadeSlide 0.65s cubic-bezier(.22,1,.36,1) 0.58s both; }
 
-        /* Inputs with floating label */
         .auth-field {
             position: relative;
             margin-bottom: 1.05rem;
@@ -548,7 +535,6 @@
             transform: translateY(-50%) scale(1.1);
         }
 
-        /* Error / Success states */
         .auth-field.error input {
             border-color: var(--error-red);
             background: rgba(231,76,60,0.06);
@@ -563,7 +549,6 @@
         }
         .auth-field.success .field-icon { color: var(--success-green); opacity: 1; }
 
-        /* Password toggle */
         .auth-field .pwd-toggle {
             position: absolute;
             left: 0.7rem;
@@ -584,7 +569,6 @@
         .auth-field .pwd-toggle:hover i { transform: scale(1.12); }
         .auth-field .pwd-toggle.toggled i { transform: rotate(180deg); }
 
-        /* Password strength + requirements */
         .pwd-strength {
             margin-top: 0.55rem;
             height: 4px;
@@ -628,7 +612,6 @@
         .pwd-req.met i { color: var(--success-green); }
         .pwd-req.met i::before { content: "\f058"; font-family: "Font Awesome 6 Free"; font-weight: 900; }
 
-        /* Submit button with shine + ripple */
         .auth-submit {
             position: relative;
             overflow: hidden;
@@ -671,7 +654,6 @@
         .auth-submit:active { transform: translateY(0) scale(0.99); }
         .auth-submit:disabled { cursor: not-allowed; transform: none; }
 
-        /* Loading state */
         .auth-submit.loading {
             pointer-events: none;
         }
@@ -690,7 +672,6 @@
             margin: -11px 0 0 -11px;
         }
 
-        /* Success state */
         .auth-submit.success {
             background: linear-gradient(135deg, #2ECC71, #27AE60) !important;
             color: #fff !important;
@@ -698,7 +679,6 @@
         }
         .auth-submit.success::before { display: none; }
 
-        /* Ripple */
         .ripple {
             position: absolute;
             border-radius: 50%;
@@ -709,7 +689,6 @@
         }
         @keyframes rippleAnim { to { transform: scale(4); opacity: 0; } }
 
-        /* Forgot link */
         .auth-forgot {
             text-align: left;
             margin-top: 0.9rem;
@@ -738,7 +717,6 @@
         }
         .auth-forgot a:hover::after { transform: scaleX(1); transform-origin: left; }
 
-        /* Alerts */
         .alert-msg {
             color: var(--error-red);
             font-size: 0.85rem;
@@ -753,7 +731,6 @@
         .alert-msg.success { color: var(--success-green); border-color: rgba(46,204,113,0.55); background: rgba(46,204,113,0.10); }
         @keyframes alertIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Responsive */
         @media (max-width: 900px) {
             .auth-container { grid-template-columns: 1fr; min-height: auto; max-width: 520px; }
             .auth-brand-panel { padding: 2rem 1.5rem; border-right: none; border-bottom: 1px solid rgba(212,175,55,0.20); min-height: auto; }
@@ -1326,6 +1303,178 @@
             .timer-modes { gap: 6px; }
             .timer-mode-btn { padding: 0.5rem 0.95rem; font-size: 0.78rem; }
         }
+
+        /* ==========================================================
+           ===== HOME PAGE — PREMIUM ANIMATIONS =====
+           ========================================================== */
+
+        /* ----- Carousel entrance (cinematic) ----- */
+        #homeSection .carousel-container {
+            animation: homeCarouselIn 1.1s cubic-bezier(.22,1,.36,1) both;
+        }
+        @keyframes homeCarouselIn {
+            0%   { opacity: 0; transform: translateY(40px) scale(0.94); filter: blur(14px); }
+            60%  { opacity: 1; filter: blur(0); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Slide zoom-in effect (Ken Burns) on active slide image */
+        .carousel-slide.active img {
+            animation: kenBurns 7s ease-in-out infinite alternate;
+        }
+        @keyframes kenBurns {
+            0%   { transform: scale(1) translate(0,0); }
+            100% { transform: scale(1.08) translate(-1%, -1%); }
+        }
+
+        /* Golden shimmer overlay on carousel */
+        .carousel-container::after {
+            content: "";
+            position: absolute;
+            top: 0; left: -60%;
+            width: 40%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(212,175,55,0.25), transparent);
+            transform: skewX(-20deg);
+            animation: carouselShine 6s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 5;
+        }
+        @keyframes carouselShine {
+            0%, 70% { left: -60%; }
+            100%    { left: 130%; }
+        }
+
+        /* ----- Home credit (fade from bottom) ----- */
+        #homeSection .home-credit {
+            animation: fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.4s both;
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ----- Stats bar (staggered pop-in) ----- */
+        #homeSection .stats-bar {
+            animation: fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.55s both;
+            position: relative;
+            overflow: hidden;
+        }
+        #homeSection .stats-bar::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.10), transparent);
+            transform: translateX(-100%);
+            animation: statsSweep 3.5s ease-in-out 1.2s infinite;
+            pointer-events: none;
+        }
+        @keyframes statsSweep {
+            0%   { transform: translateX(-100%); }
+            60%  { transform: translateX(100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Individual stat item — pop in + icon glow */
+        #homeSection .stat-item {
+            animation: statPop 0.7s cubic-bezier(.34,1.56,.64,1) both;
+            transition: transform 0.3s ease;
+        }
+        #homeSection .stat-item:nth-child(1) { animation-delay: 0.70s; }
+        #homeSection .stat-item:nth-child(2) { animation-delay: 0.85s; }
+        #homeSection .stat-item:nth-child(3) { animation-delay: 1.00s; }
+
+        #homeSection .stat-item:hover {
+            transform: translateY(-4px) scale(1.03);
+        }
+        #homeSection .stat-item:hover i {
+            animation: iconPulse 0.9s ease-in-out infinite;
+        }
+        @keyframes statPop {
+            0%   { opacity: 0; transform: translateY(22px) scale(0.85); }
+            70%  { opacity: 1; transform: translateY(-4px) scale(1.05); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(212,175,55,0.6)); }
+            50%      { transform: scale(1.18); filter: drop-shadow(0 0 12px rgba(212,175,55,1)); }
+        }
+
+        /* Number flash effect when counting */
+        .stat-item strong.counting {
+            animation: numFlash 0.4s ease;
+        }
+        @keyframes numFlash {
+            0%   { color: var(--gold-primary); text-shadow: 0 0 0 transparent; }
+            50%  { color: #FFF4C8; text-shadow: 0 0 14px rgba(212,175,55,0.9); }
+            100% { color: var(--gold-primary); text-shadow: 0 0 0 transparent; }
+        }
+
+        /* ----- Contact button — pulsing aura + shine ----- */
+        #homeSection .contact-btn-wrapper {
+            animation: fadeUp 0.8s cubic-bezier(.22,1,.36,1) 0.9s both;
+        }
+        #homeSection .contact-btn {
+            position: relative;
+            overflow: hidden;
+            animation: contactPulse 2.4s ease-in-out infinite;
+            transition: transform 0.35s cubic-bezier(.22,1,.36,1);
+        }
+        #homeSection .contact-btn::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -80%;
+            width: 45%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.65), transparent);
+            transform: skewX(-20deg);
+            animation: contactShine 3.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+        @keyframes contactShine {
+            0%, 60% { left: -80%; }
+            100%    { left: 150%; }
+        }
+        @keyframes contactPulse {
+            0%, 100% { box-shadow: 0 6px 30px rgba(212,175,55,0.4), 0 0 0 0 rgba(212,175,55,0.45); }
+            50%      { box-shadow: 0 10px 40px rgba(212,175,55,0.6), 0 0 0 18px rgba(212,175,55,0); }
+        }
+        #homeSection .contact-btn:hover {
+            transform: translateY(-4px) scale(1.05);
+        }
+        #homeSection .contact-btn i {
+            animation: whatsappWiggle 2.8s ease-in-out infinite;
+        }
+        @keyframes whatsappWiggle {
+            0%, 80%, 100% { transform: rotate(0deg) scale(1); }
+            85%           { transform: rotate(-12deg) scale(1.15); }
+            92%           { transform: rotate(12deg) scale(1.15); }
+        }
+
+        /* ----- Floating golden dots background for Home section ----- */
+        #homeSection {
+            position: relative;
+            overflow: hidden;
+        }
+        #homeSection::before,
+        #homeSection::after {
+            content: "";
+            position: absolute;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #D4AF37, transparent 70%);
+            filter: blur(1px);
+            opacity: 0.7;
+            pointer-events: none;
+            animation: floatDot 12s linear infinite;
+        }
+        #homeSection::before { top: 10%; left: 8%;  animation-delay: 0s; }
+        #homeSection::after  { top: 70%; left: 92%; animation-delay: -6s; }
+        @keyframes floatDot {
+            0%   { transform: translate(0,0) scale(1); opacity: 0; }
+            10%  { opacity: 0.8; }
+            50%  { transform: translate(30px, -40px) scale(1.4); opacity: 0.9; }
+            90%  { opacity: 0.4; }
+            100% { transform: translate(-20px, -100px) scale(0.8); opacity: 0; }
+        }
     </style>
 </head>
 <body>
@@ -1397,7 +1546,6 @@
                         <button class="auth-tab-btn" id="signupTabBtn" type="button" onclick="switchAuthMode('signup')">حساب جديد</button>
                     </div>
 
-                    <!-- LOGIN FORM -->
                     <form id="loginForm" class="auth-form active" autocomplete="on" novalidate>
                         <div class="auth-field">
                             <input type="text" id="loginId" required placeholder=" " autocomplete="username">
@@ -1417,7 +1565,6 @@
                         <div class="alert-msg" id="loginAlert"></div>
                     </form>
 
-                    <!-- SIGNUP FORM -->
                     <form id="signupForm" class="auth-form" autocomplete="on" novalidate>
                         <div class="auth-field">
                             <input type="text" id="signupName" required placeholder=" ">
@@ -1469,7 +1616,6 @@
         </div>
     </div>
 
-    <!-- ===== Header ===== -->
     <header>
         <div class="logo-container">
             <img src="logo.jpg" alt="NOVA Logo" class="site-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/48/D4AF37/080808?text=N';">
@@ -1482,7 +1628,6 @@
         </div>
     </header>
 
-    <!-- ===== Main Content ===== -->
     <div class="container">
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="showSection('home', this)"><i class="fa-solid fa-house"></i> الرئيسية</button>
@@ -1496,7 +1641,6 @@
 
         <div class="loader" id="globalLoader"></div>
 
-        <!-- HOME -->
         <div class="section-content active" id="homeSection">
             <div class="carousel-container" id="mainCarousel">
                 <div class="carousel-slides" id="carouselSlides">
@@ -1518,7 +1662,6 @@
             </div>
         </div>
 
-        <!-- DASHBOARD -->
         <div class="section-content" id="dashboardSection">
             <div class="dash-hero">
                 <svg class="dash-hero-art" viewBox="0 0 360 360" fill="none" stroke="#D4AF37" stroke-width="1.1" aria-hidden="true">
@@ -1571,7 +1714,6 @@
             <div class="activity-card" id="dashActivityList"></div>
         </div>
 
-        <!-- CORE -->
         <div class="section-content" id="coreSection">
             <h2 class="section-title">
                 <span>المواد الأساسية (Core Subjects)</span>
@@ -1588,7 +1730,6 @@
             <div class="grid-container" id="subjectBlocksContainer"></div>
         </div>
 
-        <!-- EXTRA -->
         <div class="section-content" id="extraSection">
             <div class="extra-tabs">
                 <button class="extra-tab-btn active" data-tab="tab1" onclick="switchExtraTab('tab1', this)"><i class="fa-solid fa-star"></i> مواد تضاف للمجموع</button>
@@ -1613,7 +1754,6 @@
             </div>
         </div>
 
-        <!-- PORTFOLIO -->
         <div class="section-content" id="portfolioSection">
             <h2 class="section-title">قسم البورتفوليو (Portfolio)</h2>
             <div class="grid-container">
@@ -1626,7 +1766,6 @@
             </div>
         </div>
 
-        <!-- SAVED -->
         <div class="section-content" id="savedSection">
             <h2 class="section-title">
                 <span><i class="fa-solid fa-star"></i> My Saved Resources — المحفوظات</span>
@@ -1635,7 +1774,6 @@
             <div id="savedContent"></div>
         </div>
 
-        <!-- OTHER -->
         <div class="section-content" id="otherSection">
             <h2 class="section-title"><i class="fa-solid fa-toolbox"></i> أدوات مساعدة</h2>
             <div class="other-tools">
@@ -1716,7 +1854,6 @@
         <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
     </footer>
 
-    <!-- Modals -->
     <div id="portfolioModal" class="modal" style="display:none;">
         <div class="modal-content">
             <button class="close-btn" onclick="document.getElementById('portfolioModal').style.display='none';">إغلاق</button>
@@ -2003,7 +2140,6 @@
             return 'guest';
         }
 
-        // ===== File Status =====
         function getFileStatusMap() {
             try {
                 const all = JSON.parse(localStorage.getItem('nova_file_status') || '{}');
@@ -2162,7 +2298,6 @@
             toggleFileStatus(audioEl.src, field);
         }
 
-        // ===== Appointments =====
         function getAppointments() {
             try {
                 const all = JSON.parse(localStorage.getItem('nova_appointments') || '{}');
@@ -2275,7 +2410,6 @@
             else el.innerText = `بعد ${Math.floor(diff / 60000)} دقيقة`;
         }
 
-        // ===== Dashboard Tasks =====
         function loadDashTasks() {
             try {
                 const all = JSON.parse(localStorage.getItem('nova_dash_tasks_v2') || '{}');
@@ -2329,7 +2463,6 @@
             if (el) el.innerText = `${tasks.filter(t => t.done).length}/${tasks.length}`;
         }
 
-        // ===== Last Opened =====
         function setLastOpened(file) {
             const data = { ...file, timestamp: Date.now() };
             localStorage.setItem('nova_last_opened', JSON.stringify(data));
@@ -2404,7 +2537,6 @@
             }
         }
 
-        // ===== Saved =====
         function getSavedResources() {
             try { const r = localStorage.getItem('nova_saved_resources'); return r ? JSON.parse(r) : []; } catch (e) { return []; }
         }
@@ -2472,7 +2604,6 @@
         function openAudioPlayerFromSaved(u, n, s, b, t, st) { openAudioPlayer(dec(u), dec(n), dec(s), dec(b), dec(t), dec(st)); }
         function openPDFViewerFromSaved(u, n, s, b, t, st) { openPDFViewer(dec(u), dec(n), dec(s), dec(b), dec(t), dec(st)); }
 
-        // ===== Audio =====
         let audioEl = null;
         function openAudioPlayer(url, name, subject, block, type, subType, event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
@@ -2538,7 +2669,6 @@
             audioEl.currentTime = pct * audioEl.duration;
         });
 
-        // ===== PDF =====
         let pdfCurrentFile = null;
         let pdfCurrentList = [];
         let pdfCurrentIndex = 0;
@@ -2642,7 +2772,6 @@
             document.getElementById('pdfViewerModal').style.display = 'none';
         }
 
-        // ===== Carousel =====
         function initCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.getElementById('carouselIndicators');
@@ -2669,7 +2798,6 @@
             startAutoPlay();
         }
 
-        // ===== GPA =====
         const GPA_ENTRIES = [
             { id: 'gpaResearch', name: 'Research', max: 30 },
             { id: 'gpaSkill1', name: 'Skill Lab 1', max: 15 },
@@ -2716,7 +2844,6 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
-        // ===== Pomodoro =====
         const TIMER_DURATIONS = { focus: 50 * 60, short: 10 * 60, long: 30 * 60 };
         const TIMER_LABELS = {
             focus: 'Focus Time · وقت التركيز',
@@ -2878,7 +3005,6 @@
             setTimeout(() => { startTimer(); }, 1000);
         }
 
-        // ===== Extra Tabs =====
         function switchExtraTab(tabId, btn) {
             document.querySelectorAll('.extra-tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.extra-tab-btn').forEach(el => el.classList.remove('active'));
@@ -2892,7 +3018,6 @@
             modal.style.display = 'flex';
         }
 
-        // ===== Core Subjects =====
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             if (!grid) return;
@@ -3100,7 +3225,6 @@
             }, 300);
         }
 
-        // ===== Portfolio =====
         function renderPortfolioContent(blockName, content) {
             const data = portfolioFiles[blockName] || {};
             const emptyFile = data['general_empty'] || null;
@@ -3260,11 +3384,6 @@
             }
         }
 
-        // ================================================================
-        // ===== AUTH ENHANCEMENTS =====
-        // ================================================================
-
-        // ===== Password visibility toggle (with icon rotation) =====
         function togglePassword(inputId, btn) {
             const input = document.getElementById(inputId);
             const icon = btn.querySelector("i");
@@ -3279,7 +3398,6 @@
             }
         }
 
-        // ===== Helper: shake a field on error =====
         function shakeField(fieldEl) {
             if (!fieldEl) return;
             fieldEl.classList.remove("error");
@@ -3288,14 +3406,12 @@
             setTimeout(() => fieldEl.classList.remove("error"), 550);
         }
 
-        // ===== Helper: mark field as success =====
         function markFieldSuccess(fieldEl) {
             if (!fieldEl) return;
             fieldEl.classList.add("success");
             setTimeout(() => fieldEl.classList.remove("success"), 1500);
         }
 
-        // ===== Helper: set button loading =====
         function setBtnLoading(btn, loading) {
             if (!btn) return;
             if (loading) {
@@ -3307,7 +3423,6 @@
             }
         }
 
-        // ===== Helper: set button success =====
         function setBtnSuccess(btn) {
             if (!btn) return;
             btn.classList.add("success");
@@ -3317,7 +3432,6 @@
             if (span) span.textContent = "تم بنجاح";
         }
 
-        // ===== Password strength calculator =====
         function evaluatePasswordStrength(pwd) {
             const reqs = {
                 length: pwd.length >= 6,
@@ -3346,7 +3460,6 @@
             fill.style.width = pct + "%";
             fill.style.background = color;
 
-            // Requirements chips
             reqWrap.querySelectorAll(".pwd-req").forEach(el => {
                 const key = el.getAttribute("data-req");
                 const met = reqs[key];
@@ -3363,7 +3476,6 @@
             if (reqWrap) reqWrap.classList.toggle("visible", show);
         }
 
-        // ===== Trigger staggered form entrance when switching forms =====
         function triggerFormEntrance(formEl) {
             if (!formEl) return;
             const fields = formEl.querySelectorAll(".auth-field");
@@ -3380,7 +3492,6 @@
             }
         }
 
-        // ===== Retrigger full entrance animation =====
         function playEntrance() {
             const overlay = document.getElementById("authOverlay");
             if (!overlay) return;
@@ -3389,7 +3500,6 @@
             overlay.classList.add("entrance");
         }
 
-        // ===== Switch Auth Mode (Login ↔ Signup) — Smooth crossfade =====
         function switchAuthMode(mode) {
             const lf = document.getElementById("loginForm");
             const sf = document.getElementById("signupForm");
@@ -3402,7 +3512,6 @@
             const targetForm = mode === "login" ? lf : sf;
             const hideForm = mode === "login" ? sf : lf;
 
-            // Fade out the currently visible form briefly
             if (hideForm && hideForm.classList.contains("active")) {
                 hideForm.style.transition = "opacity 0.25s ease, transform 0.25s ease";
                 hideForm.style.opacity = "0";
@@ -3448,7 +3557,6 @@
             if (signupAlert) signupAlert.style.display = "none";
         }
 
-        // ===== SIGNUP FORM HANDLER =====
         document.getElementById("signupForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signupName").value.trim();
@@ -3507,7 +3615,6 @@
                     return showErr("تم إنشاء الحساب لكن حدث خطأ في حفظ البيانات.");
                 }
 
-                // Success animation
                 setBtnLoading(btn, false);
                 setBtnSuccess(btn);
                 showErr("✅ تم إنشاء الحساب بنجاح! جارٍ الدخول...", true);
@@ -3519,7 +3626,6 @@
             }
         });
 
-        // ===== LOGIN FORM HANDLER =====
         document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const loginId = document.getElementById("loginId").value.trim();
@@ -3573,7 +3679,6 @@
                     supabaseId: authData.user.id
                 }));
 
-                // Success animation
                 setBtnLoading(btn, false);
                 setBtnSuccess(btn);
                 setTimeout(() => { showMainApp(displayName); }, 700);
@@ -3584,7 +3689,6 @@
             }
         });
 
-        // ===== Forgot =====
         let forgotStudentId = "";
         function openForgot() {
             document.getElementById("forgotModal").style.display = "flex";
@@ -3630,7 +3734,6 @@
             }
         }
 
-        // ===== Dashboard =====
         const DASH_ACTIVITY = [
             { icon: 'fa-seedling', text: 'بدأت رحلتك في NOVA', sub: 'مرحباً بك', time: 'الآن' },
             { icon: 'fa-book-open', text: 'تصفح المواد الأساسية', sub: 'Core Subjects', time: '' },
@@ -3674,7 +3777,6 @@
             setTimeout(() => openSubject('Anatomy'), 420);
         }
 
-        // ===== Main App =====
         function showMainApp(userName) {
             document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
             const overlay = document.getElementById("authOverlay");
@@ -3743,7 +3845,6 @@
             if (pdf && pdf.style.display === "flex") { closePDFViewer(); return; }
         });
 
-        // ===== Global Interceptor =====
         document.addEventListener('click', function(e) {
             if (e.defaultPrevented) return;
             if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -3770,7 +3871,6 @@
             }
         });
 
-        // ===== Ripple on submit buttons =====
         document.querySelectorAll('.auth-submit').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 const r = document.createElement('span');
@@ -3785,7 +3885,6 @@
             });
         });
 
-        // ===== Password strength listeners =====
         (function initPasswordStrength() {
             const pwdInput = document.getElementById("signupPassword");
             if (!pwdInput) return;
@@ -3796,7 +3895,6 @@
             });
         })();
 
-        // ===== Cursor Parallax (Desktop only) =====
         (function initParallax() {
             const canHover = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
             const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -3823,7 +3921,6 @@
             loop();
         })();
 
-        // ===== Particle canvas =====
         (function initParticles() {
             const canvas = document.getElementById('authParticles');
             if (!canvas) return;
@@ -3839,7 +3936,6 @@
             }
             function createParticles() {
                 particles = [];
-                // Reduce particles on mobile & for reduced-motion users
                 let count = Math.min(80, Math.floor((w * h) / 16000));
                 if (isMobile) count = Math.floor(count * 0.45);
                 if (reduceMotion) count = Math.floor(count * 0.35);
@@ -3858,7 +3954,6 @@
             let rafId = null;
             let lastFrame = 0;
             function draw(t) {
-                // Throttle to ~30fps on mobile for smoothness
                 if (isMobile && t - lastFrame < 33) {
                     rafId = requestAnimationFrame(draw);
                     return;
@@ -3879,7 +3974,6 @@
                     ctx.fillStyle = `rgba(${gold},${alpha})`;
                     ctx.fill();
                 });
-                // Connections (skip on mobile for performance)
                 if (!isMobile) {
                     const maxDist = 110;
                     for (let i = 0; i < particles.length; i++) {
@@ -3906,10 +4000,75 @@
             rafId = requestAnimationFrame(draw);
         })();
 
-        // ===== Init =====
+        /* ==========================================================
+           ===== HOME PAGE ANIMATION CONTROLLER =====
+           ========================================================== */
+
+        function animateCounter(el, target, duration = 1400) {
+            if (!el) return;
+            const start = 0;
+            const startTime = performance.now();
+            el.classList.add('counting');
+            function step(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                const current = Math.floor(start + (target - start) * eased);
+                el.innerText = current;
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    el.innerText = target;
+                    setTimeout(() => el.classList.remove('counting'), 400);
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function playHomeEntrance() {
+            const home = document.getElementById('homeSection');
+            if (!home) return;
+
+            const animated = home.querySelectorAll(
+                '.carousel-container, .home-credit, .stats-bar, .stat-item, .contact-btn-wrapper, .contact-btn'
+            );
+            animated.forEach(el => {
+                el.style.animation = 'none';
+                void el.offsetHeight;
+                el.style.animation = '';
+            });
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const ts = document.getElementById('totalSubjects');
+                    const tf = document.getElementById('totalFiles');
+                    if (ts) animateCounter(ts, coreSubjects.length, 1200);
+                    if (tf) animateCounter(tf, coreSubjects.length * 6, 1400);
+                }, 750);
+            });
+        }
+
+        (function patchShowSectionForHome() {
+            const originalShow = window.showSection;
+            window.showSection = function(section, btnElement) {
+                if (typeof originalShow === 'function') {
+                    originalShow(section, btnElement);
+                }
+                if (section === 'home') {
+                    setTimeout(playHomeEntrance, 120);
+                }
+            };
+        })();
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (document.getElementById('homeSection')?.classList.contains('active')) {
+                    playHomeEntrance();
+                }
+            }, 350);
+        });
+
         window.onload = function() {
             loadPdfCompleted();
-            // Play the entrance animation on first load
             playEntrance();
             try {
                 const activeUser = JSON.parse(localStorage.getItem("nova_active_user"));
@@ -3927,7 +4086,6 @@
         console.log("NOVA Portal loaded.");
     </script>
 
-    <!-- Supabase -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
         const SUPABASE_URL = "https://pyfdeyriireqzrlaiajw.supabase.co";
