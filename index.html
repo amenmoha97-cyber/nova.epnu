@@ -8,6 +8,191 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Poppins:wght@400;600;700;800&family=Inter:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+      /* ================================================================
+   ===== LUXURY USER BADGE — HEADER AVATAR ANIMATION =====
+   ================================================================ */
+.user-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.3rem 1.1rem 0.3rem 0.55rem;
+    border-radius: 40px;
+    background: linear-gradient(135deg, rgba(30,27,24,0.92), rgba(16,15,14,0.85));
+    border: 1px solid var(--border-gold);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    overflow: hidden;
+    isolation: isolate;
+    transition: border-color .45s cubic-bezier(.22,1,.36,1),
+                box-shadow .45s cubic-bezier(.22,1,.36,1),
+                transform .45s cubic-bezier(.22,1,.36,1);
+}
+[data-theme="light"] .user-badge {
+    background: linear-gradient(135deg, #FFFCF7, #F3ECDF);
+    border-color: #E4DCCF;
+}
+
+/* لمعة بتعدي على البادج عند الـ hover */
+.user-badge::before {
+    content: "";
+    position: absolute;
+    top: 0; left: -70%;
+    width: 45%; height: 100%;
+    background: linear-gradient(115deg, transparent, rgba(245,215,122,0.5), transparent);
+    transform: skewX(-22deg);
+    transition: left .9s cubic-bezier(.22,1,.36,1);
+    pointer-events: none;
+    z-index: 1;
+}
+.user-badge:hover::before { left: 140%; }
+
+.user-badge:hover {
+    border-color: var(--gold-primary);
+    box-shadow: 0 0 0 1px rgba(212,175,55,0.35),
+                0 8px 26px rgba(212,175,55,0.28);
+    transform: translateY(-2px);
+}
+
+/* ===== الأفاتار ===== */
+.user-avatar {
+    position: relative;
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+}
+
+/* الهالة النابضة */
+.avatar-glow {
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212,175,55,0.55), transparent 68%);
+    filter: blur(7px);
+    opacity: .55;
+    animation: avatarGlow 2.8s ease-in-out infinite;
+    pointer-events: none;
+}
+@keyframes avatarGlow {
+    0%, 100% { opacity: .4; transform: scale(.9); }
+    50%      { opacity: .95; transform: scale(1.15); }
+}
+
+/* الحلقة الذهبية اللي بتلف */
+.user-avatar::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg,
+        transparent 0%, rgba(212,175,55,0) 8%,
+        #D4AF37 18%, #F5D77A 26%, #D4AF37 34%,
+        transparent 44%, transparent 58%,
+        #D4AF37 68%, #F5D77A 76%, #D4AF37 84%,
+        transparent 94%);
+    animation: avatarRingSpin 3.2s linear infinite;
+    filter: blur(1px);
+    pointer-events: none;
+}
+@keyframes avatarRingSpin { to { transform: rotate(360deg); } }
+
+/* القرص الداخلي */
+.user-avatar::after {
+    content: "";
+    position: absolute;
+    inset: 1.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, #2A241C, #0B0A09 78%);
+    border: 1px solid rgba(212,175,55,.45);
+    box-shadow: inset 0 0 10px rgba(212,175,55,.18);
+    pointer-events: none;
+}
+[data-theme="light"] .user-avatar::after {
+    background: radial-gradient(circle at 35% 28%, #FFFDF8, #EFE6D6 78%);
+    border-color: rgba(181,138,42,.45);
+}
+
+/* الأيقونة نفسها */
+.user-avatar i {
+    position: relative;
+    z-index: 3;
+    font-size: 1rem;
+    background: linear-gradient(135deg, #F8E3A3 0%, #D4AF37 45%, #C5A059 70%, #F5D77A 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #D4AF37; /* fallback */
+    filter: drop-shadow(0 0 6px rgba(212,175,55,.7));
+    animation: avatarIconShimmer 3s linear infinite,
+               avatarIconBob 3.4s ease-in-out infinite;
+}
+@keyframes avatarIconShimmer { to { background-position: 200% center; } }
+@keyframes avatarIconBob {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50%      { transform: translateY(-2px) scale(1.08); }
+}
+
+/* النقطة اللي بتدور في المدار */
+.orbit-dot {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    animation: avatarOrbit 3.6s linear infinite;
+    pointer-events: none;
+    z-index: 4;
+}
+.orbit-dot::before {
+    content: "";
+    position: absolute;
+    top: -2px; left: 50%;
+    width: 5px; height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: #F5D77A;
+    box-shadow: 0 0 8px 2px rgba(245,215,122,.95),
+                0 0 16px 4px rgba(212,175,55,.5);
+}
+@keyframes avatarOrbit { to { transform: rotate(360deg); } }
+
+/* ===== الاسم ===== */
+.user-info {
+    position: relative;
+    z-index: 2;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--beige-main);
+    white-space: nowrap;
+    max-width: 190px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color .35s ease, letter-spacing .35s ease;
+}
+.user-badge:hover .user-info {
+    color: var(--gold-primary);
+    letter-spacing: .3px;
+}
+[data-theme="light"] .user-info { color: #29251F; }
+[data-theme="light"] .user-badge:hover .user-info { color: #B58A2A; }
+
+/* ===== Responsive ===== */
+@media (max-width: 480px) {
+    .user-badge { padding: 0.25rem 0.8rem 0.25rem 0.45rem; gap: 8px; }
+    .user-avatar { width: 30px; height: 30px; }
+    .user-avatar i { font-size: 0.85rem; }
+    .user-info { max-width: 110px; font-size: 0.8rem; }
+}
+
+/* ===== احترام تقليل الحركة ===== */
+@media (prefers-reduced-motion: reduce) {
+    .user-avatar::before,
+    .user-avatar i,
+    .avatar-glow,
+    .orbit-dot,
+    .user-badge::before { animation: none !important; transition: none !important; }
+}
         :root {
             --bg-black: #080808;
             --card-black: #121110;
@@ -303,8 +488,7 @@
         .brand-title { color: var(--gold-primary); font-size: 1.8rem; font-family: var(--font-english); font-weight: 700; letter-spacing: 2px; }
         [data-theme="light"] .brand-title { color: #B58A2A; }
         .user-control { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .user-info { font-size: 0.9rem; color: var(--beige-main); background: rgba(28,25,23,0.8); padding: 0.4rem 1.2rem; border-radius: 30px; border: 1px solid var(--border-gold); backdrop-filter: blur(4px); }
-        [data-theme="light"] .user-info { background: #FFFCF7; border-color: #E4DCCF; color: #29251F; }
+        
         .theme-toggle { background: transparent; border: 1px solid var(--border-gold); color: var(--gold-primary); padding: 0.4rem 0.9rem; border-radius: 30px; cursor: pointer; transition: 0.3s; font-size: 1.1rem; }
         .theme-toggle:hover { background: var(--gold-primary); color: #0A0A0A; }
         [data-theme="light"] .theme-toggle { border-color: #B58A2A; color: #B58A2A; }
@@ -1420,10 +1604,17 @@
             <span class="brand-title">NOVA</span>
         </div>
         <div class="user-control">
-            <span class="user-info" id="userInfoDisplay">أهلاً بك</span>
-            <button class="theme-toggle" onclick="toggleTheme()" title="تبديل السمة"><i class="fa-solid fa-moon"></i></button>
-            <button class="logout-btn" onclick="logout()">خروج <i class="fa-solid fa-right-from-bracket"></i></button>
+    <div class="user-badge">
+        <div class="user-avatar">
+            <span class="avatar-glow"></span>
+            <span class="orbit-dot"></span>
+            <i class="fa-solid fa-user-graduate"></i>
         </div>
+        <span class="user-info" id="userInfoDisplay">أهلاً بك</span>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()" title="تبديل السمة"><i class="fa-solid fa-moon"></i></button>
+    <button class="logout-btn" onclick="logout()">خروج <i class="fa-solid fa-right-from-bracket"></i></button>
+</div>
     </header>
 
     <div class="container">
@@ -1468,7 +1659,7 @@
                 </svg>
                 <div class="dash-hero-content">
                     <p class="dash-greet-en">Welcome, <span id="dashUserName">Amin</span> 👋</p>
-                    <h1 class="dash-greet-ar">أهلاً بك يا <span id="dashUserNameAr">أمين</span> 👋</h1>
+                    <h1 class="dash-greet-ar">أهلاً يا <span id="dashUserNameAr">أمين</span> 👋</h1>
                     <p class="dash-sub">Here's your academic overview — إليك نظرة سريعة على يومك الأكاديمي</p>
                     <div class="dash-hero-badges">
                         <span class="hero-badge"><i class="fa-solid fa-graduation-cap"></i> FOM · EPNU</span>
@@ -3596,7 +3787,7 @@
         }
 
         function showMainApp(userName) {
-            document.getElementById("userInfoDisplay").innerHTML = `الطالب: ${userName}`;
+            document.getElementById("userInfoDisplay").innerHTML = userName;
             const overlay = document.getElementById("authOverlay");
             overlay.classList.add("hiding");
             setTimeout(() => {
