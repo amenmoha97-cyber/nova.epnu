@@ -258,9 +258,9 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-6px); }
         }
-        /* One-time light sweep on logo */
-        .auth-logo-wrap::after {
-            content: "";
+
+        /* One-time light sweep on logo — مقصوصة على دايرة اللوجو */
+        .auth-logo-sheen {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -268,20 +268,26 @@
             height: 108px;
             margin: -54px 0 0 -54px;
             border-radius: 50%;
-            background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.75) 50%, transparent 70%);
-            transform: translateX(-160%) skewX(-20deg);
-            opacity: 0;
+            overflow: hidden;          /* ← ده اللي بيقص اللمعة على الدايرة */
             pointer-events: none;
             z-index: 6;
-            animation: logoSweep 1.6s cubic-bezier(.5,0,.5,1) 1.1s 1 forwards;
+            animation: logoFloat 4s ease-in-out infinite; /* تتحرك مع اللوجو */
         }
+      .auth-logo-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.85) 50%, transparent 65%);
+    transform: translateX(-160%) skewX(-20deg);
+    opacity: 0;
+    animation: logoSweep 2s cubic-bezier(.5,0,.5,1) 1.1s infinite;
+}
         @keyframes logoSweep {
-            0% { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { transform: translateX(160%) skewX(-20deg); opacity: 0; }
-        }
-
+    0%   { transform: translateX(-160%) skewX(-20deg); opacity: 0; }
+    8%   { opacity: 1; }
+    92%  { opacity: 1; }
+    100% { transform: translateX(160%) skewX(-20deg); opacity: 0; }
+}
         .auth-brand-title {
             font-family: var(--font-english);
             font-size: 2.6rem;
@@ -753,7 +759,7 @@
             .auth-brand-features, .auth-brand-credit, .auth-brand-tag { display: none; }
             .auth-logo-wrap { width: 90px; height: 90px; margin-bottom: 0.8rem; }
             .auth-logo { width: 72px; height: 72px; }
-            .auth-logo-wrap::after { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
+            .auth-logo-sheen { width: 72px; height: 72px; margin: -36px 0 0 -36px; }
             .auth-brand-title { font-size: 1.9rem; letter-spacing: 5px; margin-bottom: 0.5rem; }
             .auth-form-panel { padding: 2rem 1.5rem; }
         }
@@ -1344,6 +1350,7 @@
                         <div class="auth-logo-glow"></div>
                         <div class="auth-logo-ring"></div>
                         <div class="auth-logo-ring auth-logo-ring-2"></div>
+                        <div class="auth-logo-sheen"></div>
                         <img src="logo.jpg" alt="NOVA Logo" class="auth-logo" onerror="this.onerror=null; this.src='https://via.placeholder.com/110/D4AF37/080808?text=NOVA';">
                     </div>
                     <h1 class="auth-brand-title">NOVA</h1>
@@ -3915,6 +3922,7 @@
             startAppointmentsCountdown();
             renderTimer();
         };
+
 
         console.log("NOVA Portal loaded.");
     </script>
