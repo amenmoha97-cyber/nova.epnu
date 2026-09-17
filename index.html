@@ -348,15 +348,14 @@
         .carousel-slides { position: relative; width: 100%; height: 100%; }
 
         /* Cinematic slide transition: fade + zoom + blur */
+        /* Cinematic slide transition: fade + blur (no zoom) */
         .carousel-slide {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transform: scale(1.15);
-            filter: blur(20px) brightness(0.55) saturate(0.7);
+            filter: blur(12px) brightness(0.7);
             transition:
                 opacity 1.1s cubic-bezier(.65,0,.35,1),
-                transform 1.6s cubic-bezier(.22,1,.36,1),
                 filter 1.1s cubic-bezier(.65,0,.35,1);
             z-index: 1;
             pointer-events: none;
@@ -364,13 +363,12 @@
             align-items: center;
             justify-content: center;
             background-color: var(--beige-card);
-            will-change: opacity, transform, filter;
+            will-change: opacity, filter;
         }
 
         .carousel-slide.active {
             opacity: 1;
-            transform: scale(1);
-            filter: blur(0) brightness(1) saturate(1);
+            filter: blur(0) brightness(1);
             z-index: 2;
             pointer-events: auto;
         }
@@ -379,17 +377,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transform-origin: center center;
-            will-change: transform;
-        }
-
-        /* Ken Burns zoom on active image */
-        .carousel-slide.active img {
-            animation: kenBurns 8s cubic-bezier(.22,1,.36,1) forwards;
-        }
-        @keyframes kenBurns {
-            0%   { transform: scale(1); }
-            100% { transform: scale(1.09); }
         }
 
         /* Cinematic vignette */
@@ -1242,12 +1229,12 @@
                 <div class="carousel-slides" id="carouselSlides">
                     <div class="carousel-slide active" data-index="0"><img src="banner.jpg" alt="Slide 1"></div>
                     <div class="carousel-slide" data-index="1"><img src="banner2.jpg" alt="Slide 2"></div>
-                    <div class="carousel-slide" data-index="2"><img src="amin.jpg" alt="Slide 3"></div>
-                    <div class="carousel-slide" data-index="3"><img src="banner4.jpg" alt="Slide 4"></div>
+                    <div class="carousel-slide" data-index="2"><img src="banner3.jpg" alt="Slide 3"></div>
+                    <div class="carousel-slide" data-index="3"><img src="amin.jpg" alt="Slide 4"></div>
                 </div>
                 <div class="carousel-indicators" id="carouselIndicators"></div>
             </div>
-            <div class="home-credit"><strong>NOVA</strong> — FOM-EPNU</div>
+            <div class="home-credit"><strong>created by Dr.Amin</strong> — FOM-EPNU</div>
             <div class="stats-bar">
                 <div class="stat-item"><i class="fa-solid fa-book"></i> المواد: <strong id="totalSubjects">0</strong></div>
                 <div class="stat-item"><i class="fa-solid fa-file-pdf"></i> الملفات: <strong id="totalFiles">0</strong></div>
