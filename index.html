@@ -33,7 +33,6 @@
     border-color: #E4DCCF;
 }
 
-/* لمعة بتعدي على البادج عند الـ hover */
 .user-badge::before {
     content: "";
     position: absolute;
@@ -54,7 +53,6 @@
     transform: translateY(-2px);
 }
 
-/* ===== الأفاتار ===== */
 .user-avatar {
     position: relative;
     width: 36px; height: 36px;
@@ -64,7 +62,6 @@
     z-index: 2;
 }
 
-/* الهالة النابضة */
 .avatar-glow {
     position: absolute;
     inset: -9px;
@@ -80,7 +77,6 @@
     50%      { opacity: .95; transform: scale(1.15); }
 }
 
-/* الحلقة الذهبية اللي بتلف */
 .user-avatar::before {
     content: "";
     position: absolute;
@@ -98,7 +94,6 @@
 }
 @keyframes avatarRingSpin { to { transform: rotate(360deg); } }
 
-/* القرص الداخلي */
 .user-avatar::after {
     content: "";
     position: absolute;
@@ -114,7 +109,6 @@
     border-color: rgba(181,138,42,.45);
 }
 
-/* الأيقونة نفسها */
 .user-avatar i {
     position: relative;
     z-index: 3;
@@ -124,7 +118,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    color: #D4AF37; /* fallback */
+    color: #D4AF37;
     filter: drop-shadow(0 0 6px rgba(212,175,55,.7));
     animation: avatarIconShimmer 3s linear infinite,
                avatarIconBob 3.4s ease-in-out infinite;
@@ -135,7 +129,6 @@
     50%      { transform: translateY(-2px) scale(1.08); }
 }
 
-/* النقطة اللي بتدور في المدار */
 .orbit-dot {
     position: absolute;
     inset: -5px;
@@ -157,7 +150,6 @@
 }
 @keyframes avatarOrbit { to { transform: rotate(360deg); } }
 
-/* ===== الاسم ===== */
 .user-info {
     position: relative;
     z-index: 2;
@@ -177,7 +169,6 @@
 [data-theme="light"] .user-info { color: #29251F; }
 [data-theme="light"] .user-badge:hover .user-info { color: #B58A2A; }
 
-/* ===== Responsive ===== */
 @media (max-width: 480px) {
     .user-badge { padding: 0.25rem 0.8rem 0.25rem 0.45rem; gap: 8px; }
     .user-avatar { width: 30px; height: 30px; }
@@ -185,7 +176,6 @@
     .user-info { max-width: 110px; font-size: 0.8rem; }
 }
 
-/* ===== احترام تقليل الحركة ===== */
 @media (prefers-reduced-motion: reduce) {
     .user-avatar::before,
     .user-avatar i,
@@ -227,7 +217,6 @@
         .bg-animation { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(circle at 30% 40%, rgba(212,175,55,0.08) 0%, transparent 60%), radial-gradient(circle at 70% 60%, rgba(212,175,55,0.05) 0%, transparent 50%); animation: pulseBg 8s ease-in-out infinite alternate; }
         @keyframes pulseBg { 0% { opacity:0.6; transform:scale(1); } 100% { opacity:1; transform:scale(1.05); } }
 
-        /* ===== AUTH OVERLAY ===== */
         .auth-overlay {
             position: fixed; inset: 0; z-index: 1000;
             display: flex; align-items: center; justify-content: center;
@@ -480,7 +469,6 @@
             .pwd-requirements { font-size: 0.65rem; gap: 4px 9px; }
         }
 
-        /* ===== REST OF APP ===== */
         header { background: var(--card-black); border-bottom: 1px solid var(--border-gold); padding: 0.8rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; backdrop-filter: blur(6px); }
         [data-theme="light"] header { border-bottom-color: #E4DCCF; }
         .logo-container { display: flex; align-items: center; gap: 14px; }
@@ -512,9 +500,6 @@
         .home-credit { text-align: center; font-size: 0.9rem; color: var(--beige-light); margin-bottom: 0.5rem; opacity: 0.9; }
         .home-credit strong { color: var(--gold-primary); }
 
-        /* ==========================================================
-           ===== PROFESSIONAL CAROUSEL — CINEMATIC TRANSITIONS =====
-           ========================================================== */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -1177,7 +1162,6 @@
             .carousel-indicators .dot.active { width: 26px; }
         }
 
-        /* ===== HOME PAGE ANIMATIONS ===== */
         #homeSection .carousel-container { animation: homeCarouselIn 1.1s cubic-bezier(.22,1,.36,1) both; }
         @keyframes homeCarouselIn {
             0%   { opacity: 0; transform: translateY(40px) scale(0.94); filter: blur(14px); }
@@ -1265,16 +1249,12 @@
             100% { transform: translate(-20px, -100px) scale(0.8); opacity: 0; }
         }
 
-        /* ================================================================
-           ===== CORE SUBJECTS — CINEMATIC 3D CARD ANIMATIONS =====
-           ================================================================ */
         #coreSection .grid-container {
             perspective: 1600px;
             perspective-origin: 50% 30%;
             gap: 1.6rem;
         }
 
-        /* ===== OUTER WRAPPER (entrance + rotating glow border) ===== */
         #coreSection .nova-card-outer {
             position: relative;
             transform-style: preserve-3d;
@@ -1285,7 +1265,6 @@
             border-radius: 18px;
         }
 
-        /* Rotating glow ring */
         #coreSection .nova-card-outer::before {
             content: "";
             position: absolute;
@@ -1314,7 +1293,6 @@
 
         @keyframes novaBorderSpin { to { transform: rotate(360deg); } }
 
-        /* Card entrance: 3D fly-in with blur */
         @keyframes novaCardIn {
             0% {
                 opacity: 0;
@@ -1329,7 +1307,6 @@
             }
         }
 
-        /* ===== THE CARD ITSELF ===== */
         #coreSection .subject-card {
             position: relative;
             z-index: 2;
@@ -1361,7 +1338,6 @@
                 scale(1.045);
         }
 
-        /* Cursor spotlight */
         #coreSection .subject-card::before {
             content: "";
             position: absolute;
@@ -1378,7 +1354,6 @@
         }
         #coreSection .subject-card:hover::before { opacity: 1; }
 
-        /* Golden shine sweep */
         #coreSection .subject-card::after {
             content: "";
             position: absolute;
@@ -1399,7 +1374,6 @@
         }
         #coreSection .subject-card:hover::after { left: 140%; }
 
-        /* Cover image — depth pop */
         #coreSection .subject-card .subject-cover-img {
             position: relative;
             z-index: 3;
@@ -1414,7 +1388,6 @@
                         0 0 30px rgba(212,175,55,0.35);
         }
 
-        /* Fallback icon — dramatic 3D lift + wiggle */
         #coreSection .subject-card > i {
             position: relative;
             z-index: 3;
@@ -1436,7 +1409,6 @@
             100% { transform: translateZ(60px) scale(1.15) rotateY(15deg); }
         }
 
-        /* Title — 3D lift + glow */
         #coreSection .subject-card h3 {
             position: relative;
             z-index: 3;
@@ -1453,7 +1425,6 @@
             text-shadow: 0 4px 24px rgba(212,175,55,0.7);
         }
 
-        /* ===== LIGHT THEME ADJUSTMENTS ===== */
         [data-theme="light"] #coreSection .subject-card {
             background: linear-gradient(160deg, #FFFCF7 0%, #F5EFE3 100%);
         }
@@ -1471,7 +1442,6 @@
             color: #B58A2A;
         }
 
-        /* Reduced motion respect */
         @media (prefers-reduced-motion: reduce) {
             #coreSection .nova-card-outer,
             #coreSection .nova-card-outer::before,
@@ -1485,11 +1455,6 @@
             }
         }
 
-        /* ================================================================
-           ===== NOVA PREMIUM ENHANCEMENTS — LUXURY LAYER =====
-           ================================================================ */
-
-        /* ---- Custom Scrollbar ---- */
         ::-webkit-scrollbar { width: 11px; height: 11px; }
         ::-webkit-scrollbar-track { background: var(--card-black); }
         ::-webkit-scrollbar-thumb {
@@ -1499,11 +1464,9 @@
         }
         ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #F5D77A, #D4AF37); }
 
-        /* ---- Text Selection ---- */
         ::selection { background: rgba(212,175,55,0.35); color: var(--beige-main); }
         ::-moz-selection { background: rgba(212,175,55,0.35); color: var(--beige-main); }
 
-        /* ---- Scroll Progress Bar ---- */
         #novaScrollBar {
             position: fixed; top: 0; right: 0; left: 0;
             height: 3px; z-index: 2000;
@@ -1518,7 +1481,6 @@
         }
         @keyframes scrollBarShimmer { to { background-position: 200% center; } }
 
-        /* ---- Back To Top FAB ---- */
         #novaBackTop {
             position: fixed; bottom: 28px; left: 28px;
             width: 52px; height: 52px; border-radius: 50%;
@@ -1546,7 +1508,6 @@
             50% { box-shadow: 0 14px 38px rgba(212,175,55,0.55), 0 0 0 16px rgba(212,175,55,0); }
         }
 
-        /* ---- Toast Notifications ---- */
         #novaToastHost {
             position: fixed; top: 90px; left: 50%;
             transform: translateX(-50%);
@@ -1583,6 +1544,7 @@
         .nova-toast.success::before { background: linear-gradient(180deg, #2ECC71, #27AE60); }
         .nova-toast.error::before   { background: linear-gradient(180deg, #E74C3C, #C0392B); }
         .nova-toast.info::before    { background: linear-gradient(180deg, #3498DB, #2980B9); }
+        .nova-toast.warn::before    { background: linear-gradient(180deg, #E67E22, #CA6F1E); }
         .nova-toast .nt-icon {
             width: 34px; height: 34px; border-radius: 11px;
             display: grid; place-items: center; flex-shrink: 0;
@@ -1593,6 +1555,7 @@
         .nova-toast.success .nt-icon { color: #2ECC71; border-color: rgba(46,204,113,0.5); background: rgba(46,204,113,0.10); }
         .nova-toast.error   .nt-icon { color: #E74C3C; border-color: rgba(231,76,60,0.5); background: rgba(231,76,60,0.10); }
         .nova-toast.info    .nt-icon { color: #3498DB; border-color: rgba(52,152,219,0.5); background: rgba(52,152,219,0.10); }
+        .nova-toast.warn    .nt-icon { color: #E67E22; border-color: rgba(230,126,34,0.5); background: rgba(230,126,34,0.10); }
         .nova-toast .nt-msg { flex: 1; min-width: 0; line-height: 1.35; word-break: break-word; }
         .nova-toast.leaving { animation: toastOut 0.4s cubic-bezier(.65,0,.35,1) both; }
         @keyframes toastIn {
@@ -1604,7 +1567,6 @@
             100% { opacity: 0; transform: translateY(-16px) scale(0.96); }
         }
 
-        /* ---- Global Ambient Particles ---- */
         #novaAmbient {
             position: fixed; inset: 0;
             pointer-events: none; z-index: 0;
@@ -1639,7 +1601,6 @@
             100% { opacity: 0; transform: translate(-40px,-140px) scale(1.3); }
         }
 
-        /* ---- Header enhancement ---- */
         header {
             background: rgba(18,17,16,0.72) !important;
             backdrop-filter: blur(18px) saturate(180%) !important;
@@ -1668,7 +1629,6 @@
         .site-logo { transition: transform 0.6s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease; }
         .site-logo:hover { transform: rotate(-6deg) scale(1.08); box-shadow: 0 0 30px rgba(212,175,55,0.55); }
 
-        /* ---- Nav tabs glow enhancement ---- */
         .tab-btn {
             position: relative;
             overflow: hidden;
@@ -1688,7 +1648,6 @@
                         inset 0 0 12px rgba(255,255,255,0.08) !important;
         }
 
-        /* ---- Section reveal on scroll ---- */
         .reveal-on-scroll {
             opacity: 0;
             transform: translateY(28px);
@@ -1698,7 +1657,6 @@
         }
         .reveal-on-scroll.revealed { opacity: 1; transform: translateY(0); }
 
-        /* ---- Stat cards shimmer ---- */
         .dash-stat-card::before {
             content: ""; position: absolute; inset: 0;
             background: linear-gradient(120deg, transparent 40%, rgba(212,175,55,0.10) 50%, transparent 60%);
@@ -1709,7 +1667,6 @@
         .dash-stat-card:hover::before { animation: statShine 1.1s ease-out; }
         @keyframes statShine { to { transform: translateX(100%); } }
 
-        /* ---- Footer enhancement ---- */
         footer { position: relative; overflow: hidden; }
         footer::before {
             content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
@@ -1724,7 +1681,6 @@
             pointer-events: none;
         }
 
-        /* ---- Subtle cursor glow ---- */
         #novaCursorGlow {
             position: fixed;
             width: 420px; height: 420px;
@@ -1753,7 +1709,6 @@
 </head>
 <body>
 
-    <!-- NOVA Premium Layers -->
     <div id="novaScrollBar"></div>
     <div id="novaAmbient">
         <div class="nova-orb o1"></div>
@@ -2117,7 +2072,7 @@
     </div>
 
     <footer>
-        <p>This website was created by <span>Amin</span> for Medical Students at <span>East Port Said National University</span></p>
+        <p>This website was created by NOVA Founder <span>Dr. Amin</span> for <span>FOM-EPNU</span> under the supervision of the Program Director <span>Dr. Shereen El-Kouly</span></p>
     </footer>
 
     <button id="novaBackTop" title="العودة للأعلى" aria-label="Back to top">
@@ -2226,14 +2181,11 @@
         const DEVELOPER_ID = "admin";
         const DEVELOPER_PASSWORD = "admin123";
 
-        // ==== نطاق الـ ID المسموح ====
         const STUDENT_ID_MIN = 25211121;
         const STUDENT_ID_MAX = 25211620;
 
-        // ==== استثناءات مسموح بيها حتى لو بره الرينج ====
         const STUDENT_ID_EXCEPTIONS = ["12345678","25211120"];
 
-        // ==== دالة تحقق موحّدة ====
         function isValidStudentId(id) {
             if (!/^\d{8}$/.test(id)) return false;
             if (STUDENT_ID_EXCEPTIONS.includes(id)) return true;
@@ -2605,11 +2557,41 @@
                 </li>`;
             }).join('');
         }
+
+        /* ============================================================
+           ===== COUNTDOWN "فكرني" — WITH STRONG ALARM & AUTO-DELETE =====
+           ============================================================ */
         function startAppointmentsCountdown() {
             if (window._apptInterval) clearInterval(window._apptInterval);
+            // تتبع المواعيد اللي اتنبهت عليها عشان ما نكررش الصوت
+            if (!window._apptNotified) window._apptNotified = new Set();
+
             function tick() {
-                const list = getAppointments();
                 const now = Date.now();
+                let list = getAppointments();
+
+                // ==== المواعيد اللي وصل وقتها أو عدّت ====
+                const due = list.filter(a => a.dateTime <= now);
+                if (due.length > 0) {
+                    // شغّل المنبه بس للمواعيد الجديدة اللي لسه ما اتنبهتش
+                    const newlyDue = due.filter(a => !window._apptNotified.has(a.id));
+                    if (newlyDue.length > 0) {
+                        playAlarmSound('appointment');
+                        newlyDue.forEach(a => {
+                            window._apptNotified.add(a.id);
+                            if (window.novaToast) {
+                                window.novaToast('⏰ حان موعد: ' + a.title, 'warn', 9000);
+                            }
+                        });
+                    }
+                    // احذف كل المواعيد اللي عدّت فوراً
+                    list = list.filter(a => a.dateTime > now);
+                    saveAppointments(list);
+                    renderAppointments();
+                    updateDashExamCard();
+                }
+
+                // ==== تحديث عرض العداد التنازلي ====
                 const next = list.find(a => a.dateTime > now);
                 const cdDays = document.getElementById('cdDays');
                 const cdHours = document.getElementById('cdHours');
@@ -2638,6 +2620,7 @@
             tick();
             window._apptInterval = setInterval(tick, 1000);
         }
+
         function updateDashExamCard() {
             const el = document.getElementById('dashExamValue');
             if (!el) return;
@@ -3010,9 +2993,6 @@
             document.getElementById('pdfViewerModal').style.display = 'none';
         }
 
-        // ================================================================
-        // ===== PROFESSIONAL CAROUSEL CONTROLLER =====
-        // ================================================================
         function initCarousel() {
             const slides = document.querySelectorAll('.carousel-slide');
             const indicators = document.getElementById('carouselIndicators');
@@ -3142,6 +3122,77 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
+        /* ============================================================
+           ===== AUDIO / ALARM SYSTEM (مشترك) =====
+           ============================================================ */
+        let _alarmCtx = null;
+        function getAlarmCtx() {
+            if (!_alarmCtx) {
+                try { _alarmCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { return null; }
+            }
+            if (_alarmCtx.state === 'suspended') {
+                try { _alarmCtx.resume(); } catch (e) {}
+            }
+            return _alarmCtx;
+        }
+        function ensureAudioCtx() { getAlarmCtx(); }
+
+        /* ===== منبه قوي جداً للعداد التنازلي "فكرني" ===== */
+        function playAlarmSound(type) {
+            const ctx = getAlarmCtx();
+            if (!ctx) return;
+            if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} }
+            const start = ctx.currentTime + 0.02;
+            const baseFreq = type === 'appointment' ? 1300 : 900;
+            // نمط صفارة إنذار قوي — موجة مربعة أعلى وأوضح
+            const pattern = [
+                0, 0.18, 0.36,
+                0.66, 0.84, 1.02,
+                1.32, 1.50, 1.68,
+                1.98, 2.16, 2.34
+            ];
+            pattern.forEach((offset, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'square';
+                osc.frequency.value = i % 2 === 0 ? baseFreq : baseFreq * 1.33;
+                const t = start + offset;
+                gain.gain.setValueAtTime(0.0001, t);
+                gain.gain.exponentialRampToValueAtTime(0.8, t + 0.012);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.15);
+                osc.start(t);
+                osc.stop(t + 0.17);
+            });
+        }
+
+        /* ===== منبه البومودورو (أعلى وأقوى) ===== */
+        function playTimerBeep(isLong) {
+            const ctx = getAlarmCtx();
+            if (!ctx) return;
+            if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} }
+            const start = ctx.currentTime + 0.02;
+            const freq = isLong ? 880 : 1200;
+            const beeps = isLong
+                ? [0, 0.24, 0.48, 0.72, 0.96, 1.20, 1.44, 1.68]
+                : [0, 0.22, 0.44, 0.66, 0.88, 1.10, 1.32, 1.54];
+            beeps.forEach((offset, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'square';
+                osc.frequency.value = i % 2 === 0 ? freq : freq * 1.33;
+                const t = start + offset;
+                gain.gain.setValueAtTime(0.0001, t);
+                gain.gain.exponentialRampToValueAtTime(0.75, t + 0.012);
+                gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+                osc.start(t);
+                osc.stop(t + 0.18);
+            });
+        }
+
         const TIMER_DURATIONS = { focus: 50 * 60, short: 10 * 60, long: 30 * 60 };
         const TIMER_LABELS = {
             focus: 'Focus Time · وقت التركيز',
@@ -3155,7 +3206,7 @@
         let timerTotal = TIMER_DURATIONS.focus;
         let timerInterval = null;
         let timerRunning = false;
-        let timerAudioCtx = null;
+
         function loadTimerStats() {
             try { const all = JSON.parse(localStorage.getItem('nova_pomodoro_stats') || '{}'); return all[getUserKey()] || { sessions: 0, minutes: 0 }; } catch (e) { return { sessions: 0, minutes: 0 }; }
         }
@@ -3164,26 +3215,6 @@
             try { all = JSON.parse(localStorage.getItem('nova_pomodoro_stats') || '{}'); } catch (e) {}
             all[getUserKey()] = s;
             localStorage.setItem('nova_pomodoro_stats', JSON.stringify(all));
-        }
-        function ensureAudioCtx() {
-            if (!timerAudioCtx) { try { timerAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} }
-            if (timerAudioCtx && timerAudioCtx.state === 'suspended') timerAudioCtx.resume();
-        }
-        function playTimerBeep(isLong) {
-            if (!timerAudioCtx) return;
-            const now = timerAudioCtx.currentTime;
-            const freq = isLong ? 660 : 880;
-            const beeps = isLong ? [0, 0.3, 0.6, 0.9] : [0, 0.28, 0.56];
-            beeps.forEach(offset => {
-                const osc = timerAudioCtx.createOscillator();
-                const gain = timerAudioCtx.createGain();
-                osc.connect(gain); gain.connect(timerAudioCtx.destination);
-                osc.frequency.value = freq; osc.type = 'sine';
-                gain.gain.setValueAtTime(0.0001, now + offset);
-                gain.gain.exponentialRampToValueAtTime(0.28, now + offset + 0.02);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + offset + 0.22);
-                osc.start(now + offset); osc.stop(now + offset + 0.24);
-            });
         }
         function timerRingClass() {
             if (timerMode === 'focus') return '';
@@ -3286,7 +3317,6 @@
             modal.style.display = 'flex';
         }
 
-        /* ================= CORE SUBJECTS — NEW CINEMATIC RENDER ================= */
         function renderCoreSubjects(filter = '') {
             const grid = document.getElementById('coreGrid');
             if (!grid) return;
@@ -3316,7 +3346,6 @@
             const tf = document.getElementById('totalFiles');    if (tf) tf.innerText = filtered.length * 6;
         }
 
-        /* ===== 3D Mouse-following Tilt + Cursor Spotlight ===== */
         function initCardTilt() {
             const cards = document.querySelectorAll('#coreSection .subject-card');
             cards.forEach(card => {
@@ -3376,7 +3405,6 @@
             });
         }
 
-        /* ===== Debounced filter ===== */
         let _coreFilterTimer;
         function filterCoreSubjects(value) {
             clearTimeout(_coreFilterTimer);
@@ -3907,7 +3935,6 @@
 
             if (name.split(/\s+/).filter(Boolean).length < 4) { shakeField(nameField); return showErr("الاسم يجب أن يكون رباعياً."); }
 
-            // ==== فحص الـ ID الجامعي ====
             const studentIdField = document.getElementById("signupStudentId").closest(".auth-field");
             if (!/^\d{8}$/.test(studentId)) {
                 shakeField(studentIdField);
@@ -4343,11 +4370,7 @@
             }, 350);
         });
 
-        /* ================================================================
-           ===== NOVA PREMIUM ENHANCEMENTS — SCRIPT LAYER =====
-           ================================================================ */
-
-        /* ---- Toast Notification System ---- */
+        /* ===== Toast Notification System ===== */
         window.novaToast = function(message, type = 'info', duration = 3200) {
             const host = document.getElementById('novaToastHost');
             if (!host) return;
@@ -4373,7 +4396,6 @@
             t.addEventListener('click', kill);
         };
 
-        /* Replace all native alerts with beautiful toasts */
         (function patchAlerts() {
             const nativeAlert = window.alert;
             window.alert = function(msg) {
@@ -4384,7 +4406,6 @@
             };
         })();
 
-        /* ---- Scroll Progress Bar ---- */
         (function initScrollBar() {
             const bar = document.getElementById('novaScrollBar');
             if (!bar) return;
@@ -4403,7 +4424,6 @@
             update();
         })();
 
-        /* ---- Back To Top ---- */
         (function initBackTop() {
             const btn = document.getElementById('novaBackTop');
             if (!btn) return;
@@ -4415,7 +4435,6 @@
             });
         })();
 
-        /* ---- Cursor Glow ---- */
         (function initCursorGlow() {
             const glow = document.getElementById('novaCursorGlow');
             if (!glow) return;
@@ -4432,7 +4451,6 @@
             })();
         })();
 
-        /* ---- Ambient Floating Dust ---- */
         (function initDust() {
             const host = document.getElementById('novaAmbient');
             if (!host) return;
@@ -4450,7 +4468,6 @@
             }
         })();
 
-        /* ---- Reveal on Scroll ---- */
         (function initReveal() {
             if (!('IntersectionObserver' in window)) return;
             const io = new IntersectionObserver((entries) => {
@@ -4480,7 +4497,6 @@
             });
         })();
 
-        /* ---- Welcome Toast on login ---- */
         (function patchShowMainApp() {
             const original = window.showMainApp;
             if (typeof original === 'function') {
@@ -4493,7 +4509,6 @@
             }
         })();
 
-        /* ---- Nice toast for saving file ---- */
         (function patchToggleSave() {
             const original = window.toggleSave;
             if (typeof original === 'function') {
@@ -4509,14 +4524,11 @@
             }
         })();
 
-        console.log("✨ NOVA Premium Enhancements loaded.");
-
         /* ==== Real-time validation للـ ID الجامعي ==== */
         (function initStudentIdValidation() {
             const input = document.getElementById("signupStudentId");
             if (!input) return;
 
-            // امنع أي حاجة غير الأرقام
             input.addEventListener("input", () => {
                 input.value = input.value.replace(/\D/g, "").slice(0, 8);
 
@@ -4525,20 +4537,34 @@
 
                 if (input.value.length === 8) {
                     if (isValidStudentId(input.value)) {
-                        field.classList.add("success");   // ✅ أخضر
+                        field.classList.add("success");
                     } else {
-                        field.classList.add("error");     // ❌ أحمر
+                        field.classList.add("error");
                     }
                 }
             });
 
-            // لو خرج من الحقل وهو ناقص، رجّعه أحمر
             input.addEventListener("blur", () => {
                 const field = input.closest(".auth-field");
                 if (input.value.length > 0 && input.value.length < 8) {
                     field.classList.add("error");
                 }
             });
+        })();
+
+        /* ==== فتح Audio Context عند أول تفاعل من المستخدم ==== */
+        (function unlockAudioOnGesture() {
+            const tryUnlock = () => {
+                const ctx = getAlarmCtx();
+                if (ctx && ctx.state === 'running') {
+                    document.removeEventListener('click', tryUnlock, true);
+                    document.removeEventListener('touchstart', tryUnlock, true);
+                    document.removeEventListener('keydown', tryUnlock, true);
+                }
+            };
+            document.addEventListener('click', tryUnlock, true);
+            document.addEventListener('touchstart', tryUnlock, true);
+            document.addEventListener('keydown', tryUnlock, true);
         })();
 
         window.onload = function() {
