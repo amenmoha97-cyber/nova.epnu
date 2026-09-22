@@ -1762,11 +1762,9 @@
 
                     <form id="loginForm" class="auth-form active" autocomplete="on" novalidate>
                         <div class="auth-field">
-                            <input type="text" id="loginNationalId" required placeholder=" "
-                                   maxlength="14" minlength="8" inputmode="numeric"
-                                   title="الرقم القومي يجب أن يبدأ بـ 30 ويكون 14 رقم">
-                            <label for="loginNationalId">الرقم القومي (14 رقم)</label>
-                            <i class="fa-solid fa-address-card field-icon"></i>
+                            <input type="text" id="loginId" required placeholder=" " autocomplete="username">
+                            <label for="loginId">الـ ID الجامعي أو الرقم القومي</label>
+                            <i class="fa-solid fa-id-card field-icon"></i>
                         </div>
                         <div class="auth-field">
                             <input type="password" id="loginPassword" required placeholder=" " autocomplete="current-password">
@@ -1788,8 +1786,14 @@
                             <i class="fa-solid fa-user field-icon"></i>
                         </div>
                         <div class="auth-field">
-                            <input type="text" id="signupNationalId" maxlength="14" minlength="8" required placeholder=" " inputmode="numeric"
-                                   title="الرقم القومي يجب أن يبدأ بـ 30 ويكون 14 رقم">
+                            <input type="text" id="signupStudentId" required placeholder=" "
+                                   maxlength="8" minlength="8" pattern="\d{8}" inputmode="numeric"
+                                   title="الـ ID يجب أن يكون 8 أرقام">
+                            <label for="signupStudentId">الـ ID الجامعي</label>
+                            <i class="fa-solid fa-id-badge field-icon"></i>
+                        </div>
+                        <div class="auth-field">
+                            <input type="text" id="signupNationalId" maxlength="14" required placeholder=" " pattern="\d{14}" inputmode="numeric">
                             <label for="signupNationalId">الرقم القومي (14 رقم)</label>
                             <i class="fa-solid fa-address-card field-icon"></i>
                         </div>
@@ -2174,24 +2178,26 @@
     </style>
 
     <script>
+        const DEVELOPER_ID = "admin";
+        const DEVELOPER_PASSWORD = "admin123";
+
+        const STUDENT_ID_MIN = 25211121;
+        const STUDENT_ID_MAX = 25211620;
+
+        const STUDENT_ID_EXCEPTIONS = ["12345678","25211120"];
+
+        function isValidStudentId(id) {
+            if (!/^\d{8}$/.test(id)) return false;
+            if (STUDENT_ID_EXCEPTIONS.includes(id)) return true;
+            const n = parseInt(id, 10);
+            return n >= STUDENT_ID_MIN && n <= STUDENT_ID_MAX;
+        }
+
         function isAudioUrl(url) { return /\.(mp3|m4a|wav|ogg|aac)$/i.test(url); }
         function esc(str) { return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
         function enc(s) { return encodeURIComponent(String(s == null ? '' : s)); }
         function dec(s) { return decodeURIComponent(String(s == null ? '' : s)); }
         function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-        /* ============================================================
-           ===== NATIONAL ID VALIDATION + ADMIN EXCEPTION =====
-           القاعدة: 14 رقم ويبدأ بـ 30
-           الاستثناء: 12345678 (حساب إدارة خاص — دخول مباشر بدون Supabase)
-           ============================================================ */
-        const NATIONAL_ID_EXCEPTION = "12345678";
-
-        function isValidNationalId(value) {
-            const v = String(value || "").trim();
-            if (v === NATIONAL_ID_EXCEPTION) return true;
-            return /^30\d{12}$/.test(v);
-        }
 
         const subjectFiles = {
             'Anatomy': {
@@ -2345,7 +2351,7 @@
         function getUserKey() {
             try {
                 const u = JSON.parse(localStorage.getItem('nova_active_user') || 'null');
-                if (u && (u.nationalId || u.name)) return String(u.nationalId || u.name);
+                if (u && (u.studentId || u.name)) return String(u.studentId || u.name);
             } catch (e) {}
             return 'guest';
         }
@@ -2552,16 +2558,22 @@
             }).join('');
         }
 
+        /* ============================================================
+           ===== COUNTDOWN "فكرني" — WITH STRONG ALARM & AUTO-DELETE =====
+           ============================================================ */
         function startAppointmentsCountdown() {
             if (window._apptInterval) clearInterval(window._apptInterval);
+            // تتبع المواعيد اللي اتنبهت عليها عشان ما نكررش الصوت
             if (!window._apptNotified) window._apptNotified = new Set();
 
             function tick() {
                 const now = Date.now();
                 let list = getAppointments();
 
+                // ==== المواعيد اللي وصل وقتها أو عدّت ====
                 const due = list.filter(a => a.dateTime <= now);
                 if (due.length > 0) {
+                    // شغّل المنبه بس للمواعيد الجديدة اللي لسه ما اتنبهتش
                     const newlyDue = due.filter(a => !window._apptNotified.has(a.id));
                     if (newlyDue.length > 0) {
                         playAlarmSound('appointment');
@@ -2572,12 +2584,14 @@
                             }
                         });
                     }
+                    // احذف كل المواعيد اللي عدّت فوراً
                     list = list.filter(a => a.dateTime > now);
                     saveAppointments(list);
                     renderAppointments();
                     updateDashExamCard();
                 }
 
+                // ==== تحديث عرض العداد التنازلي ====
                 const next = list.find(a => a.dateTime > now);
                 const cdDays = document.getElementById('cdDays');
                 const cdHours = document.getElementById('cdHours');
@@ -3108,6 +3122,9 @@
             document.getElementById('gpaResult').style.display = 'block';
         }
 
+        /* ============================================================
+           ===== AUDIO / ALARM SYSTEM (مشترك) =====
+           ============================================================ */
         let _alarmCtx = null;
         function getAlarmCtx() {
             if (!_alarmCtx) {
@@ -3120,12 +3137,14 @@
         }
         function ensureAudioCtx() { getAlarmCtx(); }
 
+        /* ===== منبه قوي جداً للعداد التنازلي "فكرني" ===== */
         function playAlarmSound(type) {
             const ctx = getAlarmCtx();
             if (!ctx) return;
             if (ctx.state === 'suspended') { try { ctx.resume(); } catch (e) {} }
             const start = ctx.currentTime + 0.02;
             const baseFreq = type === 'appointment' ? 1300 : 900;
+            // نمط صفارة إنذار قوي — موجة مربعة أعلى وأوضح
             const pattern = [
                 0, 0.18, 0.36,
                 0.66, 0.84, 1.02,
@@ -3148,6 +3167,7 @@
             });
         }
 
+        /* ===== منبه البومودورو (أعلى وأقوى) ===== */
         function playTimerBeep(isLong) {
             const ctx = getAlarmCtx();
             if (!ctx) return;
@@ -3896,6 +3916,7 @@
         document.getElementById("signupForm").addEventListener("submit", async function(e) {
             e.preventDefault();
             const name = document.getElementById("signupName").value.trim();
+            const studentId = document.getElementById("signupStudentId").value.trim();
             const email = document.getElementById("signupEmail").value.trim();
             const nationalId = document.getElementById("signupNationalId").value.trim();
             const phone = document.getElementById("signupPhone").value.trim();
@@ -3913,10 +3934,21 @@
             const pwdField = document.getElementById("signupPassword").closest(".auth-field");
 
             if (name.split(/\s+/).filter(Boolean).length < 4) { shakeField(nameField); return showErr("الاسم يجب أن يكون رباعياً."); }
-            if (nationalId === NATIONAL_ID_EXCEPTION) { shakeField(nationalField); return showErr("هذا الرقم محجوز للنظام ولا يمكن التسجيل به."); }
-            if (!isValidNationalId(nationalId)) { shakeField(nationalField); return showErr("الرقم القومي يجب أن يبدأ بـ 30 ويكون 14 رقم."); }
+
+            const studentIdField = document.getElementById("signupStudentId").closest(".auth-field");
+            if (!/^\d{8}$/.test(studentId)) {
+                shakeField(studentIdField);
+                return showErr("الـ ID الجامعي يجب أن يكون 8 أرقام بالضبط.");
+            }
+            if (!isValidStudentId(studentId)) {
+                shakeField(studentIdField);
+                return showErr(`الـ ID لازم يكون بين ${STUDENT_ID_MIN} و ${STUDENT_ID_MAX}.`);
+            }
+
+            if (!/^\d{14}$/.test(nationalId)) { shakeField(nationalField); return showErr("الرقم القومي يجب أن يكون 14 رقم."); }
             if (!/^0?\d{10,11}$/.test(phone.replace(/\D/g, ""))) { shakeField(phoneField); return showErr("رقم الهاتف غير صحيح."); }
             if (password.length < 6) { shakeField(pwdField); return showErr("كلمة السر 6 أحرف على الأقل."); }
+            if (studentId === DEVELOPER_ID) { shakeField(studentIdField); return showErr("هذا الـ ID محجوز."); }
             showErr("⏳ جارٍ إنشاء الحساب...");
             alertBox.className = "alert-msg";
             setBtnLoading(btn, true);
@@ -3933,6 +3965,7 @@
                     id: authData.user.id,
                     full_name: name,
                     national_id: nationalId,
+                    id_student: studentId,
                     phone: phone,
                     email: email
                 });
@@ -3954,7 +3987,7 @@
 
         document.getElementById("loginForm").addEventListener("submit", async function(e) {
             e.preventDefault();
-            const nationalId = document.getElementById("loginNationalId").value.trim();
+            const loginId = document.getElementById("loginId").value.trim();
             const password = document.getElementById("loginPassword").value;
             const alertBox = document.getElementById("loginAlert");
             const btn = document.getElementById("loginSubmitBtn");
@@ -3963,41 +3996,21 @@
                 alertBox.className = "alert-msg" + (ok ? " success" : "");
                 alertBox.style.display = "block";
             };
-            if (!nationalId || !password) {
-                if (!nationalId) shakeField(document.getElementById("loginNationalId").closest(".auth-field"));
+            if (!loginId || !password) {
+                if (!loginId) shakeField(document.getElementById("loginId").closest(".auth-field"));
                 if (!password) shakeField(document.getElementById("loginPassword").closest(".auth-field"));
-                return showErr("أدخل الرقم القومي وكلمة السر.");
+                return showErr("أدخل الـ ID وكلمة السر.");
             }
-            if (!isValidNationalId(nationalId)) {
-                shakeField(document.getElementById("loginNationalId").closest(".auth-field"));
-                return showErr("الرقم القومي يجب أن يبدأ بـ 30 ويكون 14 رقم.");
-            }
-
-            /* ===== استثناء النظام: 12345678 — دخول مباشر بدون Supabase ===== */
-            if (nationalId === NATIONAL_ID_EXCEPTION) {
-                localStorage.setItem("nova_active_user", JSON.stringify({
-                    name: "NOVA Admin",
-                    nationalId: nationalId,
-                    email: "admin@nova.local",
-                    supabaseId: "nova-admin-demo"
-                }));
-                setBtnLoading(btn, false);
-                setBtnSuccess(btn);
-                showErr("✅ مرحباً بك في وضع الإدارة.", true);
-                setTimeout(() => { showMainApp("NOVA Admin"); }, 700);
-                return;
-            }
-
             showErr("⏳ جارٍ التحقق...");
             alertBox.className = "alert-msg";
             setBtnLoading(btn, true);
             try {
-                const { data: emailResult, error: rpcError } = await supabaseClient.rpc("get_email_by_national_id", { identifier: nationalId });
+                const { data: emailResult, error: rpcError } = await supabaseClient.rpc("get_email_by_identifier", { identifier: loginId });
                 const email = emailResult;
                 if (rpcError) { setBtnLoading(btn, false); return showErr("خطأ في الاتصال بقاعدة البيانات."); }
                 if (!email) {
                     setBtnLoading(btn, false);
-                    shakeField(document.getElementById("loginNationalId").closest(".auth-field"));
+                    shakeField(document.getElementById("loginId").closest(".auth-field"));
                     return showErr("الحساب غير موجود.");
                 }
                 const { data: authData, error: authError } = await supabaseClient.auth.signInWithPassword({ email, password });
@@ -4010,7 +4023,7 @@
                 const displayName = (profile && profile.full_name) ? profile.full_name : email;
                 localStorage.setItem("nova_active_user", JSON.stringify({
                     name: displayName,
-                    nationalId: nationalId,
+                    studentId: (profile && profile.id_student) || "",
                     email: email,
                     supabaseId: authData.user.id
                 }));
@@ -4092,6 +4105,7 @@
             if (u && u.name) {
                 nameEn = firstNameOf(u.name);
                 nameAr = nameEn;
+                if (u.isDeveloper) { nameEn = 'Amin'; nameAr = 'أمين'; }
             }
             const elEn = document.getElementById('dashUserName'); if (elEn) elEn.innerText = nameEn;
             const elAr = document.getElementById('dashUserNameAr'); if (elAr) elAr.innerText = nameAr;
@@ -4129,7 +4143,7 @@
             overlay.classList.remove("hiding");
             document.getElementById("userInfoDisplay").innerText = "أهلاً بك";
             switchAuthMode("login");
-            document.getElementById("loginNationalId").value = "";
+            document.getElementById("loginId").value = "";
             document.getElementById("loginPassword").value = "";
             document.getElementById("loginAlert").style.display = "none";
             document.getElementById("signupAlert").style.display = "none";
@@ -4356,6 +4370,7 @@
             }, 350);
         });
 
+        /* ===== Toast Notification System ===== */
         window.novaToast = function(message, type = 'info', duration = 3200) {
             const host = document.getElementById('novaToastHost');
             if (!host) return;
@@ -4509,6 +4524,35 @@
             }
         })();
 
+        /* ==== Real-time validation للـ ID الجامعي ==== */
+        (function initStudentIdValidation() {
+            const input = document.getElementById("signupStudentId");
+            if (!input) return;
+
+            input.addEventListener("input", () => {
+                input.value = input.value.replace(/\D/g, "").slice(0, 8);
+
+                const field = input.closest(".auth-field");
+                field.classList.remove("error", "success");
+
+                if (input.value.length === 8) {
+                    if (isValidStudentId(input.value)) {
+                        field.classList.add("success");
+                    } else {
+                        field.classList.add("error");
+                    }
+                }
+            });
+
+            input.addEventListener("blur", () => {
+                const field = input.closest(".auth-field");
+                if (input.value.length > 0 && input.value.length < 8) {
+                    field.classList.add("error");
+                }
+            });
+        })();
+
+        /* ==== فتح Audio Context عند أول تفاعل من المستخدم ==== */
         (function unlockAudioOnGesture() {
             const tryUnlock = () => {
                 const ctx = getAlarmCtx();
@@ -4548,6 +4592,7 @@
         const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_L-R6C_VpaL0MJR_DLVz-3Q_NbvPiKae";
         const { createClient } = supabase;
         const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+        function makeAuthEmail(studentId) { return `${studentId}@auth.nova.local`; }
     </script>
 </body>
 </html>
